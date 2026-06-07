@@ -14,7 +14,7 @@ const media: MediaItem[] = [
   { src: '/jewellery/RNS5911.jpg', type: 'image', alt: 'Jewellery' },
   { src: '/jewellery/RNS5938.jpg', type: 'image', alt: 'Jewellery' },
   { src: '/jewellery/RNS5941.jpg', type: 'image', alt: 'Jewellery' },
-  { src: '/jewellery/SC00606.jpg', type: 'image', alt: 'Jewellery' },
+  { src: '/jewellery/DSC00606.jpg', type: 'image', alt: 'Jewellery' },
   { src: '/jewellery/DSC01322.jpg', type: 'image', alt: 'Jewellery' },
   { src: '/jewellery/IMG_9905.jpg', type: 'image', alt: 'Jewellery' },
 ];
