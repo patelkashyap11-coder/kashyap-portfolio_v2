@@ -8,8 +8,14 @@ import type { MediaItem } from '@/components/GalleryPage';
 //   { src: '/fashion/video-01.mp4', type: 'video' },
 // ];
 
-const media: MediaItem[] = [];
-
+const media: MediaItem[] = [
+  { src: '/fashion/fashion-1.jpg', type: 'image', alt: 'Fashion' },
+  { src: '/fashion/fashion-2.jpg', type: 'image', alt: 'Fashion' },
+  { src: '/fashion/fashion-3.jpeg', type: 'image', alt: 'Fashion' },
+  { src: '/fashion/fashion-4.jpg', type: 'image', alt: 'Fashion' },
+  { src: '/fashion/fashion-5.jpg', type: 'image', alt: 'Fashion' },
+  { src: '/fashion/fashion-6.jpg', type: 'image', alt: 'Fashion' },
+];
 export default function Page() {
   return (
     <GalleryPage
