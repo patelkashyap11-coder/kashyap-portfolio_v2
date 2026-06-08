@@ -33,36 +33,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Cursor ──────────────────────────────────── */
-.cursor-dot {
-  position: fixed; top: 0; left: 0;
-  width: 6px; height: 6px;
-  background: var(--dark);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, opacity 0.25s ease;
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  position: fixed; top: 0; left: 0;
-  width: 32px; height: 32px;
-  border: 1px solid rgba(10,10,10,0.25);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-}
-.cursor-dot.is-hover {
-  width: 44px; height: 44px;
-  background: var(--accent);
-  mix-blend-mode: normal;
-}
-.cursor-ring.is-hover {
-  opacity: 0;
-}
-
 /* ── Typography ──────────────────────────────── */
 .t-display {
   font-family: var(--font-tight);

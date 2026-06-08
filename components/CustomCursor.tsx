@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import './custom-cursor.css';
 
 export function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
@@ -8,20 +9,29 @@ export function CustomCursor() {
   useEffect(() => {
     const dot  = dotRef.current!;
     const ring = ringRef.current!;
-    let mx = -100, my = -100, rx = -100, ry = -100;
+    let mx = -100, my = -100;
+    let dx = -100, dy = -100, rx = -100, ry = -100;
     let raf = 0;
 
+    const DOT_LERP  = 0.88;
+    const RING_LERP = 0.38;
+
+    const setPos = (el: HTMLElement, x: number, y: number) => {
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    };
+
     const onMove = (e: MouseEvent) => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + 'px';
-      dot.style.top  = my + 'px';
+      mx = e.clientX;
+      my = e.clientY;
     };
 
     const tick = () => {
-      rx += (mx - rx) * 0.13;
-      ry += (my - ry) * 0.13;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
+      dx += (mx - dx) * DOT_LERP;
+      dy += (my - dy) * DOT_LERP;
+      rx += (mx - rx) * RING_LERP;
+      ry += (my - ry) * RING_LERP;
+      setPos(dot, dx, dy);
+      setPos(ring, rx, ry);
       raf = requestAnimationFrame(tick);
     };
 

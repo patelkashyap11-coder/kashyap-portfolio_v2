@@ -1,0 +1,45 @@
+/* Custom cursor — outlined accent ring */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  box-sizing: content-box;
+  background: transparent;
+  border: 2px solid #C7E200;
+  border-radius: 9999px;
+  box-shadow: 0 0 12px rgba(199, 226, 0, 0.6);
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  box-sizing: content-box;
+  background: transparent;
+  border: 2px solid #C7E200;
+  border-radius: 9999px;
+  box-shadow: 0 0 12px rgba(199, 226, 0, 0.6);
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+}
+
+.cursor-dot.is-hover {
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 2px solid #C7E200;
+  box-shadow: 0 0 12px rgba(199, 226, 0, 0.6);
+}
+
+.cursor-ring.is-hover {
+  opacity: 0;
+}
