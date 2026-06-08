@@ -69,7 +69,7 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.85, ease: 'easeOut' }}
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 py-10"
+        className="py-10"
       >
         <p
           className="font-light leading-relaxed max-w-xl"
@@ -78,19 +78,6 @@ export function HeroSection() {
           We create visual stories that help brands stand out — from fashion
           campaigns and restaurant content to jewellery, products and interiors.
         </p>
-
-        {/* Scroll cue */}
-        <div className="hidden md:flex items-center gap-4" style={{ color: '#aaaaaa' }}>
-          <motion.div
-            animate={{ y: [0, 7, 0] }}
-            transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
-            className="w-px h-10"
-            style={{ background: '#cccccc' }}
-          />
-          <span className="t-label" style={{ color: '#aaaaaa', writingMode: 'vertical-rl', letterSpacing: '0.18em' }}>
-            scroll
-          </span>
-        </div>
       </motion.div>
     </section>
   );

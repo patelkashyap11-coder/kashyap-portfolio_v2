@@ -31,18 +31,17 @@
   }
 
   .category-section .category-content {
-    padding: 0 24px 32px !important;
+    padding: 5.25rem 24px 0 !important;
   }
 
-  .category-section .category-row {
-    justify-content: flex-start !important;
-    gap: 10px !important;
-    row-gap: 8px !important;
+  .category-section .category-stack {
+    gap: 14px !important;
   }
 
   .category-section .category-cta {
-    gap: 8px !important;
-    flex-shrink: 0;
+    gap: 10px !important;
+    padding: 10px 20px 10px 22px !important;
+    font-size: 0.65rem !important;
   }
 
   .category-section .category-cta-icon {
@@ -87,16 +86,23 @@
 
   /* ── CTA ── */
   .cta-section {
-    padding: 72px 24px 80px !important;
+    padding: 80px 24px 96px !important;
   }
 
   .cta-section .cta-headline-last {
-    margin-bottom: 1.25rem !important;
+    margin-bottom: 2rem !important;
   }
 
   .cta-section .cta-actions {
-    gap: 1rem !important;
-    margin-top: 0 !important;
+    width: 100%;
+  }
+
+  .cta-section .cta-btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    padding: 16px 28px !important;
+    font-size: 0.7rem !important;
   }
 
   /* ── Footer ── */

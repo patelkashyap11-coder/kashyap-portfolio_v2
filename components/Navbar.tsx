@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,8 @@ const links = [
 export function Navbar() {
   const [open, setOpen]       = useState(false);
   const [pinned, setPinned]   = useState(false);
+  const [visible, setVisible] = useState(true);
+  const lastScrollY           = useRef(0);
   const pathname              = usePathname();
 
   // pages with dark (black) bg
@@ -23,7 +25,20 @@ export function Navbar() {
     .some(p => pathname?.startsWith(p));
 
   useEffect(() => {
-    const fn = () => setPinned(window.scrollY > 40);
+    const fn = () => {
+      const y = window.scrollY;
+      setPinned(y > 40);
+
+      if (y <= 40) {
+        setVisible(true);
+      } else if (y > lastScrollY.current + 4) {
+        setVisible(false);
+      } else if (y < lastScrollY.current - 4) {
+        setVisible(true);
+      }
+
+      lastScrollY.current = y;
+    };
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
@@ -43,11 +58,13 @@ export function Navbar() {
     <>
       {/* ── Bar ── */}
       <nav
-        className="site-nav fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-colors duration-500"
+        className="site-nav fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
         style={{
           padding: '28px 48px',
           background: bg,
           backdropFilter: pinned ? 'blur(16px)' : 'none',
+          transform: visible ? 'translateY(0)' : 'translateY(calc(-100% - 8px))',
+          transition: 'transform 0.45s cubic-bezier(0.76, 0, 0.24, 1), background 0.5s ease, backdrop-filter 0.5s ease',
         }}
       >
         {/* Logo */}

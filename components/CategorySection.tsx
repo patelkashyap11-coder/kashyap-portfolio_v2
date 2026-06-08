@@ -39,22 +39,21 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
         )}
       </motion.div>
 
-      {/* Gradient overlay */}
+      {/* Gradient overlay — darker at top for title legibility */}
       <div
         style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 100%)',
           transition: 'opacity 0.6s ease',
         }}
       />
 
-      {/* Content */}
+      {/* Content — top-left */}
       <div
-        className="category-content relative h-full flex flex-col justify-end"
-        style={{ padding: '0 48px 48px' }}
+        className="category-content relative h-full flex flex-col justify-start"
+        style={{ padding: 'clamp(100px, 12vh, 140px) 48px 0' }}
       >
-        {/* Title + CTA on same row */}
-        <div className="category-row flex items-end justify-between gap-6 flex-wrap">
+        <div className="category-stack flex flex-col items-start gap-5">
           <motion.h2
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -67,26 +66,37 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
           </motion.h2>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
           >
             <Link
               href={href}
-              className="category-cta group/btn flex items-center gap-3 text-white transition-colors duration-300 hover:text-[#C7E200]"
-              style={{ fontSize: '0.8rem', letterSpacing: '0.18em', fontWeight: 500, textTransform: 'uppercase' }}
+              className="category-cta group/btn inline-flex items-center gap-3 text-white transition-colors duration-300 hover:text-[#C7E200]"
+              style={{
+                background: 'transparent',
+                border: '1px solid #ffffff',
+                borderRadius: '9999px',
+                padding: '12px 24px 12px 28px',
+                fontSize: '0.75rem',
+                letterSpacing: '0.18em',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+              }}
             >
               View Work
               <span
-                className="category-cta-icon flex items-center justify-center transition-all duration-300 group-hover/btn:bg-[#C7E200] group-hover/btn:text-black"
+                className="category-cta-icon flex items-center justify-center transition-all duration-300 group-hover/btn:border-[#C7E200] group-hover/btn:text-[#C7E200]"
                 style={{
-                  width: 36, height: 36,
-                  border: '1px solid rgba(255,255,255,0.35)',
+                  width: 28,
+                  height: 28,
+                  border: '1px solid rgba(255,255,255,0.85)',
                   borderRadius: '50%',
+                  flexShrink: 0,
                 }}
               >
-                <ArrowUpRight size={14} className="category-cta-arrow" />
+                <ArrowUpRight size={12} className="category-cta-arrow" />
               </span>
             </Link>
           </motion.div>

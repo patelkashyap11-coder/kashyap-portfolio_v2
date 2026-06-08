@@ -6,82 +6,87 @@ import { ArrowUpRight } from 'lucide-react';
 export function CTASection() {
   return (
     <section
-      style={{ background: '#F5F5F2', padding: '140px 48px 160px' }}
+      style={{ background: '#0A0A0A', padding: 'clamp(120px,18vw,220px) 48px clamp(140px,20vw,240px)' }}
       className="cta-section relative overflow-hidden"
     >
-      {/* faint accent wash */}
       <div
-        style={{
-          position: 'absolute', top: 0, right: 0,
-          width: '40%', height: '100%',
-          background: 'radial-gradient(ellipse at 80% 50%, rgba(199,226,0,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}>
-        <p className="t-label mb-10" style={{ color: '#888888' }}>Ready to start?</p>
-
-        {/* Large headline */}
-        <div style={{ overflow: 'hidden', marginBottom: '0.04em' }}>
+        className="cta-inner flex flex-col items-center text-center"
+        style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}
+      >
+        {/* Massive headline */}
+        <div style={{ overflow: 'hidden', marginBottom: '0.04em', width: '100%' }}>
           <motion.h2
             initial={{ y: '105%' }}
             whileInView={{ y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display"
-            style={{ fontSize: 'clamp(4rem,9vw,11rem)', color: '#0A0A0A' }}
+            className="t-display text-white"
+            style={{ fontSize: 'clamp(3.5rem,11vw,13rem)', lineHeight: 0.9 }}
           >
-            TALK OVER
+            LET&apos;S CREATE
           </motion.h2>
         </div>
-        <div className="cta-headline-last" style={{ overflow: 'hidden', marginBottom: '0.6em' }}>
+        <div style={{ overflow: 'hidden', marginBottom: '0.04em', width: '100%' }}>
           <motion.h2
             initial={{ y: '105%' }}
             whileInView={{ y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1, delay: 0.1, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display"
-            style={{ fontSize: 'clamp(4rem,9vw,11rem)' }}
+            transition={{ duration: 1, delay: 0.08, ease: [0.76, 0, 0.24, 1] }}
+            className="t-display text-white"
+            style={{ fontSize: 'clamp(3.5rem,11vw,13rem)', lineHeight: 0.9 }}
           >
-            <span style={{ color: '#C7E200' }}>COFFEE</span>
+            SOMETHING
+          </motion.h2>
+        </div>
+        <div className="cta-headline-last" style={{ overflow: 'hidden', marginBottom: 'clamp(2.5rem,6vw,4.5rem)', width: '100%' }}>
+          <motion.h2
+            initial={{ y: '105%' }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 1, delay: 0.16, ease: [0.76, 0, 0.24, 1] }}
+            className="t-display"
+            style={{ fontSize: 'clamp(3.5rem,11vw,13rem)', lineHeight: 0.9 }}
+          >
+            <span style={{ color: '#C7E200' }}>UNFORGETTABLE</span>
           </motion.h2>
         </div>
 
+        {/* Large centered CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="cta-actions flex flex-col sm:flex-row items-start sm:items-center gap-5"
+          transition={{ delay: 0.45, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          className="cta-actions flex flex-col items-center"
         >
           <Link
             href="/contact"
-            className="group flex items-center gap-4"
+            className="cta-btn group inline-flex items-center gap-4 text-white transition-all duration-300 hover:border-[#C7E200] hover:text-[#C7E200]"
             style={{
-              background: '#0A0A0A', color: '#F5F5F2',
-              padding: '18px 36px',
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,0.85)',
+              borderRadius: '9999px',
+              padding: 'clamp(18px,2.5vw,24px) clamp(40px,6vw,72px)',
               fontFamily: 'var(--font-tight)',
               fontWeight: 600,
-              fontSize: '0.8rem',
-              letterSpacing: '0.14em',
+              fontSize: 'clamp(0.75rem,1.2vw,0.9rem)',
+              letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              transition: 'background 0.3s, color 0.3s',
             }}
           >
-            Contact Me
-            <ArrowUpRight size={15} className="group-hover:translate-x-px group-hover:-translate-y-px transition-transform" />
+            Start a Project
+            <span
+              className="flex items-center justify-center transition-all duration-300 group-hover:border-[#C7E200]"
+              style={{
+                width: 36,
+                height: 36,
+                border: '1px solid rgba(255,255,255,0.6)',
+                borderRadius: '50%',
+              }}
+            >
+              <ArrowUpRight size={15} className="group-hover:translate-x-px group-hover:-translate-y-px transition-transform" />
+            </span>
           </Link>
-
-          <a
-            href="https://wa.me/919712727007"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="t-label hover:text-[#0A0A0A] transition-colors"
-            style={{ color: '#aaaaaa' }}
-          >
-            WhatsApp instead →
-          </a>
         </motion.div>
       </div>
     </section>
