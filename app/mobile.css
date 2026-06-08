@@ -61,6 +61,7 @@
   .category-stack-wrapper {
     height: var(--category-stack-height-vh, 500vh) !important;
     height: var(--category-stack-height, 500svh) !important;
+    height: var(--category-stack-height-dvh, var(--category-stack-height, 500dvh)) !important;
     min-height: var(--category-stack-height-vh, 500vh) !important;
   }
 
@@ -69,6 +70,7 @@
     top: 0 !important;
     height: 100vh !important;
     height: 100svh !important;
+    height: 100dvh !important;
     min-height: 480px !important;
   }
 

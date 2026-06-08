@@ -247,6 +247,7 @@ body {
   width: 100%;
   height: var(--category-stack-height-vh, 500vh);
   height: var(--category-stack-height, 500svh);
+  height: var(--category-stack-height-dvh, var(--category-stack-height, 500dvh));
   min-height: var(--category-stack-height-vh, 500vh);
   z-index: 20;
   isolation: isolate;
@@ -257,6 +258,7 @@ body {
   top: 0;
   height: 100vh;
   height: 100svh;
+  height: 100dvh;
   min-height: 560px;
 }
 
@@ -333,6 +335,7 @@ body {
   .category-section {
     height: 100vh;
     height: 100svh;
+    height: 100dvh;
     min-height: 620px;
   }
 

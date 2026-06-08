@@ -14,6 +14,7 @@ const homepageCategories = categories.map((cat) => ({
 }));
 
 type CategoryStackStyle = CSSProperties & {
+  '--category-stack-height-dvh': string;
   '--category-stack-height': string;
   '--category-stack-height-vh': string;
 };
@@ -21,6 +22,7 @@ type CategoryStackStyle = CSSProperties & {
 export default function HomePage() {
   const categoryStackHeight = `${homepageCategories.length * 100}`;
   const categoryStackStyle: CategoryStackStyle = {
+    '--category-stack-height-dvh': `${categoryStackHeight}dvh`,
     '--category-stack-height': `${categoryStackHeight}svh`,
     '--category-stack-height-vh': `${categoryStackHeight}vh`,
   };
