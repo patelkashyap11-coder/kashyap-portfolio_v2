@@ -75,7 +75,7 @@ export function WhatWeDoSection() {
             style={{
               fontFamily: 'var(--font-tight)',
               fontWeight: 800,
-              fontSize: 'clamp(4rem,7.5vw,9rem)',
+              fontSize: 'clamp(4.5rem,8vw,10rem)',
               letterSpacing: '-0.045em',
               lineHeight: 0.88,
               textTransform: 'uppercase' as const,
@@ -105,23 +105,22 @@ export function WhatWeDoSection() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: active ? '34px 32px' : '34px 0',
+                    padding: '34px 0',
                     background: active ? '#C7E200' : 'transparent',
-                    margin: active ? '0 -32px' : '0',
+                    margin: '0',
                     boxSizing: 'border-box' as const,
-                    transition: 'background 0.25s ease, padding 0.25s ease, margin 0.25s ease',
+                    transition: 'background 0.25s ease, color 0.25s ease',
                     cursor: 'none',
                     border: 'none',
                     textAlign: 'left' as const,
                     // widen to container edge when active
-                    maxWidth: active ? 'calc(100% + 64px)' : '100%',
                   }}
                 >
                   <span
                     style={{
                       fontFamily: 'var(--font-tight)',
                       fontWeight: 700,
-                      fontSize: 'clamp(1.35rem,2.2vw,2rem)',
+                      fontSize: 'clamp(1.5rem,2.4vw,2.2rem)',
                       letterSpacing: '-0.025em',
                       color: '#0A0A0A',
                       lineHeight: 1,
@@ -171,10 +170,10 @@ export function WhatWeDoSection() {
                       <p
                         style={{
                           fontFamily: 'var(--font-inter)',
-                          fontWeight: 300,
-                          fontSize: 'clamp(0.95rem,1.15vw,1.1rem)',
+                          fontWeight: 500,
+                          fontSize: 'clamp(1.05rem,1.25vw,1.2rem)',
                           lineHeight: 1.75,
-                          color: '#444444',
+                          color: '#222222',
                           maxWidth: 700,
                           padding: '28px 0 40px',
                         }}
