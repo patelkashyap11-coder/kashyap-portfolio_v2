@@ -48,18 +48,28 @@ export default function HomePage() {
     <>
       <HeroSection />
 
-      {categories.map((cat, i) => (
-        <CategorySection
-          key={cat.href}
-          {...cat}
-          index={i}
-        />
-      ))}
+      <div className="hero-category-spacer" aria-hidden />
 
-      <WhatWeDoSection />
-      <TrustedBySection />
-      <CTASection />
-      <Footer />
+      {/* Bounded sticky stack — releases into normal flow after Interiors */}
+      <div
+        className="category-stack-wrapper"
+        style={{ height: `${categories.length * 100}vh` }}
+      >
+        {categories.map((cat, i) => (
+          <CategorySection
+            key={cat.href}
+            {...cat}
+            index={i}
+          />
+        ))}
+      </div>
+
+      <div className="homepage-after-categories">
+        <WhatWeDoSection />
+        <TrustedBySection />
+        <CTASection />
+        <Footer />
+      </div>
     </>
   );
 }

@@ -1,71 +1,83 @@
 'use client';
 import { motion } from 'framer-motion';
 
-const clients: { name: string; logo: string | null }[] = [
-  { name: 'Client One',   logo: null },
-  { name: 'Client Two',   logo: null },
-  { name: 'Client Three', logo: null },
-  { name: 'Client Four',  logo: null },
-  { name: 'Client Five',  logo: null },
-  { name: 'Client Six',   logo: null },
+const clientCategories = [
+  {
+    label: 'FASHION',
+    clients: [
+      { name: 'Maison Noir', logo: null },
+      { name: 'Velvet Line', logo: null },
+      { name: 'Atelier 11', logo: null },
+    ],
+  },
+  {
+    label: 'FOOD & HOSPITALITY',
+    clients: [
+      { name: 'Ember Kitchen', logo: null },
+      { name: 'The Copper Room', logo: null },
+      { name: 'Saffron House', logo: null },
+    ],
+  },
+  {
+    label: 'JEWELLERY',
+    clients: [
+      { name: 'Orion Fine', logo: null },
+      { name: 'Lustre Co.', logo: null },
+    ],
+  },
+  {
+    label: 'INTERIORS',
+    clients: [
+      { name: 'Form Studio', logo: null },
+      { name: 'Arc Space', logo: null },
+    ],
+  },
+  {
+    label: 'COMMERCIAL',
+    clients: [
+      { name: 'North & Co.', logo: null },
+      { name: 'Studio K', logo: null },
+      { name: 'Axis Brands', logo: null },
+    ],
+  },
 ];
 
 export function TrustedBySection() {
   return (
-    <section
-      className="trusted-by-section"
-      style={{ background: '#ffffff', padding: 'clamp(120px,14vw,180px) 48px' }}
-    >
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="t-label mb-20 text-center"
-          style={{ color: '#888888' }}
+    <section className="clients-section">
+      <div className="clients-inner">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="clients-heading t-display"
         >
-          Trusted By
-        </motion.p>
+          TRUSTED <span className="clients-heading-accent">BY</span>
+        </motion.h2>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-            gap: '48px 72px',
-            alignItems: 'center',
-          }}
-        >
-          {clients.map((c, i) => (
+        <div className="clients-categories">
+          {clientCategories.map((category, ci) => (
             <motion.div
-              key={c.name}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.07, duration: 0.5 }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                height: 44, opacity: 0.45, filter: 'grayscale(1)',
-                transition: 'opacity 0.3s, filter 0.3s',
-                cursor: 'default',
-              }}
-              whileHover={{ opacity: 1, filter: 'grayscale(0)' }}
+              key={category.label}
+              className="clients-category"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, delay: ci * 0.06, ease: [0.76, 0, 0.24, 1] }}
             >
-              {c.logo ? (
-                <img
-                  src={c.logo} alt={c.name}
-                  style={{ maxHeight: 36, maxWidth: 140, objectFit: 'contain' }}
-                />
-              ) : (
-                <span
-                  style={{
-                    fontFamily: 'var(--font-tight)', fontWeight: 700,
-                    fontSize: '0.8rem', letterSpacing: '0.12em',
-                    textTransform: 'uppercase', color: '#0A0A0A',
-                  }}
-                >
-                  {c.name}
-                </span>
-              )}
+              <p className="clients-category-label">{category.label}</p>
+              <div className="clients-grid">
+                {category.clients.map((client) => (
+                  <div key={client.name} className="clients-logo-cell">
+                    {client.logo ? (
+                      <img src={client.logo} alt={client.name} className="clients-logo-img" />
+                    ) : (
+                      <span className="clients-logo-text">{client.name}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>

@@ -1,98 +1,86 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Instagram } from 'lucide-react';
+
+function WhatsAppIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
+
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+};
+
+const line = {
+  hidden: { y: '108%' },
+  show: {
+    y: 0,
+    transition: { duration: 1, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] },
+  },
+};
+
+const socials = [
+  { href: 'https://instagram.com/ikashyap__', label: 'Instagram', Icon: Instagram },
+  { href: 'https://wa.me/919712727007', label: 'WhatsApp', Icon: WhatsAppIcon },
+];
 
 export function CTASection() {
   return (
-    <section
-      className="cta-section relative overflow-hidden"
-      style={{
-        background: '#0A0A0A',
-        minHeight: 'auto',
-        padding: 'clamp(48px, 8vw, 64px) 48px 0',
-      }}
-    >
-      <div
-        className="cta-inner flex flex-col items-center text-center"
-        style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', width: '100%' }}
-      >
-        {/* Massive headline */}
-        <div style={{ overflow: 'hidden', marginBottom: '0.03em', width: '100%' }}>
-          <motion.h2
-            initial={{ y: '105%' }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display text-white"
-            style={{ fontSize: 'clamp(3.5rem,11vw,13rem)', lineHeight: 0.9 }}
-          >
-            LET&apos;S CREATE
-          </motion.h2>
-        </div>
-        <div style={{ overflow: 'hidden', marginBottom: '0.03em', width: '100%' }}>
-          <motion.h2
-            initial={{ y: '105%' }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1, delay: 0.08, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display text-white"
-            style={{ fontSize: 'clamp(3.5rem,11vw,13rem)', lineHeight: 0.9 }}
-          >
-            SOMETHING
-          </motion.h2>
-        </div>
-        <div className="cta-headline-last" style={{ overflow: 'hidden', marginBottom: 'clamp(0.75rem,2vw,1.25rem)', width: '100%' }}>
-          <motion.h2
-            initial={{ y: '105%' }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1, delay: 0.16, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display"
-            style={{ fontSize: 'clamp(3.5rem,11vw,13rem)', lineHeight: 0.9 }}
-          >
-            <span style={{ color: '#C7E200' }}>UNFORGETTABLE</span>
-          </motion.h2>
-        </div>
-
-        {/* Centered CTA */}
+    <section className="cta-section">
+      <div className="cta-inner">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.45, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-          className="cta-actions flex flex-col items-center"
-          style={{ padding: 'clamp(40px, 6vw, 56px) 0 clamp(40px, 6vw, 56px)' }}
+          className="cta-headline-wrap"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.35 }}
+          variants={container}
         >
-          <Link
-            href="/contact"
-            className="cta-btn group inline-flex items-center gap-2 text-white transition-all duration-300 hover:border-[#C7E200] hover:text-[#C7E200]"
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(255,255,255,0.4)',
-              borderRadius: '999px',
-              padding: '10px 20px',
-              fontFamily: 'var(--font-tight)',
-              fontWeight: 500,
-              fontSize: '11px',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Start a Project
-            <span
-              className="cta-btn-icon flex items-center justify-center transition-all duration-300 group-hover:border-[#C7E200]"
-              style={{
-                width: 24,
-                height: 24,
-                border: '1px solid rgba(255,255,255,0.35)',
-                borderRadius: '50%',
-                flexShrink: 0,
-              }}
-            >
-              <ArrowUpRight size={11} className="group-hover:translate-x-px group-hover:-translate-y-px transition-transform" />
-            </span>
+          <motion.div variants={line} className="cta-headline-line">
+            <h2 className="cta-headline t-display">CREATING</h2>
+          </motion.div>
+          <motion.div variants={line} className="cta-headline-line">
+            <h2 className="cta-headline t-display">VISUAL STORIES</h2>
+          </motion.div>
+          <motion.div variants={line} className="cta-headline-line">
+            <h2 className="cta-headline t-display">
+              THAT <span className="cta-headline-accent">LAST</span>
+            </h2>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ delay: 0.4, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          className="cta-actions"
+        >
+          <Link href="/contact" className="cta-btn">
+            <span>Start a Project</span>
+            <ArrowUpRight size={16} className="cta-btn-arrow" />
           </Link>
+
+          <div className="cta-socials">
+            {socials.map((s) => (
+              <a
+                key={s.href}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-social-link"
+                aria-label={s.label}
+              >
+                <s.Icon size={20} />
+              </a>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
