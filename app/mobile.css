@@ -358,6 +358,11 @@
     border-radius: 10px !important;
   }
 
+  .category-mobile-gallery .category-masonry-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   .category-next {
     padding: 40px 24px 56px !important;
   }

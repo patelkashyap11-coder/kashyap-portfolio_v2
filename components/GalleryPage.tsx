@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useMemo, useEffect, useSyncExternalStore } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
@@ -82,23 +82,6 @@ function usePinterestColumnCount(itemCount: number) {
   return count;
 }
 
-const PHONE_GALLERY_QUERY = '(max-width: 767px)';
-
-function subscribeToPhoneGallery(callback: () => void) {
-  const mediaQuery = window.matchMedia(PHONE_GALLERY_QUERY);
-  mediaQuery.addEventListener('change', callback);
-
-  return () => mediaQuery.removeEventListener('change', callback);
-}
-
-function getPhoneGallerySnapshot() {
-  return window.matchMedia(PHONE_GALLERY_QUERY).matches;
-}
-
-function useIsPhoneGallery() {
-  return useSyncExternalStore(subscribeToPhoneGallery, getPhoneGallerySnapshot, () => false);
-}
-
 export function GalleryPage({
   title,
   subtitle,
@@ -133,7 +116,6 @@ export function GalleryPage({
   const galleryItems = galleryMedia;
   const heroFallbackImage = heroImage || featuredMedia[0]?.src || galleryMedia[0]?.src;
   const columnCount = usePinterestColumnCount(galleryItems.length);
-  const isPhoneGallery = useIsPhoneGallery();
   const masonryColumns = useMemo(
     () => buildPinterestColumns(galleryItems, columnCount, featuredCount),
     [galleryItems, columnCount, featuredCount],
@@ -288,49 +270,41 @@ export function GalleryPage({
             <p className="t-label category-section-label">Visual Gallery</p>
           </div>
 
-          {isPhoneGallery ? (
+          <div className="category-mobile-gallery">
+            {galleryItems.map((item, itemIndex) => (
+              <MasonryItem
+                key={`mobile-${featuredCount + itemIndex}`}
+                item={item}
+                index={featuredCount + itemIndex}
+                totalDelay={Math.min(itemIndex * 0.02, 0.24)}
+                onOpen={open}
+              />
+            ))}
+          </div>
+
+          <div className="category-masonry-scroll">
             <motion.div
-              className="category-mobile-gallery"
+              className="category-masonry"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 0.7 }}
             >
-              {galleryItems.map((item, itemIndex) => (
-                <MasonryItem
-                  key={`mobile-${featuredCount + itemIndex}`}
-                  item={item}
-                  index={featuredCount + itemIndex}
-                  totalDelay={Math.min(itemIndex * 0.02, 0.24)}
-                  onOpen={open}
-                />
+              {masonryColumns.map((col, colIndex) => (
+                <div key={colIndex} className="category-masonry-col">
+                  {col.map(({ item, originalIndex }, itemIndex) => (
+                    <MasonryItem
+                      key={originalIndex}
+                      item={item}
+                      index={originalIndex}
+                      totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
+                      onOpen={open}
+                    />
+                  ))}
+                </div>
               ))}
             </motion.div>
-          ) : (
-            <div className="category-masonry-scroll">
-              <motion.div
-                className="category-masonry"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.05 }}
-                transition={{ duration: 0.7 }}
-              >
-                {masonryColumns.map((col, colIndex) => (
-                  <div key={colIndex} className="category-masonry-col">
-                    {col.map(({ item, originalIndex }, itemIndex) => (
-                      <MasonryItem
-                        key={originalIndex}
-                        item={item}
-                        index={originalIndex}
-                        totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
-                        onOpen={open}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          )}
+          </div>
         </section>
       )}
 
