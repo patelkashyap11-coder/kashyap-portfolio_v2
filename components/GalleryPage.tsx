@@ -57,24 +57,23 @@ function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOff
   return cols;
 }
 
-function getPinterestColumnCount(width: number, itemCount: number): number {
-  if (width < 768) return 2;
-  const minCols = width < 900 ? 3 : width < 1200 ? 4 : 5;
-  const maxCols = width < 900 ? 5 : width < 1400 ? 7 : 10;
-  // More photos → more columns → gallery extends further right
-  const neededCols = Math.ceil(itemCount / 7);
-  return Math.min(maxCols, Math.max(minCols, neededCols));
+function getPinterestColumnCount(width: number): number {
+  if (width < 640) return 2;
+  if (width < 900) return 3;
+  if (width < 1200) return 4;
+  if (width < 1600) return 5;
+  return 6;
 }
 
-function usePinterestColumnCount(itemCount: number) {
+function usePinterestColumnCount() {
   const [count, setCount] = useState(4);
 
   useEffect(() => {
-    const update = () => setCount(getPinterestColumnCount(window.innerWidth, itemCount));
+    const update = () => setCount(getPinterestColumnCount(window.innerWidth));
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
-  }, [itemCount]);
+  }, []);
 
   return count;
 }
@@ -112,7 +111,7 @@ export function GalleryPage({
   const featuredItems = featuredMedia;
   const galleryItems = galleryMedia;
   const heroFallbackImage = heroImage || featuredMedia[0]?.src || galleryMedia[0]?.src;
-  const columnCount = usePinterestColumnCount(galleryItems.length);
+  const columnCount = usePinterestColumnCount();
   const masonryColumns = useMemo(
     () => buildPinterestColumns(galleryItems, columnCount, featuredCount),
     [galleryItems, columnCount, featuredCount],
@@ -454,7 +453,9 @@ function MasonryItem({
           alt={item.alt || ''}
           loading="lazy"
           decoding="async"
-          sizes="(max-width: 767px) 48vw, 280px"
+          width={item.width}
+          height={item.height}
+          sizes="(max-width: 639px) calc((100vw - 42px) / 2), (max-width: 1199px) calc((100vw - 80px) / 3), calc((100vw - 160px) / 5)"
           className="category-masonry-asset"
         />
       )}

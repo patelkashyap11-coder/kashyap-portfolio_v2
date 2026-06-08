@@ -57,7 +57,157 @@
     line-height: 1.48 !important;
   }
 
-  /* ── Category sections — natural vertical scroll, no sticky stack ── */
+  /* ── Category sections — Noxediem-style mobile carousel ── */
+  .category-stack-wrapper--desktop {
+    display: none !important;
+  }
+
+  .category-mobile-showcase {
+    display: block;
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    background: #0a0a0a;
+  }
+
+  .category-mobile-track {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .category-mobile-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-mobile-slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: clamp(520px, 92svh, 760px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    overflow: hidden;
+  }
+
+  .category-mobile-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .category-mobile-asset {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .category-mobile-image {
+    background-size: cover;
+    background-position: center;
+    background-color: #141414;
+  }
+
+  .category-mobile-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.35) 42%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+    pointer-events: none;
+  }
+
+  .category-mobile-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding: 5.25rem 24px 32px;
+  }
+
+  .category-mobile-title {
+    margin: 0;
+    font-family: var(--font-inter);
+    font-weight: 800;
+    font-size: clamp(2.25rem, 11vw, 3.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .category-mobile-subtitle {
+    margin: 10px 0 0;
+    font-family: var(--font-inter);
+    font-weight: 400;
+    font-size: clamp(1rem, 4.2vw, 1.125rem);
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .category-pill-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 18px;
+    padding-bottom: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .category-pill-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-pill {
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 999px;
+    padding: 9px 16px;
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-tight);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+
+  .category-pill.is-active {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: #fff;
+  }
+
+  .category-mobile-cta {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 999px;
+    padding: 9px 16px;
+    color: #fff;
+    font-family: var(--font-tight);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  /* Legacy single-section overrides (desktop stack hidden on mobile) */
   .category-stack-wrapper {
     height: auto !important;
     min-height: 0 !important;
@@ -72,7 +222,7 @@
 
   .category-section .category-content {
     padding: clamp(48px, 8vh, 72px) 24px 32px !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
   }
 
   .category-section .category-content--first {
@@ -336,23 +486,15 @@
   }
 
   .category-masonry-scroll {
-    overflow-x: hidden !important;
-    overflow-y: visible !important;
     padding: 0 16px !important;
-    padding-bottom: 0 !important;
   }
 
   .category-masonry {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    width: 100% !important;
-    min-width: unset !important;
-    max-width: 100% !important;
     gap: 10px !important;
   }
 
   .category-masonry-col {
-    display: contents !important;
+    gap: 10px !important;
   }
 
   .category-masonry-item {
