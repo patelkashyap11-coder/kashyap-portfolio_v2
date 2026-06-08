@@ -41,100 +41,120 @@ const services = [
 ];
 
 export function WhatWeDoSection() {
-  const [openId, setOpenId] = useState<number | null>(null);
-  const [dotVisible, setDotVisible] = useState<number | null>(null);
+  const [openId, setOpenId]   = useState<number | null>(null);
+  const [hoverId, setHoverId] = useState<number | null>(null);
 
-  const toggle = (id: number) => {
-    if (openId === id) {
-      setOpenId(null);
-      setDotVisible(null);
-    } else {
-      setOpenId(id);
-      setDotVisible(id);
-      // fade dot after 900 ms
-      setTimeout(() => setDotVisible(null), 900);
-    }
-  };
+  const toggle = (id: number) => setOpenId(prev => (prev === id ? null : id));
 
   return (
-    <section style={{ background: '#F5F5F2', padding: '120px 48px 140px' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <section
+      style={{
+        background: '#ffffff',
+        padding: '120px 0 140px',
+        borderTop: '1px solid #d9d9d9',
+      }}
+    >
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px' }}>
 
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
-          <div>
-            <p className="t-label mb-5" style={{ color: '#888888' }}>Services</p>
-            <h2
-              className="t-display"
-              style={{ fontSize: 'clamp(3.5rem,6vw,7rem)', color: '#0A0A0A' }}
-            >
-              WHAT I DO
-            </h2>
-          </div>
+        {/* ── Section header ── */}
+        <div style={{ marginBottom: 72 }}>
           <p
-            className="font-light leading-relaxed max-w-sm"
-            style={{ fontSize: '1rem', color: '#777777' }}
+            style={{
+              fontFamily: 'var(--font-tight)',
+              fontWeight: 500,
+              fontSize: '0.6875rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase' as const,
+              color: '#999999',
+              marginBottom: 20,
+            }}
           >
-            A full-service visual production studio specialising in premium brand content.
+            Services
           </p>
+          <h2
+            style={{
+              fontFamily: 'var(--font-tight)',
+              fontWeight: 800,
+              fontSize: 'clamp(4rem,7.5vw,9rem)',
+              letterSpacing: '-0.045em',
+              lineHeight: 0.88,
+              textTransform: 'uppercase' as const,
+              color: '#0A0A0A',
+            }}
+          >
+            WHAT I DO
+          </h2>
         </div>
 
-        {/* Accordion */}
-        <div>
+        {/* ── Accordion list ── */}
+        <div style={{ borderTop: '1px solid #d9d9d9' }}>
           {services.map((s) => {
-            const isOpen = openId === s.id;
+            const isOpen  = openId  === s.id;
+            const isHover = hoverId === s.id;
+            const active  = isOpen || isHover;
+
             return (
-              <div key={s.id} className="acc-row">
+              <div key={s.id} style={{ borderBottom: '1px solid #d9d9d9' }}>
+                {/* Row */}
                 <button
                   onClick={() => toggle(s.id)}
-                  className="w-full flex items-center justify-between text-left group"
-                  style={{ padding: '28px 0' }}
+                  onMouseEnter={() => setHoverId(s.id)}
+                  onMouseLeave={() => setHoverId(null)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: active ? '34px 32px' : '34px 0',
+                    background: active ? '#C7E200' : 'transparent',
+                    margin: active ? '0 -32px' : '0',
+                    boxSizing: 'border-box' as const,
+                    transition: 'background 0.25s ease, padding 0.25s ease, margin 0.25s ease',
+                    cursor: 'none',
+                    border: 'none',
+                    textAlign: 'left' as const,
+                    // widen to container edge when active
+                    maxWidth: active ? 'calc(100% + 64px)' : '100%',
+                  }}
                 >
-                  <div className="flex items-center gap-8">
-                    {/* Animated dot — only visible briefly on open */}
-                    <span
-                      style={{
-                        display: 'inline-block',
-                        width: 8, height: 8,
-                        borderRadius: '50%',
-                        background: '#C7E200',
-                        flexShrink: 0,
-                        transition: 'opacity 0.4s ease',
-                        opacity: dotVisible === s.id ? 1 : 0,
-                      }}
-                    />
-                    <h3
-                      style={{
-                        fontFamily: 'var(--font-tight)',
-                        fontWeight: 600,
-                        fontSize: 'clamp(1.25rem,2vw,1.75rem)',
-                        letterSpacing: '-0.02em',
-                        color: isOpen ? '#0A0A0A' : 'rgba(10,10,10,0.5)',
-                        transition: 'color 0.3s ease',
-                      }}
-                    >
-                      {s.title}
-                    </h3>
-                  </div>
-
-                  {/* +/- icon */}
                   <span
                     style={{
-                      width: 32, height: 32, borderRadius: '50%',
-                      border: `1px solid ${isOpen ? '#0A0A0A' : 'rgba(10,10,10,0.2)'}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0,
-                      transition: 'border-color 0.3s ease, background 0.3s ease',
-                      background: isOpen ? '#0A0A0A' : 'transparent',
-                      fontSize: '1.1rem', lineHeight: 1,
-                      color: isOpen ? '#fff' : '#0A0A0A',
-                      fontWeight: 300,
+                      fontFamily: 'var(--font-tight)',
+                      fontWeight: 700,
+                      fontSize: 'clamp(1.35rem,2.2vw,2rem)',
+                      letterSpacing: '-0.025em',
+                      color: '#0A0A0A',
+                      lineHeight: 1,
                     }}
                   >
-                    {isOpen ? '−' : '+'}
+                    {s.title}
+                  </span>
+
+                  {/* + rotates 45° to become × */}
+                  <span
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 36,
+                      height: 36,
+                      flexShrink: 0,
+                      border: `1.5px solid ${active ? '#0A0A0A' : '#d9d9d9'}`,
+                      borderRadius: '50%',
+                      fontSize: '1.3rem',
+                      fontWeight: 300,
+                      lineHeight: 1,
+                      color: '#0A0A0A',
+                      transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.3s cubic-bezier(0.76,0,0.24,1), border-color 0.25s ease',
+                      userSelect: 'none' as const,
+                    }}
+                  >
+                    +
                   </span>
                 </button>
 
+                {/* Expandable body */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
@@ -142,17 +162,21 @@ export function WhatWeDoSection() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.42, ease: [0.76, 0, 0.24, 1] }}
-                      style={{ overflow: 'hidden' }}
+                      transition={{
+                        height:  { duration: 0.32, ease: [0.76, 0, 0.24, 1] as [number,number,number,number] },
+                        opacity: { duration: 0.22, ease: 'easeOut' },
+                      }}
+                      style={{ overflow: 'hidden', background: '#ffffff' }}
                     >
                       <p
-                        className="font-light leading-relaxed"
                         style={{
-                          fontSize: 'clamp(0.95rem,1.1vw,1.1rem)',
-                          color: '#666666',
-                          maxWidth: 680,
-                          paddingBottom: 32,
-                          paddingLeft: 48,
+                          fontFamily: 'var(--font-inter)',
+                          fontWeight: 300,
+                          fontSize: 'clamp(0.95rem,1.15vw,1.1rem)',
+                          lineHeight: 1.75,
+                          color: '#444444',
+                          maxWidth: 700,
+                          padding: '28px 0 40px',
                         }}
                       >
                         {s.desc}
