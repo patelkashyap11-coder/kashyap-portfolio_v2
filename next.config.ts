@@ -12,9 +12,6 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     domains: [],
   },
-  experimental: {
-    optimizeCss: true,
-  },
 };
 
 export default nextConfig;

@@ -7,7 +7,7 @@ export function CTASection() {
   return (
     <section
       style={{ background: '#F5F5F2', padding: '140px 48px 160px' }}
-      className="relative overflow-hidden"
+      className="cta-section relative overflow-hidden"
     >
       {/* faint accent wash */}
       <div
@@ -35,7 +35,7 @@ export function CTASection() {
             TALK OVER
           </motion.h2>
         </div>
-        <div style={{ overflow: 'hidden', marginBottom: '0.6em' }}>
+        <div className="cta-headline-last" style={{ overflow: 'hidden', marginBottom: '0.6em' }}>
           <motion.h2
             initial={{ y: '105%' }}
             whileInView={{ y: 0 }}
@@ -53,7 +53,7 @@ export function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="flex flex-col sm:flex-row items-start sm:items-center gap-5"
+          className="cta-actions flex flex-col sm:flex-row items-start sm:items-center gap-5"
         >
           <Link
             href="/contact"

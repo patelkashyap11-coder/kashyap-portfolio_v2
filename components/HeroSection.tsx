@@ -12,18 +12,18 @@ const rise = (delay: number) => ({
 export function HeroSection() {
   return (
     <section
-      className="relative min-h-screen flex flex-col"
+      className="hero-section relative flex flex-col overflow-x-hidden"
       style={{ background: '#F5F5F2', padding: '0 48px' }}
     >
       {/* ── Upper: hero type ── */}
-      <div className="flex-1 flex flex-col justify-end pb-14 pt-36">
+      <div className="hero-content flex flex-col justify-start pb-8 md:pb-10">
 
         {/* eyebrow */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="t-label mb-10 md:mb-14"
+          className="t-label mb-6 md:mb-8"
           style={{ color: '#888888' }}
         >
           Photographer &amp; Filmmaker
@@ -33,7 +33,7 @@ export function HeroSection() {
         <div style={{ overflow: 'hidden', marginBottom: '0.06em' }}>
           <motion.h1
             variants={rise(0.2)} initial="hidden" animate="show"
-            className="t-display"
+            className="t-display hero-headline"
             style={{ fontSize: 'clamp(4.5rem,10.5vw,12.5rem)', color: '#0A0A0A' }}
           >
             CREATIVE &amp;
@@ -43,7 +43,7 @@ export function HeroSection() {
         <div style={{ overflow: 'hidden', marginBottom: '0.06em' }}>
           <motion.h1
             variants={rise(0.33)} initial="hidden" animate="show"
-            className="t-display"
+            className="t-display hero-headline"
             style={{ fontSize: 'clamp(4.5rem,10.5vw,12.5rem)', color: '#0A0A0A' }}
           >
             VISUAL
@@ -53,20 +53,10 @@ export function HeroSection() {
         <div style={{ overflow: 'hidden' }}>
           <motion.h1
             variants={rise(0.46)} initial="hidden" animate="show"
-            className="t-display"
+            className="t-display hero-headline"
             style={{ fontSize: 'clamp(4.5rem,10.5vw,12.5rem)' }}
           >
-            <span
-              style={{
-                background: '#C7E200',
-                color: '#0A0A0A',
-                display: 'inline-block',
-                padding: '0 0.12em',
-                lineHeight: 1,
-              }}
-            >
-              CONTENT
-            </span>
+            <span className="hero-highlight">CONTENT</span>
           </motion.h1>
         </div>
       </div>

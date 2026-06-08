@@ -45,7 +45,7 @@ const rise = (delay: number) => ({
 
 export default function ContactPage() {
   return (
-    <div style={{ minHeight: '100vh', background: '#000000', color: '#fff', padding: '0 48px' }}>
+    <div className="contact-page" style={{ minHeight: '100vh', background: '#000000', color: '#fff', padding: '0 48px' }}>
       {/* faint accent blob */}
       <div style={{
         position: 'fixed', top: 0, right: 0, width: '45%', height: '100vh',

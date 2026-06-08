@@ -40,11 +40,11 @@ export function GalleryPage({ title, subtitle, description, media }: Props) {
   const cols2 = buildColumns(media, 2);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0A0A0A', color: '#fff' }}>
+    <div className="gallery-page" style={{ minHeight: '100vh', background: '#0A0A0A', color: '#fff' }}>
 
       {/* ── Header ── */}
       <div
-        className="relative flex flex-col justify-end"
+        className="gallery-header relative flex flex-col justify-end"
         style={{
           minHeight: '42vh',
           padding: '0 48px 48px',
@@ -115,6 +115,7 @@ export function GalleryPage({ title, subtitle, description, media }: Props) {
       {/* ── True CSS masonry gallery ── */}
       {media.length > 0 && (
         <motion.div
+          className="gallery-grid"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           transition={{ delay: 0.25, duration: 0.7 }}
           style={{ padding: '20px 12px 80px' }}

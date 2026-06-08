@@ -1,12 +1,43 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './custom-cursor.css';
+
+function shouldShowCursor() {
+  if (typeof window === 'undefined') return false;
+  const isTouch =
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0;
+  const isNarrow = window.matchMedia('(max-width: 767px)').matches;
+  return !isTouch && !isNarrow;
+}
 
 export function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
+    const update = () => setActive(shouldShowCursor());
+    update();
+
+    const mq = window.matchMedia('(max-width: 767px)');
+    mq.addEventListener('change', update);
+    window.addEventListener('resize', update);
+
+    return () => {
+      mq.removeEventListener('change', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('has-custom-cursor', active);
+    return () => document.body.classList.remove('has-custom-cursor');
+  }, [active]);
+
+  useEffect(() => {
+    if (!active) return;
+
     const dot  = dotRef.current!;
     const ring = ringRef.current!;
     let mx = -100, my = -100;
@@ -64,7 +95,9 @@ export function CustomCursor() {
       cancelAnimationFrame(raf);
       obs.disconnect();
     };
-  }, []);
+  }, [active]);
+
+  if (!active) return null;
 
   return (
     <>

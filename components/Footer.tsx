@@ -13,11 +13,11 @@ const workLinks = [
 
 export function Footer() {
   return (
-    <footer style={{ background: '#0A0A0A', color: '#ffffff', padding: '100px 48px 52px' }}>
+    <footer className="site-footer" style={{ background: '#0A0A0A', color: '#ffffff', padding: '100px 48px 52px' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
         {/* ── Top section: big headline + contact ── */}
-        <div className="flex flex-col lg:flex-row lg:justify-between gap-16 lg:gap-24 mb-24">
+        <div className="footer-top flex flex-col lg:flex-row lg:justify-between gap-16 lg:gap-24 mb-24">
 
           {/* Left: headline */}
           <div className="flex-1">
@@ -64,7 +64,7 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.7 }}
-            className="flex flex-col gap-5"
+            className="footer-contact flex flex-col gap-5"
             style={{ flexShrink: 0, minWidth: 260 }}
           >
             <p className="t-label mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>
@@ -96,14 +96,14 @@ export function Footer() {
         <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', marginBottom: 36 }} />
 
         {/* ── Bottom row ── */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+        <div className="footer-bottom flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="logo-text" style={{ color: '#ffffff' }}>
             KASHYAP PATEL
           </Link>
 
           {/* Work links */}
-          <div className="flex flex-wrap gap-x-8 gap-y-2">
+          <div className="footer-nav flex flex-wrap gap-x-8 gap-y-2">
             {workLinks.map(l => (
               <Link
                 key={l.href}

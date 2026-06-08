@@ -55,10 +55,10 @@ export function WhatWeDoSection() {
         borderTop: '1px solid #d9d9d9',
       }}
     >
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px' }}>
+      <div className="what-we-do-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px' }}>
 
         {/* ── Section header ── */}
-        <div style={{ marginBottom: 72 }}>
+        <div className="what-we-do-header" style={{ marginBottom: 72 }}>
           <p
             style={{
               fontFamily: 'var(--font-tight)',
@@ -98,6 +98,7 @@ export function WhatWeDoSection() {
               <div key={s.id} style={{ borderBottom: '1px solid #d9d9d9' }}>
                 {/* Row */}
                 <button
+                  className="accordion-row-btn"
                   onClick={() => toggle(s.id)}
                   onMouseEnter={() => setHoverId(s.id)}
                   onMouseLeave={() => setHoverId(null)}
@@ -131,6 +132,7 @@ export function WhatWeDoSection() {
 
                   {/* + rotates 45° to become × */}
                   <span
+                    className="accordion-plus"
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -165,6 +167,7 @@ export function WhatWeDoSection() {
                         height:  { duration: 0.32, ease: [0.76, 0, 0.24, 1] as [number,number,number,number] },
                         opacity: { duration: 0.22, ease: 'easeOut' },
                       }}
+                      className="accordion-body"
                       style={{ overflow: 'hidden', background: '#ffffff' }}
                     >
                       <p
