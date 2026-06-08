@@ -283,7 +283,6 @@ export function GalleryPage({
                       index={originalIndex}
                       totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
                       onOpen={open}
-                      title={title}
                     />
                   ))}
                 </div>
@@ -415,13 +414,11 @@ function MasonryItem({
   index,
   totalDelay,
   onOpen,
-  title,
 }: {
   item: MediaItem;
   index: number;
   totalDelay: number;
   onOpen: (i: number) => void;
-  title: string;
 }) {
   return (
     <motion.div

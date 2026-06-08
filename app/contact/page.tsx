@@ -78,7 +78,7 @@ export default function ContactPage() {
         <div style={{ overflow: 'hidden', marginBottom: 80 }}>
           <motion.h1 variants={rise(0.34)} initial="hidden" animate="show"
             className="t-display" style={{ fontSize: 'clamp(3rem,7vw,8.5rem)', color: '#C7E200' }}>
-            LET'S TALK!
+            LET&apos;S TALK!
           </motion.h1>
         </div>
 
