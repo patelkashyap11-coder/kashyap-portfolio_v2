@@ -68,7 +68,12 @@
   }
 
   .category-content {
-    padding: 0 24px !important;
+    padding: 2.25rem 24px 0 !important;
+  }
+
+  .category-section .category-view-link {
+    font-size: 11px !important;
+    padding: 11px 18px !important;
   }
 
   .category-section .category-title {
@@ -76,12 +81,8 @@
     line-height: 0.92 !important;
   }
 
-  .category-content-inner {
-    gap: 18px !important;
-  }
-
-  .category-section .category-view-link {
-    font-size: 9px !important;
+  .category-section .category-view-link:active {
+    background: rgba(255, 255, 255, 0.12) !important;
   }
 
   /* ── What I Do ── */
