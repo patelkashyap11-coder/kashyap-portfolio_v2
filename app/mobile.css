@@ -341,16 +341,24 @@
 
   .category-masonry-scroll {
     padding: 0 16px !important;
+    overflow-x: visible !important;
+    scrollbar-width: none !important;
+  }
+
+  .category-masonry-scroll::-webkit-scrollbar {
+    display: none !important;
   }
 
   .category-masonry {
     gap: 10px !important;
-    min-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
   }
 
   .category-masonry-col {
-    flex: 0 0 calc(50% - 5px) !important;
-    width: calc(50% - 5px) !important;
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
     gap: 10px !important;
   }
 

@@ -58,6 +58,10 @@ function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOff
 }
 
 function getPinterestColumnCount(width: number, itemCount: number): number {
+  if (width < 640) {
+    return Math.min(2, Math.max(1, itemCount));
+  }
+
   const minCols = width < 640 ? 2 : width < 900 ? 3 : width < 1200 ? 4 : 5;
   const maxCols = width < 640 ? 3 : width < 900 ? 5 : width < 1400 ? 7 : 10;
   // More photos → more columns → gallery extends further right
@@ -435,6 +439,7 @@ function MasonryItem({
             src={item.src}
             muted
             loop
+            preload="metadata"
             playsInline
             className="category-masonry-asset"
             onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
@@ -449,6 +454,7 @@ function MasonryItem({
           src={item.src}
           alt={item.alt || ''}
           loading="lazy"
+          decoding="async"
           className="category-masonry-asset"
         />
       )}
