@@ -105,12 +105,11 @@ export function WhatWeDoSection() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '34px 0',
+                    padding: '34px 24px',
                     background: active ? '#C7E200' : 'transparent',
                     margin: '0',
                     boxSizing: 'border-box' as const,
-                    transition: 'background 0.25s ease, color 0.25s ease',
-                    cursor: 'none',
+                    transition: 'background 0.25s ease',
                     border: 'none',
                     textAlign: 'left' as const,
                     // widen to container edge when active
@@ -170,11 +169,11 @@ export function WhatWeDoSection() {
                       <p
                         style={{
                           fontFamily: 'var(--font-inter)',
-                          fontWeight: 500,
-                          fontSize: 'clamp(1.05rem,1.25vw,1.2rem)',
+                          fontWeight: 600,
+                          fontSize: 'clamp(1.15rem,1.4vw,1.35rem)',
                           lineHeight: 1.75,
                           color: '#222222',
-                          maxWidth: 700,
+                          maxWidth: 850,
                           padding: '28px 0 40px',
                         }}
                       >
