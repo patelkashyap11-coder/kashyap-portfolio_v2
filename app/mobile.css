@@ -181,22 +181,35 @@
     padding: 56px 24px 28px !important;
   }
 
+  .cta-headline-grid {
+    min-height: clamp(220px, 58vw, 320px) !important;
+  }
+
+  .cta-line-anchor--top,
+  .cta-line-anchor--bottom {
+    right: 16px !important;
+  }
+
+  .cta-line-anchor--middle {
+    left: 16px !important;
+  }
+
   .cta-line {
     font-size: clamp(2.25rem, 12vw, 3.5rem) !important;
   }
 
   .cta-contact-row {
-    margin-top: 32px !important;
+    margin-top: 40px !important;
   }
 
   .cta-contact-link {
-    font-size: clamp(1.35rem, 6vw, 1.75rem) !important;
+    font-size: clamp(1.35rem, 5.5vw, 1.625rem) !important;
     gap: 14px !important;
   }
 
   .cta-contact-icon {
-    width: 44px !important;
-    height: 44px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .cta-footer-bar {

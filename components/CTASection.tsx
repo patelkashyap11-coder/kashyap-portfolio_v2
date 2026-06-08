@@ -34,15 +34,21 @@ export function CTASection() {
           viewport={{ once: true, amount: 0.15 }}
           variants={container}
         >
-          <motion.h2 variants={rise} className="cta-line cta-line--top">
-            BRINGING
-          </motion.h2>
-          <motion.h2 variants={rise} className="cta-line cta-line--middle">
-            STORIES
-          </motion.h2>
-          <motion.h2 variants={rise} className="cta-line cta-line--bottom">
-            <span className="cta-line-accent">TO LIFE</span>
-          </motion.h2>
+          <div className="cta-line-anchor cta-line-anchor--top">
+            <motion.h2 variants={rise} className="cta-line">
+              BRINGING
+            </motion.h2>
+          </div>
+          <div className="cta-line-anchor cta-line-anchor--middle">
+            <motion.h2 variants={rise} className="cta-line">
+              STORIES
+            </motion.h2>
+          </div>
+          <div className="cta-line-anchor cta-line-anchor--bottom">
+            <motion.h2 variants={rise} className="cta-line">
+              <span className="cta-line-accent">TO LIFE</span>
+            </motion.h2>
+          </div>
         </motion.div>
 
         <motion.div
@@ -55,7 +61,7 @@ export function CTASection() {
           <Link href="/contact" className="cta-contact-link">
             <span>Contact us</span>
             <span className="cta-contact-icon" aria-hidden>
-              <ArrowRight size={22} strokeWidth={1.75} />
+              <ArrowRight size={18} strokeWidth={1.75} />
             </span>
           </Link>
         </motion.div>
