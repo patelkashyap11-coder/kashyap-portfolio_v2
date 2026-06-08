@@ -6,15 +6,19 @@ import { ArrowUpRight } from 'lucide-react';
 export function CTASection() {
   return (
     <section
-      style={{ background: '#0A0A0A', padding: 'clamp(120px,18vw,220px) 48px clamp(140px,20vw,240px)' }}
-      className="cta-section relative overflow-hidden"
+      className="cta-section relative overflow-hidden flex items-center justify-center"
+      style={{
+        background: '#0A0A0A',
+        minHeight: '65vh',
+        padding: '120px 48px',
+      }}
     >
       <div
-        className="cta-inner flex flex-col items-center text-center"
-        style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}
+        className="cta-inner flex flex-col items-center justify-center text-center"
+        style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', width: '100%' }}
       >
         {/* Massive headline */}
-        <div style={{ overflow: 'hidden', marginBottom: '0.04em', width: '100%' }}>
+        <div style={{ overflow: 'hidden', marginBottom: '0.03em', width: '100%' }}>
           <motion.h2
             initial={{ y: '105%' }}
             whileInView={{ y: 0 }}
@@ -26,7 +30,7 @@ export function CTASection() {
             LET&apos;S CREATE
           </motion.h2>
         </div>
-        <div style={{ overflow: 'hidden', marginBottom: '0.04em', width: '100%' }}>
+        <div style={{ overflow: 'hidden', marginBottom: '0.03em', width: '100%' }}>
           <motion.h2
             initial={{ y: '105%' }}
             whileInView={{ y: 0 }}
@@ -38,7 +42,7 @@ export function CTASection() {
             SOMETHING
           </motion.h2>
         </div>
-        <div className="cta-headline-last" style={{ overflow: 'hidden', marginBottom: 'clamp(2.5rem,6vw,4.5rem)', width: '100%' }}>
+        <div className="cta-headline-last" style={{ overflow: 'hidden', marginBottom: 'clamp(1.25rem,3vw,2rem)', width: '100%' }}>
           <motion.h2
             initial={{ y: '105%' }}
             whileInView={{ y: 0 }}
@@ -51,7 +55,7 @@ export function CTASection() {
           </motion.h2>
         </div>
 
-        {/* Large centered CTA */}
+        {/* Centered CTA */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,30 +65,31 @@ export function CTASection() {
         >
           <Link
             href="/contact"
-            className="cta-btn group inline-flex items-center gap-4 text-white transition-all duration-300 hover:border-[#C7E200] hover:text-[#C7E200]"
+            className="cta-btn group inline-flex items-center gap-3 text-white transition-all duration-300 hover:border-[#C7E200] hover:text-[#C7E200]"
             style={{
               background: 'transparent',
               border: '1px solid rgba(255,255,255,0.85)',
-              borderRadius: '9999px',
-              padding: 'clamp(18px,2.5vw,24px) clamp(40px,6vw,72px)',
+              borderRadius: '999px',
+              padding: '18px 32px',
               fontFamily: 'var(--font-tight)',
               fontWeight: 600,
-              fontSize: 'clamp(0.75rem,1.2vw,0.9rem)',
-              letterSpacing: '0.2em',
+              fontSize: '12px',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
             }}
           >
             Start a Project
             <span
-              className="flex items-center justify-center transition-all duration-300 group-hover:border-[#C7E200]"
+              className="cta-btn-icon flex items-center justify-center transition-all duration-300 group-hover:border-[#C7E200]"
               style={{
                 width: 36,
                 height: 36,
                 border: '1px solid rgba(255,255,255,0.6)',
                 borderRadius: '50%',
+                flexShrink: 0,
               }}
             >
-              <ArrowUpRight size={15} className="group-hover:translate-x-px group-hover:-translate-y-px transition-transform" />
+              <ArrowUpRight size={14} className="group-hover:translate-x-px group-hover:-translate-y-px transition-transform" />
             </span>
           </Link>
         </motion.div>

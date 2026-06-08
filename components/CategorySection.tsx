@@ -39,27 +39,27 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
         )}
       </motion.div>
 
-      {/* Gradient overlay — darker at top for title legibility */}
+      {/* Gradient overlay — darker at bottom for title legibility */}
       <div
         style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 100%)',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 100%)',
           transition: 'opacity 0.6s ease',
         }}
       />
 
-      {/* Content — top-left */}
+      {/* Content — lower-left, ~20% from bottom */}
       <div
-        className="category-content relative h-full flex flex-col justify-start"
-        style={{ padding: 'clamp(100px, 12vh, 140px) 48px 0' }}
+        className="category-content relative h-full flex flex-col justify-end"
+        style={{ padding: '0 48px 120px' }}
       >
-        <div className="category-stack flex flex-col items-start gap-5">
+        <div className="category-stack flex flex-col items-start gap-4">
           <motion.h2
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display text-white"
+            className="category-title t-display text-white"
             style={{ fontSize: 'clamp(3rem,7vw,8rem)', lineHeight: 0.9 }}
           >
             {title}
@@ -73,14 +73,14 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
           >
             <Link
               href={href}
-              className="category-cta group/btn inline-flex items-center gap-3 text-white transition-colors duration-300 hover:text-[#C7E200]"
+              className="category-cta group/btn inline-flex items-center gap-2.5 text-white transition-colors duration-300 hover:text-[#C7E200]"
               style={{
                 background: 'transparent',
                 border: '1px solid #ffffff',
-                borderRadius: '9999px',
-                padding: '12px 24px 12px 28px',
-                fontSize: '0.75rem',
-                letterSpacing: '0.18em',
+                borderRadius: '999px',
+                padding: '12px 22px',
+                fontSize: '11px',
+                letterSpacing: '0.15em',
                 fontWeight: 500,
                 textTransform: 'uppercase',
               }}

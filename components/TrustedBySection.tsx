@@ -18,8 +18,8 @@ export function TrustedBySection() {
 
   return (
     <section
-      className="divider"
-      style={{ background: '#F5F5F2', padding: '120px 48px' }}
+      className="trusted-by-section"
+      style={{ background: '#ffffff', padding: 'clamp(80px,10vw,120px) 48px' }}
     >
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <motion.p
