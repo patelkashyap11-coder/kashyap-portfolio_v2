@@ -57,23 +57,26 @@
     line-height: 1.48 !important;
   }
 
-  /* ── Category sections ── */
+  /* ── Category sections — natural vertical scroll, no sticky stack ── */
   .category-stack-wrapper {
-    height: calc(5 * 55vh) !important;
-    min-height: 1900px;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   .category-section {
-    height: 55vh !important;
-    min-height: 380px;
+    position: relative !important;
+    top: auto !important;
+    height: clamp(420px, 85svh, 680px) !important;
+    min-height: 0 !important;
   }
 
   .category-section .category-content {
-    padding: 6vh 24px 0 !important;
+    padding: clamp(48px, 8vh, 72px) 24px 32px !important;
+    justify-content: flex-end !important;
   }
 
   .category-section .category-content--first {
-    padding-top: 2vh !important;
+    padding-top: clamp(48px, 8vh, 72px) !important;
   }
 
   .category-section .category-title {
@@ -200,6 +203,7 @@
 
   .cta-contact-row {
     margin-top: 40px !important;
+    justify-content: center !important;
   }
 
   .cta-contact-link {
@@ -214,12 +218,18 @@
 
   .cta-footer-bar {
     flex-direction: column !important;
-    align-items: flex-start !important;
+    align-items: center !important;
+    text-align: center !important;
     gap: 20px !important;
     padding-top: 40px !important;
   }
 
+  .cta-footer-left {
+    align-items: center !important;
+  }
+
   .cta-footer-right {
+    justify-content: center !important;
     gap: 20px !important;
     flex-wrap: wrap;
   }
@@ -322,25 +332,40 @@
   .category-masonry-section .category-section-header {
     margin-left: 20px !important;
     margin-right: 20px !important;
+    margin-bottom: 24px !important;
   }
 
   .category-masonry-scroll {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
     padding: 0 16px !important;
+    padding-bottom: 0 !important;
   }
 
   .category-masonry {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: 100% !important;
     gap: 10px !important;
-    min-width: 100% !important;
   }
 
   .category-masonry-col {
-    flex: 0 0 calc(50% - 5px) !important;
-    width: calc(50% - 5px) !important;
-    gap: 10px !important;
+    display: contents !important;
   }
 
   .category-masonry-item {
     border-radius: 10px !important;
+  }
+
+  .category-masonry-item:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .category-masonry-item:active {
+    opacity: 0.92;
   }
 
   .category-next {

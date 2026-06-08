@@ -3,6 +3,14 @@ import { useEffect } from 'react';
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch =
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+
+    if (prefersReducedMotion || isTouch || isMobile) return;
+
     let lenis: { raf: (time: number) => void; destroy: () => void } | null = null;
 
     const initLenis = async () => {
