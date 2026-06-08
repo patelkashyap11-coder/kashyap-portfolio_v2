@@ -1,6 +1,10 @@
 /* Mobile-only styles — screens below 768px */
 
 @media (max-width: 767px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+
   html,
   body {
     overflow-x: hidden;
@@ -12,7 +16,12 @@
     padding: 0 0 20vh !important;
     overflow-x: hidden;
     height: auto !important;
-    min-height: 60vh !important;
+    min-height: 100svh !important;
+    scroll-snap-align: start;
+  }
+
+  .hero-category-spacer {
+    display: none !important;
   }
 
   .hero-content {
@@ -57,7 +66,7 @@
     line-height: 1.48 !important;
   }
 
-  /* ── Category sections — Noxediem-style mobile carousel ── */
+  /* ── Category sections — Noxediem-style vertical stack ── */
   .category-stack-wrapper--desktop {
     display: none !important;
   }
@@ -70,27 +79,18 @@
     background: #0a0a0a;
   }
 
-  .category-mobile-track {
+  .category-mobile-stack {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .category-mobile-track::-webkit-scrollbar {
-    display: none;
+    flex-direction: column;
+    width: 100%;
   }
 
   .category-mobile-slide {
     position: relative;
-    flex: 0 0 100%;
     width: 100%;
-    height: clamp(520px, 92svh, 760px);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    min-height: 100svh;
     overflow: hidden;
+    scroll-snap-align: start;
   }
 
   .category-mobile-media {
@@ -117,9 +117,10 @@
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.72) 0%,
-      rgba(0, 0, 0, 0.35) 42%,
-      rgba(0, 0, 0, 0.2) 100%
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.18) 38%,
+      rgba(0, 0, 0, 0.08) 62%,
+      rgba(0, 0, 0, 0.32) 100%
     );
     pointer-events: none;
   }
@@ -130,48 +131,35 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    height: 100%;
-    padding: 5.25rem 24px 32px;
+    min-height: 100svh;
+    padding: 5.25rem 24px 48px;
   }
 
   .category-mobile-title {
     margin: 0;
+    max-width: 14ch;
     font-family: var(--font-inter);
     font-weight: 800;
-    font-size: clamp(2.25rem, 11vw, 3.5rem);
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
+    font-size: clamp(2rem, 9.5vw, 3rem);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
     color: #fff;
   }
 
   .category-mobile-subtitle {
-    margin: 10px 0 0;
+    margin: 12px 0 0;
+    max-width: 22ch;
     font-family: var(--font-inter);
     font-weight: 400;
-    font-size: clamp(1rem, 4.2vw, 1.125rem);
-    line-height: 1.35;
-    color: rgba(255, 255, 255, 0.88);
-  }
-
-  .category-pill-scroll {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    margin-top: 18px;
-    padding-bottom: 2px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .category-pill-scroll::-webkit-scrollbar {
-    display: none;
+    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .category-pill {
-    flex-shrink: 0;
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
     border: 1px solid rgba(255, 255, 255, 0.82);
     border-radius: 999px;
     padding: 9px 16px;
@@ -182,29 +170,12 @@
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    cursor: pointer;
+    text-decoration: none;
     transition: background 0.25s ease, border-color 0.25s ease;
   }
 
-  .category-pill.is-active {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: #fff;
-  }
-
-  .category-mobile-cta {
-    margin-top: 16px;
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.82);
-    border-radius: 999px;
-    padding: 9px 16px;
-    color: #fff;
-    font-family: var(--font-tight);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
+  .category-pill:active {
+    background: rgba(255, 255, 255, 0.12);
   }
 
   /* Legacy single-section overrides (desktop stack hidden on mobile) */
