@@ -199,11 +199,8 @@ export function GalleryPage({
       {/* ── Section 2: Featured Work ── */}
       {featuredCount > 0 && (
         <section id="category-featured" className="category-featured">
-          <div className="category-section-header">
+          <div className="category-section-header category-section-header--solo">
             <p className="t-label category-section-label">Featured Work</p>
-            <p className="t-label category-section-count">
-              {String(featuredCount).padStart(2, '0')} Projects
-            </p>
           </div>
 
           <div className="category-featured-list">
@@ -220,9 +217,9 @@ export function GalleryPage({
                   transition={{ duration: 0.85, ease: EASE }}
                   className="category-featured-item"
                 >
-                  <div className="category-featured-index">
+                  <div className={`category-featured-index${isReversed ? ' category-featured-index--reverse' : ''}`}>
                     <p className="t-label category-featured-number">
-                      Project {String(i + 1).padStart(2, '0')}
+                      {String(i + 1).padStart(2, '0')}
                     </p>
                     <span className="category-featured-index-line" aria-hidden />
                   </div>
@@ -265,11 +262,8 @@ export function GalleryPage({
       {/* ── Section 3: Visual Gallery ── */}
       {galleryItems.length > 0 && (
         <section className="category-masonry-section">
-          <div className="category-section-header">
+          <div className="category-section-header category-section-header--solo">
             <p className="t-label category-section-label">Visual Gallery</p>
-            <p className="t-label category-section-count">
-              {String(galleryItems.length).padStart(2, '0')} Frames
-            </p>
           </div>
 
           <div className="category-masonry-scroll">
