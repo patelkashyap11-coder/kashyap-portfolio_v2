@@ -328,39 +328,41 @@ body {
   }
 }
 
-/* ── WHAT I DO ───────────────────────────────── */
+/* ── WHAT I DO (noxediem-style) ──────────────── */
 .what-we-do {
   background: #ffffff;
-  padding: clamp(72px, 9vw, 96px) 0 clamp(80px, 10vw, 104px);
+  padding: clamp(48px, 5vw, 72px) 0 clamp(56px, 6vw, 80px);
   border-top: 1px solid rgba(10, 10, 10, 0.08);
 }
 
 .what-we-do-inner {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.what-we-do-eyebrow {
+  color: var(--dark);
+  font-family: var(--font-inter);
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  margin-bottom: clamp(24px, 3vw, 36px);
   padding: 0 48px;
 }
 
-.what-we-do-header {
-  margin-bottom: clamp(40px, 5vw, 56px);
-}
-
-.what-we-do-title {
-  font-size: clamp(3.5rem, 8vw, 9rem);
-  color: #0A0A0A;
-  letter-spacing: -0.05em;
-}
-
 .what-we-do-list {
-  border-top: 1px solid rgba(10, 10, 10, 0.12);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  border-top: 1px solid rgba(10, 10, 10, 0.18);
 }
 
 .what-we-do-item {
-  border-bottom: 1px solid rgba(10, 10, 10, 0.12);
-}
-
-.what-we-do-item.is-open {
-  background: #C7E200;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.18);
 }
 
 .what-we-do-trigger {
@@ -368,69 +370,71 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding: clamp(28px, 3.5vw, 40px) 0;
-  background: transparent;
+  gap: clamp(20px, 3vw, 40px);
+  padding: clamp(20px, 2.5vw, 32px) 48px;
+  background: #ffffff;
   border: none;
   text-align: left;
   cursor: pointer;
+  transition: background-color 0.35s ease, padding 0.35s ease;
 }
 
-.what-we-do-item.is-open .what-we-do-trigger {
-  padding-bottom: clamp(16px, 2vw, 24px);
+.what-we-do-trigger.is-open {
+  background: #C7E200;
+  padding-top: clamp(28px, 3.5vw, 44px);
+  padding-bottom: clamp(28px, 3.5vw, 44px);
 }
 
 .what-we-do-trigger-title {
-  font-family: var(--font-tight);
-  font-weight: 800;
-  font-size: clamp(1.75rem, 3.2vw, 3.5rem);
-  letter-spacing: -0.035em;
+  font-family: var(--font-inter);
+  font-weight: 700;
+  font-size: clamp(1.875rem, 3.8vw, 3.75rem);
+  letter-spacing: -0.03em;
   line-height: 0.95;
   color: #0A0A0A;
-  text-transform: uppercase;
+}
+
+.what-we-do-trigger.is-open .what-we-do-trigger-title {
+  font-size: clamp(2.125rem, 4.2vw, 4.25rem);
+  line-height: 0.92;
 }
 
 .what-we-do-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
   flex-shrink: 0;
-  border: 1px solid rgba(10, 10, 10, 0.18);
-  border-radius: 50%;
-  font-size: 1.35rem;
-  font-weight: 300;
-  line-height: 1;
   color: #0A0A0A;
-  transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1), border-color 0.25s ease;
-}
-
-.what-we-do-icon.is-open {
-  border-color: #0A0A0A;
-  transform: rotate(0deg);
 }
 
 .what-we-do-panel {
   overflow: hidden;
+  background: #ffffff;
 }
 
-.what-we-do-capabilities {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 32px;
-  padding: 0 0 clamp(28px, 3.5vw, 40px);
+.what-we-do-details {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.5vw, 40px);
+  padding: clamp(32px, 4vw, 48px) 48px clamp(36px, 4.5vw, 52px);
 }
 
-.what-we-do-capabilities li {
-  font-family: var(--font-tight);
+.what-we-do-detail-title {
+  font-family: var(--font-inter);
   font-weight: 700;
-  font-size: clamp(1.1rem, 1.8vw, 1.65rem);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  line-height: 1.35;
   color: #0A0A0A;
-  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.what-we-do-detail-text {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: clamp(0.875rem, 1.05vw, 1rem);
+  line-height: 1.55;
+  color: #5a5a5a;
+  max-width: 44rem;
 }
 
 /* ── CLIENTS ─────────────────────────────────── */
@@ -672,7 +676,6 @@ body {
 
 /* ── Tablet ──────────────────────────────────── */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .what-we-do-inner,
   .clients-inner {
     padding: 0 40px;
   }
@@ -687,8 +690,23 @@ body {
     gap: 28px 32px;
   }
 
-  .what-we-do-capabilities {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .what-we-do-eyebrow,
+  .what-we-do-trigger,
+  .what-we-do-details {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .what-we-do-eyebrow {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .what-we-do-trigger-title {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
+  .what-we-do-trigger.is-open .what-we-do-trigger-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
   }
 
   .cta-section,

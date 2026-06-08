@@ -102,44 +102,53 @@
 
   /* ── What I Do ── */
   .what-we-do {
-    padding: 64px 0 72px !important;
+    padding: 40px 0 56px !important;
   }
 
-  .what-we-do-inner {
+  .what-we-do-eyebrow {
+    font-family: var(--font-inter) !important;
+    font-size: clamp(1.75rem, 9vw, 2.5rem) !important;
+    font-weight: 400 !important;
+    margin-bottom: 20px !important;
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
 
-  .what-we-do-header {
-    margin-bottom: 32px !important;
-  }
-
-  .what-we-do-title {
-    font-size: clamp(2.5rem, 12vw, 4rem) !important;
-  }
-
   .what-we-do-trigger {
-    padding: 24px 0 !important;
+    padding: 18px 24px !important;
+    gap: 14px !important;
   }
 
-  .what-we-do-trigger-title {
-    font-size: clamp(1.35rem, 5.5vw, 1.85rem) !important;
-  }
-
-  .what-we-do-icon {
-    width: 36px !important;
-    height: 36px !important;
-    font-size: 1.2rem !important;
-  }
-
-  .what-we-do-capabilities {
-    grid-template-columns: 1fr !important;
-    gap: 8px !important;
+  .what-we-do-trigger.is-open {
+    padding-top: 24px !important;
     padding-bottom: 24px !important;
   }
 
-  .what-we-do-capabilities li {
-    font-size: clamp(1rem, 4.5vw, 1.25rem) !important;
+  .what-we-do-details {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .what-we-do-trigger-title {
+    font-size: clamp(1.5rem, 6.5vw, 2rem) !important;
+    line-height: 0.96 !important;
+  }
+
+  .what-we-do-trigger.is-open .what-we-do-trigger-title {
+    font-size: clamp(1.65rem, 7vw, 2.15rem) !important;
+  }
+
+  .what-we-do-details {
+    gap: 18px !important;
+    padding: 20px 0 24px !important;
+  }
+
+  .what-we-do-detail-title {
+    font-size: 0.9375rem !important;
+  }
+
+  .what-we-do-detail-text {
+    font-size: 0.875rem !important;
   }
 
   /* ── Clients ── */
