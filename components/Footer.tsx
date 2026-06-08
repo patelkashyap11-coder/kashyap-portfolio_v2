@@ -9,7 +9,7 @@ export function Footer() {
           KASHYAP PATEL
         </Link>
         <p className="site-footer-tagline">
-          Photographer &amp; Filmmaker — Ahmedabad, India
+          Photographer &amp; Filmmaker
         </p>
       </div>
     </footer>

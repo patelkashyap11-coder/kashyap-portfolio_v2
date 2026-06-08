@@ -3,7 +3,6 @@ import { CategorySection } from '@/components/CategorySection';
 import { WhatWeDoSection } from '@/components/WhatWeDoSection';
 import { TrustedBySection } from '@/components/TrustedBySection';
 import { CTASection } from '@/components/CTASection';
-import { Footer } from '@/components/Footer';
 
 const categories = [
   {
@@ -68,7 +67,6 @@ export default function HomePage() {
         <WhatWeDoSection />
         <TrustedBySection />
         <CTASection />
-        <Footer />
       </div>
     </>
   );

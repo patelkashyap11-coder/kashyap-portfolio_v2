@@ -161,14 +161,6 @@
     margin-bottom: 40px !important;
   }
 
-  .clients-categories {
-    gap: 36px !important;
-  }
-
-  .clients-category-label {
-    margin-bottom: 16px !important;
-  }
-
   .clients-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 20px 16px !important;
@@ -185,30 +177,38 @@
 
   /* ── CTA ── */
   .cta-section {
-    padding: 64px 24px 56px !important;
+    min-height: auto !important;
+    padding: 56px 24px 28px !important;
   }
 
-  .cta-headline {
-    font-size: clamp(2.5rem, 11vw, 4.25rem) !important;
+  .cta-line {
+    font-size: clamp(2.25rem, 12vw, 3.5rem) !important;
   }
 
-  .cta-headline-wrap {
-    margin-bottom: 28px !important;
+  .cta-contact-row {
+    margin-top: 32px !important;
   }
 
-  .cta-actions {
-    gap: 16px !important;
+  .cta-contact-link {
+    font-size: clamp(1.35rem, 6vw, 1.75rem) !important;
+    gap: 14px !important;
   }
 
-  .cta-btn {
-    padding: 12px 28px !important;
-    font-size: 0.75rem !important;
+  .cta-contact-icon {
+    width: 44px !important;
+    height: 44px !important;
   }
 
-  .cta-socials {
+  .cta-footer-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+    padding-top: 40px !important;
+  }
+
+  .cta-footer-right {
     gap: 20px !important;
     flex-wrap: wrap;
-    justify-content: center;
   }
 
   /* ── Footer ── */
