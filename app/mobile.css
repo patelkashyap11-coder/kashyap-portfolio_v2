@@ -1,10 +1,6 @@
 /* Mobile-only styles — screens below 768px */
 
 @media (max-width: 767px) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-
   html,
   body {
     overflow-x: hidden;
@@ -17,7 +13,6 @@
     overflow-x: hidden;
     height: auto !important;
     min-height: 100svh !important;
-    scroll-snap-align: start;
   }
 
   .hero-category-spacer {
@@ -66,162 +61,27 @@
     line-height: 1.48 !important;
   }
 
-  /* ── Category sections — Noxediem-style vertical stack ── */
-  .category-stack-wrapper--desktop {
-    display: none !important;
-  }
-
-  .category-mobile-showcase {
-    display: block;
-    position: relative;
-    z-index: 20;
-    width: 100%;
-    background: #0a0a0a;
-  }
-
-  .category-mobile-stack {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .category-mobile-slide {
-    position: relative;
-    width: 100%;
-    min-height: 100svh;
-    overflow: hidden;
-    scroll-snap-align: start;
-  }
-
-  .category-mobile-media {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .category-mobile-asset {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .category-mobile-image {
-    background-size: cover;
-    background-position: center;
-    background-color: #141414;
-  }
-
-  .category-mobile-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.58) 0%,
-      rgba(0, 0, 0, 0.18) 38%,
-      rgba(0, 0, 0, 0.08) 62%,
-      rgba(0, 0, 0, 0.32) 100%
-    );
-    pointer-events: none;
-  }
-
-  .category-mobile-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    min-height: 100svh;
-    padding: 5.25rem 24px 48px;
-  }
-
-  .category-mobile-title {
-    margin: 0;
-    max-width: 14ch;
-    font-family: var(--font-inter);
-    font-weight: 800;
-    font-size: clamp(2rem, 9.5vw, 3rem);
-    line-height: 0.95;
-    letter-spacing: -0.025em;
-    color: #fff;
-  }
-
-  .category-mobile-subtitle {
-    margin: 12px 0 0;
-    max-width: 22ch;
-    font-family: var(--font-inter);
-    font-weight: 400;
-    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .category-pill {
-    margin-top: 16px;
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.82);
-    border-radius: 999px;
-    padding: 9px 16px;
-    background: transparent;
-    color: #fff;
-    font-family: var(--font-tight);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.25s ease, border-color 0.25s ease;
-  }
-
-  .category-pill:active {
-    background: rgba(255, 255, 255, 0.12);
-  }
-
-  /* Legacy single-section overrides (desktop stack hidden on mobile) */
-  .category-stack-wrapper {
-    height: auto !important;
-    min-height: 0 !important;
-  }
-
+  /* ── Category sections — sticky full-screen portfolio stack ── */
   .category-section {
-    position: relative !important;
-    top: auto !important;
-    height: clamp(420px, 85svh, 680px) !important;
-    min-height: 0 !important;
+    height: 100vh !important;
+    height: 100svh !important;
   }
 
-  .category-section .category-content {
-    padding: clamp(48px, 8vh, 72px) 24px 32px !important;
-    justify-content: flex-start !important;
-  }
-
-  .category-section .category-content--first {
-    padding-top: clamp(48px, 8vh, 72px) !important;
+  .category-content {
+    padding: 0 24px !important;
   }
 
   .category-section .category-title {
-    font-size: clamp(2rem, 10vw, 4rem) !important;
+    font-size: clamp(3rem, 14vw, 5.5rem) !important;
+    line-height: 0.92 !important;
   }
 
-  .category-section .category-stack {
-    gap: 12px !important;
+  .category-content-inner {
+    gap: 18px !important;
   }
 
-  .category-section .category-cta {
-    gap: 5px !important;
-    padding: 6px 11px !important;
+  .category-section .category-view-link {
     font-size: 9px !important;
-  }
-
-  .category-section .category-cta-icon {
-    width: 16px !important;
-    height: 16px !important;
-  }
-
-  .category-section .category-cta-arrow {
-    width: 8px !important;
-    height: 8px !important;
   }
 
   /* ── What I Do ── */
