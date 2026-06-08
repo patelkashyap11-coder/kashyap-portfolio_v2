@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { HeroSection } from '@/components/HeroSection';
 import { CategorySection } from '@/components/CategorySection';
 import { WhatWeDoSection } from '@/components/WhatWeDoSection';
@@ -12,7 +13,18 @@ const homepageCategories = categories.map((cat) => ({
   imageSrc: cat.imageSrc,
 }));
 
+type CategoryStackStyle = CSSProperties & {
+  '--category-stack-height': string;
+  '--category-stack-height-vh': string;
+};
+
 export default function HomePage() {
+  const categoryStackHeight = `${homepageCategories.length * 100}`;
+  const categoryStackStyle: CategoryStackStyle = {
+    '--category-stack-height': `${categoryStackHeight}svh`,
+    '--category-stack-height-vh': `${categoryStackHeight}vh`,
+  };
+
   return (
     <>
       <HeroSection />
@@ -22,7 +34,7 @@ export default function HomePage() {
       {/* Bounded sticky stack — releases into normal flow after Interiors */}
       <div
         className="category-stack-wrapper"
-        style={{ height: `${homepageCategories.length * 100}vh` }}
+        style={categoryStackStyle}
       >
         {homepageCategories.map((cat, i) => (
           <CategorySection
