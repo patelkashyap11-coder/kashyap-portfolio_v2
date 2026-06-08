@@ -1,17 +1,22 @@
 import { GalleryPage } from '@/components/GalleryPage';
-import { getGallery } from '@/lib/getGallery';
+import { getCategoryPageProps } from '@/lib/getCategoryPageProps';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Page() {
-  const media = await getGallery('fashion');
+  const { category, featuredMedia, galleryMedia, nextCategory } = await getCategoryPageProps('fashion');
 
   return (
     <GalleryPage
-      title="FASHION"
-      subtitle="Fashion Photography"
-      description="Editorial campaigns, lookbooks and fashion storytelling that brings clothing to life."
-      media={media}
+      title={category.title}
+      subtitle={category.subtitle}
+      description={category.description}
+      featuredMedia={featuredMedia}
+      galleryMedia={galleryMedia}
+      heroVideo={category.videoSrc}
+      heroImage={category.imageSrc}
+      featuredProjects={category.featuredProjects}
+      nextCategory={nextCategory}
     />
   );
 }

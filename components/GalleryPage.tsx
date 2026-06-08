@@ -1,223 +1,373 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ArrowLeft, Play } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
+import type { FeaturedProjectMeta } from '@/lib/categoryData';
+
+interface NextCategory {
+  title: string;
+  subtitle: string;
+  href: string;
+}
 
 export interface MediaItem {
   src: string;
   type: 'image' | 'video';
   alt?: string;
-  /** Optional explicit intrinsic size — if omitted, natural size is used */
   width?: number;
   height?: number;
+  publicId?: string;
 }
 
 interface Props {
   title: string;
   subtitle: string;
   description: string;
-  media: MediaItem[];
+  featuredMedia: MediaItem[];
+  galleryMedia: MediaItem[];
+  heroVideo?: string;
+  heroImage?: string;
+  featuredProjects?: FeaturedProjectMeta[];
+  nextCategory?: NextCategory;
 }
 
-// Distribute items across N columns round-robin
-function buildColumns<T>(items: T[], n: number): { item: T; originalIndex: number }[][] {
-  const cols: { item: T; originalIndex: number }[][] = Array.from({ length: n }, () => []);
-  items.forEach((item, i) => cols[i % n].push({ item, originalIndex: i }));
+const EASE = [0.76, 0, 0.24, 1] as [number, number, number, number];
+
+type ColumnEntry = { item: MediaItem; originalIndex: number };
+
+/** Pinterest-style: place each pin in the shortest column */
+function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOffset: number): ColumnEntry[][] {
+  const cols: ColumnEntry[][] = Array.from({ length: columnCount }, () => []);
+  const heights = Array(columnCount).fill(0);
+
+  items.forEach((item, i) => {
+    const aspect = item.width && item.height ? item.height / item.width : 1.2;
+    const gapShare = 0.08;
+
+    let shortest = 0;
+    for (let c = 1; c < columnCount; c++) {
+      if (heights[c] < heights[shortest]) shortest = c;
+    }
+
+    cols[shortest].push({ item, originalIndex: indexOffset + i });
+    heights[shortest] += aspect + gapShare;
+  });
+
   return cols;
 }
 
-export function GalleryPage({ title, subtitle, description, media }: Props) {
+function getPinterestColumnCount(width: number, itemCount: number): number {
+  const minCols = width < 640 ? 2 : width < 900 ? 3 : width < 1200 ? 4 : 5;
+  const maxCols = width < 640 ? 3 : width < 900 ? 5 : width < 1400 ? 7 : 10;
+  // More photos → more columns → gallery extends further right
+  const neededCols = Math.ceil(itemCount / 7);
+  return Math.min(maxCols, Math.max(minCols, neededCols));
+}
+
+function usePinterestColumnCount(itemCount: number) {
+  const [count, setCount] = useState(4);
+
+  useEffect(() => {
+    const update = () => setCount(getPinterestColumnCount(window.innerWidth, itemCount));
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [itemCount]);
+
+  return count;
+}
+
+export function GalleryPage({
+  title,
+  subtitle,
+  description,
+  featuredMedia,
+  galleryMedia,
+  heroVideo,
+  heroImage,
+  featuredProjects = [],
+  nextCategory,
+}: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
-  const open  = useCallback((i: number) => setLightboxIdx(i), []);
-  const close = useCallback(() => setLightboxIdx(null), []);
-  const prev  = useCallback(() => setLightboxIdx(i => i !== null ? (i - 1 + media.length) % media.length : null), [media.length]);
-  const next  = useCallback(() => setLightboxIdx(i => i !== null ? (i + 1) % media.length : null), [media.length]);
+  const media = useMemo(
+    () => [...featuredMedia, ...galleryMedia],
+    [featuredMedia, galleryMedia],
+  );
 
-  // 3 columns on ≥md, 2 on mobile
-  const cols3 = buildColumns(media, 3);
-  const cols2 = buildColumns(media, 2);
+  const open = useCallback((i: number) => setLightboxIdx(i), []);
+  const close = useCallback(() => setLightboxIdx(null), []);
+  const prev = useCallback(
+    () => setLightboxIdx((i) => (i !== null ? (i - 1 + media.length) % media.length : null)),
+    [media.length],
+  );
+  const next = useCallback(
+    () => setLightboxIdx((i) => (i !== null ? (i + 1) % media.length : null)),
+    [media.length],
+  );
+
+  const featuredCount = featuredMedia.length;
+  const featuredItems = featuredMedia;
+  const galleryItems = galleryMedia;
+  const heroFallbackImage = heroImage || featuredMedia[0]?.src || galleryMedia[0]?.src;
+  const columnCount = usePinterestColumnCount(galleryItems.length);
+  const masonryColumns = useMemo(
+    () => buildPinterestColumns(galleryItems, columnCount, featuredCount),
+    [galleryItems, columnCount, featuredCount],
+  );
+
+  const scrollToFeatured = () => {
+    document.getElementById('category-featured')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <div className="gallery-page" style={{ minHeight: '100vh', background: '#0A0A0A', color: '#fff' }}>
+    <div className="gallery-page">
+      {/* ── Section 1: Hero ── */}
+      <section className="category-hero">
+        <div className="category-hero-media" aria-hidden>
+          {heroVideo ? (
+            <video
+              src={heroVideo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="category-hero-video"
+            />
+          ) : heroFallbackImage ? (
+            <div
+              className="category-hero-image"
+              style={{ backgroundImage: `url(${heroFallbackImage})` }}
+            />
+          ) : null}
+          <div className="category-hero-overlay" />
+        </div>
 
-      {/* ── Header ── */}
-      <div
-        className="gallery-header relative flex flex-col justify-end"
-        style={{
-          minHeight: '42vh',
-          padding: '0 48px 48px',
-          paddingTop: 120,
-          background: 'linear-gradient(160deg,#111 0%,#0a0a0a 100%)',
-        }}
-      >
-        <Link
-          href="/"
-          className="flex items-center gap-2 t-label mb-10 w-fit transition-colors hover:text-[#C7E200]"
-          style={{ color: 'rgba(255,255,255,0.3)' }}
-        >
+        <Link href="/" className="category-hero-back t-label">
           <ArrowLeft size={12} /> Back
         </Link>
 
-        <motion.p
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
-          className="t-label mb-5" style={{ color: 'rgba(255,255,255,0.3)' }}
-        >
-          {subtitle}
-        </motion.p>
-
-        <div style={{ overflow: 'hidden' }}>
-          <motion.h1
-            initial={{ y: '100%' }} animate={{ y: 0 }}
-            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-            className="t-display"
-            style={{ fontSize: 'clamp(3rem,7vw,8rem)', lineHeight: 0.9, whiteSpace: 'pre-line' }}
+        <div className="category-hero-content">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="category-hero-label t-label"
           >
-            {title}
-          </motion.h1>
+            {subtitle}
+          </motion.p>
+
+          <div className="category-hero-title-wrap">
+            <motion.h1
+              initial={{ y: '110%' }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, ease: EASE }}
+              className="category-hero-title t-display"
+            >
+              {title}
+            </motion.h1>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.7, ease: EASE }}
+            className="category-hero-description"
+          >
+            {description}
+          </motion.p>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="font-light leading-relaxed mt-6"
-          style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.38)', maxWidth: 440 }}
+        <button
+          type="button"
+          onClick={scrollToFeatured}
+          className="category-hero-scroll"
+          aria-label="Scroll to explore"
         >
-          {description}
-        </motion.p>
-      </div>
+          <span className="t-label">Scroll to explore</span>
+          <motion.span
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="category-hero-scroll-icon"
+          >
+            <ChevronDown size={18} strokeWidth={1.5} />
+          </motion.span>
+        </button>
+      </section>
+
+      {/* ── Section 2: Featured Work ── */}
+      {featuredCount > 0 && (
+        <section id="category-featured" className="category-featured">
+          <div className="category-section-header">
+            <p className="t-label category-section-label">Featured Work</p>
+            <p className="t-label category-section-count">
+              {String(featuredCount).padStart(2, '0')} Projects
+            </p>
+          </div>
+
+          <div className="category-featured-list">
+            {featuredItems.map((item, i) => {
+              const meta = featuredProjects[i];
+              const isReversed = i % 2 === 1;
+
+              return (
+                <motion.article
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.85, ease: EASE }}
+                  className="category-featured-item"
+                >
+                  <div className="category-featured-index">
+                    <p className="t-label category-featured-number">
+                      Project {String(i + 1).padStart(2, '0')}
+                    </p>
+                    <span className="category-featured-index-line" aria-hidden />
+                  </div>
+
+                  <div className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}`}>
+                    <div className="category-featured-media">
+                      <FeaturedMedia item={item} title={title} onOpen={() => open(i)} />
+                    </div>
+
+                    {meta && (
+                      <div className="category-featured-copy">
+                        <h2 className="category-featured-name">{meta.name}</h2>
+                        <div className="category-featured-meta">
+                          <span>{meta.client}</span>
+                          <span className="category-featured-meta-dot" aria-hidden />
+                          <span>{meta.year}</span>
+                        </div>
+                        <p className="category-featured-description">{meta.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ── Empty state ── */}
       {media.length === 0 && (
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          justifyContent: 'center', padding: '120px 24px', textAlign: 'center',
-        }}>
-          <div style={{
-            width: 56, height: 56, border: '1px solid rgba(255,255,255,0.08)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28,
-          }}>
-            <div style={{ width: 14, height: 14, background: 'rgba(255,255,255,0.06)' }} />
-          </div>
-          <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.9rem', marginBottom: 8 }}>
-            Gallery coming soon
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.14)', fontSize: '0.75rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            Add files to{' '}
-            <code style={{ color: '#C7E200', opacity: 0.55 }}>
-              public/{subtitle.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}/
-            </code>
+        <div className="category-empty">
+          <div className="category-empty-icon" />
+          <p className="category-empty-title">Gallery coming soon</p>
+          <p className="category-empty-hint t-label">
+            Content loading from Cloudinary
           </p>
         </div>
       )}
 
-      {/* ── True CSS masonry gallery ── */}
-      {media.length > 0 && (
-        <motion.div
-          className="gallery-grid"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 0.25, duration: 0.7 }}
-          style={{ padding: '20px 12px 80px' }}
-        >
-          {/* Desktop: 3 columns */}
-          <div className="hidden md:flex gap-3 items-start">
-            {cols3.map((col, ci) => (
-              <div key={ci} className="flex flex-col gap-3" style={{ flex: 1, minWidth: 0 }}>
-                {col.map(({ item, originalIndex }) => (
-                  <GalleryItem
-                    key={originalIndex}
-                    item={item}
-                    index={originalIndex}
-                    totalDelay={originalIndex * 0.04}
-                    onOpen={open}
-                  />
-                ))}
-              </div>
-            ))}
+      {/* ── Section 3: Visual Gallery ── */}
+      {galleryItems.length > 0 && (
+        <section className="category-masonry-section">
+          <div className="category-section-header">
+            <p className="t-label category-section-label">Visual Gallery</p>
+            <p className="t-label category-section-count">
+              {String(galleryItems.length).padStart(2, '0')} Frames
+            </p>
           </div>
 
-          {/* Mobile: 2 columns */}
-          <div className="flex md:hidden gap-2 items-start">
-            {cols2.map((col, ci) => (
-              <div key={ci} className="flex flex-col gap-2" style={{ flex: 1, minWidth: 0 }}>
-                {col.map(({ item, originalIndex }) => (
-                  <GalleryItem
-                    key={originalIndex}
-                    item={item}
-                    index={originalIndex}
-                    totalDelay={originalIndex * 0.04}
-                    onOpen={open}
-                  />
-                ))}
-              </div>
-            ))}
+          <div className="category-masonry-scroll">
+            <motion.div
+              className="category-masonry"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.05 }}
+              transition={{ duration: 0.7 }}
+            >
+              {masonryColumns.map((col, colIndex) => (
+                <div key={colIndex} className="category-masonry-col">
+                  {col.map(({ item, originalIndex }, itemIndex) => (
+                    <MasonryItem
+                      key={originalIndex}
+                      item={item}
+                      index={originalIndex}
+                      totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
+                      onOpen={open}
+                      title={title}
+                    />
+                  ))}
+                </div>
+              ))}
+            </motion.div>
           </div>
-        </motion.div>
+        </section>
+      )}
+
+      {nextCategory && (
+        <section className="category-next">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="category-next-inner"
+          >
+            <p className="t-label category-next-label">Next</p>
+            <Link href={nextCategory.href} className="category-next-link group">
+              <span className="category-next-title">{nextCategory.title}</span>
+              <ArrowUpRight
+                size={15}
+                strokeWidth={1.25}
+                className="category-next-arrow"
+                aria-hidden
+              />
+            </Link>
+          </motion.div>
+        </section>
       )}
 
       {/* ── Lightbox ── */}
       <AnimatePresence>
         {lightboxIdx !== null && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            style={{
-              position: 'fixed', inset: 0, zIndex: 9999,
-              background: 'rgba(0,0,0,0.97)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
+            className="category-lightbox"
             onClick={close}
           >
-            {/* counter */}
-            <p className="t-label absolute" style={{ top: 28, left: '50%', transform: 'translateX(-50%)', color: 'rgba(255,255,255,0.3)' }}>
+            <p className="t-label category-lightbox-counter">
               {lightboxIdx + 1} / {media.length}
             </p>
 
-            {/* close */}
-            <button
-              onClick={close}
-              style={{
-                position: 'absolute', top: 20, right: 20,
-                width: 40, height: 40, border: '1px solid rgba(255,255,255,0.12)',
-                background: 'transparent', color: 'rgba(255,255,255,0.55)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'none', transition: 'color 0.2s, border-color 0.2s',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.55)'; }}
-            >
+            <button type="button" onClick={close} className="category-lightbox-close" aria-label="Close">
               <X size={16} />
             </button>
 
-            {/* prev */}
             <NavBtn side="left" onClick={(e) => { e.stopPropagation(); prev(); }} />
 
-            {/* media */}
             <motion.div
               key={lightboxIdx}
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.28 }}
-              style={{ maxWidth: '90vw', maxHeight: '88vh', display: 'flex', alignItems: 'center' }}
-              onClick={e => e.stopPropagation()}
+              className="category-lightbox-media"
+              onClick={(e) => e.stopPropagation()}
             >
               {media[lightboxIdx].type === 'video' ? (
                 <video
-                  src={media[lightboxIdx].src} controls autoPlay
-                  style={{ maxWidth: '90vw', maxHeight: '88vh', objectFit: 'contain', display: 'block' }}
+                  src={media[lightboxIdx].src}
+                  controls
+                  autoPlay
+                  className="category-lightbox-asset"
                 />
               ) : (
                 <img
                   src={media[lightboxIdx].src}
                   alt={media[lightboxIdx].alt || title}
-                  style={{ maxWidth: '90vw', maxHeight: '88vh', objectFit: 'contain', display: 'block' }}
+                  className="category-lightbox-asset"
                 />
               )}
             </motion.div>
 
-            {/* next */}
             <NavBtn side="right" onClick={(e) => { e.stopPropagation(); next(); }} />
           </motion.div>
         )}
@@ -226,57 +376,81 @@ export function GalleryPage({ title, subtitle, description, media }: Props) {
   );
 }
 
-/* ── Gallery item — preserves natural image ratio, no forced height ── */
-function GalleryItem({
-  item, index, totalDelay, onOpen,
+/* ── Featured media block ── */
+function FeaturedMedia({
+  item,
+  title,
+  onOpen,
+}: {
+  item: MediaItem;
+  title: string;
+  onOpen: () => void;
+}) {
+  return (
+    <button type="button" onClick={onOpen} className="category-featured-media-btn group">
+      {item.type === 'video' ? (
+        <>
+          <video
+            src={item.src}
+            muted
+            loop
+            playsInline
+            className="category-featured-asset group-hover:scale-[1.02]"
+            onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
+            onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
+          />
+          <div className="category-featured-play">
+            <Play size={18} style={{ marginLeft: 2 }} />
+          </div>
+        </>
+      ) : (
+        <img
+          src={item.src}
+          alt={item.alt || title}
+          loading="lazy"
+          className="category-featured-asset group-hover:scale-[1.02]"
+        />
+      )}
+    </button>
+  );
+}
+
+/* ── Masonry item ── */
+function MasonryItem({
+  item,
+  index,
+  totalDelay,
+  onOpen,
+  title,
 }: {
   item: MediaItem;
   index: number;
   totalDelay: number;
   onOpen: (i: number) => void;
+  title: string;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: totalDelay, duration: 0.55, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.06 }}
+      transition={{ delay: totalDelay, duration: 0.5, ease: 'easeOut' }}
+      className="category-masonry-item group"
       onClick={() => onOpen(index)}
-      style={{
-        position: 'relative', cursor: 'none',
-        overflow: 'hidden', display: 'block',
-        background: '#111',
-      }}
-      className="group"
     >
       {item.type === 'video' ? (
         <>
           <video
-            src={item.src} muted loop playsInline
-            style={{
-              display: 'block', width: '100%', height: 'auto',
-              transition: 'transform 0.6s ease',
-            }}
-            className="group-hover:scale-[1.03]"
-            onMouseEnter={e => (e.currentTarget as HTMLVideoElement).play()}
-            onMouseLeave={e => (e.currentTarget as HTMLVideoElement).pause()}
+            src={item.src}
+            muted
+            loop
+            playsInline
+            className="category-masonry-asset"
+            onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
+            onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
           />
-          {/* Play badge */}
-          <div
-            style={{
-              position: 'absolute', inset: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'rgba(0,0,0,0.18)',
-              transition: 'background 0.3s',
-            }}
-            className="group-hover:bg-transparent"
-          >
-            <div style={{
-              width: 44, height: 44, borderRadius: '50%',
-              background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(4px)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Play size={15} style={{ color: '#fff', marginLeft: 2 }} />
-            </div>
+          <div className="category-masonry-play">
+            <Play size={14} style={{ marginLeft: 2 }} />
           </div>
         </>
       ) : (
@@ -284,24 +458,10 @@ function GalleryItem({
           src={item.src}
           alt={item.alt || ''}
           loading="lazy"
-          style={{
-            display: 'block', width: '100%', height: 'auto',
-            transition: 'transform 0.65s ease',
-          }}
-          className="group-hover:scale-[1.03]"
+          className="category-masonry-asset"
         />
       )}
-
-      {/* Hover sheen */}
-      <div
-        style={{
-          position: 'absolute', inset: 0,
-          background: 'rgba(0,0,0,0)',
-          transition: 'background 0.35s',
-          pointerEvents: 'none',
-        }}
-        className="group-hover:bg-black/10"
-      />
+      <div className="category-masonry-sheen" />
     </motion.div>
   );
 }
@@ -310,20 +470,10 @@ function GalleryItem({
 function NavBtn({ side, onClick }: { side: 'left' | 'right'; onClick: (e: React.MouseEvent) => void }) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      style={{
-        position: 'absolute',
-        [side]: 16,
-        top: '50%', transform: 'translateY(-50%)',
-        width: 40, height: 40,
-        border: '1px solid rgba(255,255,255,0.12)',
-        background: 'transparent',
-        color: 'rgba(255,255,255,0.55)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'none', transition: 'color 0.2s, border-color 0.2s',
-      }}
-      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fff'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.35)'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.55)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.12)'; }}
+      className={`category-lightbox-nav category-lightbox-nav--${side}`}
+      aria-label={side === 'left' ? 'Previous' : 'Next'}
     >
       {side === 'left' ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
     </button>

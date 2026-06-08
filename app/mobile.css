@@ -230,20 +230,113 @@
   }
 
   /* ── Contact & gallery pages ── */
-  .contact-page,
-  .gallery-page .gallery-header {
+  .contact-page {
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
 
-  .gallery-page .gallery-grid {
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+  .category-hero-back {
+    left: 24px !important;
+    top: 5.25rem !important;
+  }
+
+  .category-hero-content {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .category-hero-title {
+    font-size: clamp(2.5rem, 12vw, 4.5rem) !important;
+  }
+
+  .category-featured {
+    padding: 72px 24px 88px !important;
+  }
+
+  .category-section-header {
+    margin-bottom: 40px !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .category-featured-list {
+    gap: 32px !important;
+  }
+
+  .category-featured-item {
+    gap: 24px !important;
+  }
+
+  .category-featured-body,
+  .category-featured-body--reverse {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .category-featured-body--reverse .category-featured-media,
+  .category-featured-body--reverse .category-featured-copy {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .category-featured-copy {
+    order: -1;
+    max-width: 100% !important;
+    padding-top: 0 !important;
+  }
+
+  .category-featured-name {
+    font-size: clamp(1.5rem, 7vw, 2.25rem) !important;
+  }
+
+  .category-featured-description {
+    max-width: 100% !important;
+  }
+
+  .category-masonry-section {
+    padding: 56px 0 72px !important;
+  }
+
+  .category-masonry-section .category-section-header {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+  }
+
+  .category-masonry-scroll {
+    padding: 0 16px !important;
+  }
+
+  .category-masonry {
+    gap: 10px !important;
+    min-width: 100% !important;
+  }
+
+  .category-masonry-col {
+    flex: 0 0 calc(50% - 5px) !important;
+    width: calc(50% - 5px) !important;
+    gap: 10px !important;
+  }
+
+  .category-masonry-item {
+    border-radius: 10px !important;
+  }
+
+  .category-next {
+    padding: 40px 24px 56px !important;
+  }
+
+  .category-next-title {
+    font-size: 0.6875rem !important;
+    letter-spacing: 0.2em !important;
   }
 
   .gallery-page button,
   .gallery-page [role="button"],
-  .gallery-page .group {
+  .gallery-page .group,
+  .category-featured-media-btn,
+  .category-masonry-item,
+  .category-hero-scroll {
     cursor: pointer !important;
   }
 }
