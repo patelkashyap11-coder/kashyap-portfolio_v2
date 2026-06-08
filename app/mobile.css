@@ -340,29 +340,21 @@
   }
 
   .category-masonry-scroll {
-    padding: 0 16px !important;
-    overflow-x: visible !important;
-    scrollbar-width: none !important;
-  }
-
-  .category-masonry-scroll::-webkit-scrollbar {
     display: none !important;
   }
 
-  .category-masonry {
-    gap: 10px !important;
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  .category-masonry-col {
-    flex: 1 1 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
-    gap: 10px !important;
+  .category-mobile-gallery {
+    display: block !important;
+    columns: 2 140px;
+    column-gap: 10px;
+    padding: 0 16px;
   }
 
   .category-masonry-item {
+    display: inline-block !important;
+    width: 100% !important;
+    margin: 0 0 10px !important;
+    break-inside: avoid;
     border-radius: 10px !important;
   }
 
