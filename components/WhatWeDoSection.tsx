@@ -58,27 +58,6 @@ const services = [
   },
   {
     id: 3,
-    title: 'Tournage',
-    capabilities: [
-      {
-        title: 'Filming',
-        description:
-          'From corporate content to interviews and commercials — we film with a clear visual vision and a focus on production quality.',
-      },
-      {
-        title: 'Photography',
-        description:
-          'From portraits to product photography — we create visual storytelling that elevates your brand and connects with your audience.',
-      },
-      {
-        title: 'Motion design',
-        description:
-          'Clean, creative animations that add depth and energy to your film or campaign without overpowering your message.',
-      },
-    ],
-  },
-  {
-    id: 4,
     title: 'Post production',
     capabilities: [
       {
