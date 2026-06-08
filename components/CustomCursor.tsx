@@ -28,8 +28,16 @@ export function CustomCursor() {
     document.addEventListener('mousemove', onMove);
     raf = requestAnimationFrame(tick);
 
-    const enter = () => { dot.classList.add('is-hover'); ring.classList.add('is-hover'); };
-    const leave = () => { dot.classList.remove('is-hover'); ring.classList.remove('is-hover'); };
+    const enter = (e: Event) => {
+      if ((e.currentTarget as Element).closest('.what-we-do')) return;
+      dot.classList.add('is-hover');
+      ring.classList.add('is-hover');
+    };
+    const leave = (e: Event) => {
+      if ((e.currentTarget as Element).closest('.what-we-do')) return;
+      dot.classList.remove('is-hover');
+      ring.classList.remove('is-hover');
+    };
 
     const bind = () => {
       document.querySelectorAll('a,button,[data-hover]').forEach(el => {

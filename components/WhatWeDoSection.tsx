@@ -48,6 +48,7 @@ export function WhatWeDoSection() {
 
   return (
     <section
+      className="what-we-do"
       style={{
         background: '#ffffff',
         padding: '120px 0 140px',
