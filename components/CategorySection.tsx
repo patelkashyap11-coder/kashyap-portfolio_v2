@@ -38,9 +38,6 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
       ref={ref}
       className="category-section relative overflow-hidden group"
       style={{
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
         zIndex: index + 1,
       }}
     >

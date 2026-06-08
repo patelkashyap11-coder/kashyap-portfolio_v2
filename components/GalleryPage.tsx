@@ -58,6 +58,10 @@ function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOff
 }
 
 function getPinterestColumnCount(width: number, itemCount: number): number {
+  if (width < 640) {
+    return Math.min(2, Math.max(1, itemCount));
+  }
+
   const minCols = width < 640 ? 2 : width < 900 ? 3 : width < 1200 ? 4 : 5;
   const maxCols = width < 640 ? 3 : width < 900 ? 5 : width < 1400 ? 7 : 10;
   // More photos → more columns → gallery extends further right
@@ -266,6 +270,18 @@ export function GalleryPage({
             <p className="t-label category-section-label">Visual Gallery</p>
           </div>
 
+          <div className="category-mobile-gallery">
+            {galleryItems.map((item, itemIndex) => (
+              <MasonryItem
+                key={`mobile-${featuredCount + itemIndex}`}
+                item={item}
+                index={featuredCount + itemIndex}
+                totalDelay={Math.min(itemIndex * 0.02, 0.24)}
+                onOpen={open}
+              />
+            ))}
+          </div>
+
           <div className="category-masonry-scroll">
             <motion.div
               className="category-masonry"
@@ -283,7 +299,6 @@ export function GalleryPage({
                       index={originalIndex}
                       totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
                       onOpen={open}
-                      title={title}
                     />
                   ))}
                 </div>
@@ -415,13 +430,11 @@ function MasonryItem({
   index,
   totalDelay,
   onOpen,
-  title,
 }: {
   item: MediaItem;
   index: number;
   totalDelay: number;
   onOpen: (i: number) => void;
-  title: string;
 }) {
   return (
     <motion.div
@@ -438,6 +451,7 @@ function MasonryItem({
             src={item.src}
             muted
             loop
+            preload="metadata"
             playsInline
             className="category-masonry-asset"
             onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
@@ -452,6 +466,7 @@ function MasonryItem({
           src={item.src}
           alt={item.alt || ''}
           loading="lazy"
+          decoding="async"
           className="category-masonry-asset"
         />
       )}

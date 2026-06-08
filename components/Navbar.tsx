@@ -14,11 +14,12 @@ const links = [
 ];
 
 export function Navbar() {
-  const [open, setOpen]       = useState(false);
+  const [openPath, setOpenPath] = useState<string | null>(null);
   const [pinned, setPinned]   = useState(false);
   const [visible, setVisible] = useState(true);
   const lastScrollY           = useRef(0);
   const pathname              = usePathname();
+  const open                  = openPath === pathname;
 
   // pages with dark (black) bg
   const isDark = ['/contact','/fashion','/food-hospitality','/jewellery','/products','/interiors']
@@ -43,7 +44,6 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  useEffect(() => { setOpen(false); }, [pathname]);
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -89,7 +89,7 @@ export function Navbar() {
         {/* Hamburger */}
         <button
           className="md:hidden z-50 relative flex flex-col justify-center gap-[5px] w-6 h-6"
-          onClick={() => setOpen(v => !v)}
+          onClick={() => setOpenPath(currentPath => (currentPath === pathname ? null : pathname))}
           aria-label="Menu"
         >
           <span className="block h-px transition-all duration-300 origin-center"
@@ -134,7 +134,7 @@ export function Navbar() {
                 >
                   <Link
                     href={l.href}
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpenPath(null)}
                     className="block t-display text-white leading-none py-4 hover:text-[#C7E200] transition-colors"
                     style={{ fontSize: 'clamp(2.2rem,7vw,3.5rem)' }}
                   >
