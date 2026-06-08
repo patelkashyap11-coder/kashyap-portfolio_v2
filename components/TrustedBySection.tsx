@@ -1,9 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
 
-// ── Set hasLogos = true and populate this array once you have logo files ──
-const hasLogos = false;
-
 const clients: { name: string; logo: string | null }[] = [
   { name: 'Client One',   logo: null },
   { name: 'Client Two',   logo: null },
@@ -14,19 +11,17 @@ const clients: { name: string; logo: string | null }[] = [
 ];
 
 export function TrustedBySection() {
-  if (!hasLogos) return null;
-
   return (
     <section
       className="trusted-by-section"
-      style={{ background: '#ffffff', padding: 'clamp(80px,10vw,120px) 48px' }}
+      style={{ background: '#ffffff', padding: 'clamp(120px,14vw,180px) 48px' }}
     >
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="t-label mb-16 text-center"
+          className="t-label mb-20 text-center"
           style={{ color: '#888888' }}
         >
           Trusted By
@@ -36,7 +31,7 @@ export function TrustedBySection() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-            gap: '40px 60px',
+            gap: '48px 72px',
             alignItems: 'center',
           }}
         >
