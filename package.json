@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "sync:clients": "node scripts/sync-client-logos.mjs",
+    "seo:preview": "node scripts/seo-preview.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

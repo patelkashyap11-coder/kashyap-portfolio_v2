@@ -12,6 +12,10 @@ export const SITE_DESCRIPTION =
 export const SITE_SHORT_DESCRIPTION =
   'Commercial photographer & filmmaker creating cinemagraphs and brand visual stories in Ahmedabad, India.';
 
+/** Shorter copy for WhatsApp / iMessage / social link previews. */
+export const SITE_SHARE_DESCRIPTION =
+  'Commercial photographer & filmmaker in Ahmedabad. Fashion, food, jewellery, product & interior brands.';
+
 export const SITE_KEYWORDS = [
   'Kashyap Patel',
   'Kashyap Patel photographer',

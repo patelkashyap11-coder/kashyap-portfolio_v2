@@ -1,18 +1,19 @@
 import { ImageResponse } from 'next/og';
 import {
-  BRAND,
-  SITE_LOCATION,
-  SITE_NAME,
-  SITE_SHORT_DESCRIPTION,
-  SITE_TAGLINE,
-  SITE_TITLE,
-} from '@/lib/site';
+  getShareCollageDataUrls,
+  SHARE_COLLAGE_CENTER_INDEX,
+  SHARE_OG_CTA,
+  SHARE_OG_SUBTITLE,
+} from '@/lib/shareCollage';
+import { BRAND, SITE_NAME, SITE_TAGLINE, SITE_TITLE } from '@/lib/site';
 
 export const alt = SITE_TITLE;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const images = await getShareCollageDataUrls();
+
   return new ImageResponse(
     (
       <div
@@ -20,96 +21,109 @@ export default function OpenGraphImage() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '80px',
           background: BRAND.dark,
-          color: BRAND.cream,
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              fontSize: 24,
-              fontWeight: 700,
-              letterSpacing: '0.32em',
-              textTransform: 'uppercase',
-              color: BRAND.accent,
-              fontFamily: 'Inter, Helvetica, Arial, sans-serif',
-              marginBottom: 48,
-            }}
-          >
-            Portfolio
-          </div>
+        {images.map((src, index) => {
+          const isCenter = index === SHARE_COLLAGE_CENTER_INDEX;
 
-          <div
-            style={{
-              fontSize: 96,
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              lineHeight: 0.92,
-              textTransform: 'uppercase',
-              fontFamily: 'Inter, Helvetica, Arial, sans-serif',
-              marginBottom: 28,
-            }}
-          >
-            {SITE_NAME}
-          </div>
+          return (
+            <div
+              key={index}
+              style={{
+                flex: 1,
+                position: 'relative',
+                display: 'flex',
+                overflow: 'hidden',
+                borderRight:
+                  index < images.length - 1 ? '2px solid rgba(255,255,255,0.08)' : 'none',
+              }}
+            >
+              <img
+                src={src}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }}
+              />
 
-          <div
-            style={{
-              width: 120,
-              height: 6,
-              background: BRAND.accent,
-              marginBottom: 28,
-            }}
-          />
+              {isCenter ? (
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'rgba(10, 10, 10, 0.52)',
+                    color: BRAND.cream,
+                    textAlign: 'center',
+                    padding: '24px 12px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      letterSpacing: '0.16em',
+                      textTransform: 'uppercase',
+                      color: BRAND.accent,
+                      fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+                      marginBottom: 10,
+                    }}
+                  >
+                    {SITE_TAGLINE}
+                  </div>
 
-          <div
-            style={{
-              fontSize: 38,
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'rgba(245, 245, 242, 0.88)',
-              fontFamily: 'Inter, Helvetica, Arial, sans-serif',
-              marginBottom: 36,
-            }}
-          >
-            {SITE_TAGLINE}
-          </div>
+                  <div
+                    style={{
+                      fontSize: 24,
+                      fontWeight: 800,
+                      letterSpacing: '-0.02em',
+                      lineHeight: 0.95,
+                      textTransform: 'uppercase',
+                      fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+                      marginBottom: 16,
+                    }}
+                  >
+                    {SITE_NAME}
+                  </div>
 
-          <div
-            style={{
-              fontSize: 28,
-              lineHeight: 1.45,
-              maxWidth: 900,
-              color: 'rgba(245, 245, 242, 0.62)',
-              fontFamily: 'Inter, Helvetica, Arial, sans-serif',
-            }}
-          >
-            {SITE_SHORT_DESCRIPTION}
-          </div>
-        </div>
+                  <div
+                    style={{
+                      fontSize: 30,
+                      fontWeight: 800,
+                      letterSpacing: '-0.02em',
+                      lineHeight: 1,
+                      fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+                      marginBottom: 10,
+                    }}
+                  >
+                    {SHARE_OG_CTA}
+                  </div>
 
-        <div
-          style={{
-            fontSize: 22,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'rgba(245, 245, 242, 0.42)',
-            fontFamily: 'Inter, Helvetica, Arial, sans-serif',
-          }}
-        >
-          {`${SITE_LOCATION.city}, ${SITE_LOCATION.country}`}
-        </div>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 500,
+                      letterSpacing: '0.04em',
+                      lineHeight: 1.3,
+                      color: 'rgba(245, 245, 242, 0.88)',
+                      fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+                      textTransform: 'lowercase',
+                    }}
+                  >
+                    {SHARE_OG_SUBTITLE}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
       </div>
     ),
     size,
