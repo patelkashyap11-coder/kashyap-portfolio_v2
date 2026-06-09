@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
 import { cloudinaryPreset, cloudinaryUrl } from '@/lib/cloudinaryUrl';
+import {
+  protectedImageProps,
+  protectedMediaSurfaceProps,
+  protectedVideoProps,
+} from '@/lib/mediaProtection';
 
 interface NextCategory {
   title: string;
@@ -136,7 +141,7 @@ export function GalleryPage({
     <div className="gallery-page">
       {/* ── Section 1: Hero ── */}
       <section className="category-hero">
-        <div className="category-hero-media" aria-hidden>
+        <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
           {heroVideo ? (
             <video
               src={heroVideo}
@@ -145,11 +150,13 @@ export function GalleryPage({
               loop
               playsInline
               className="category-hero-video"
+              {...protectedVideoProps}
             />
           ) : heroFallbackImageSrc ? (
             <div
               className="category-hero-image"
               style={{ backgroundImage: `url(${heroFallbackImageSrc})` }}
+              {...protectedMediaSurfaceProps}
             />
           ) : null}
           <div className="category-hero-overlay" />
@@ -362,6 +369,7 @@ export function GalleryPage({
               transition={{ duration: 0.28 }}
               className="category-lightbox-media"
               onClick={(e) => e.stopPropagation()}
+              {...protectedMediaSurfaceProps}
             >
               {media[lightboxIdx].type === 'video' ? (
                 <video
@@ -369,12 +377,14 @@ export function GalleryPage({
                   controls
                   autoPlay
                   className="category-lightbox-asset"
+                  {...protectedVideoProps}
                 />
               ) : (
                 <img
                   src={cloudinaryPreset(media[lightboxIdx].src, 'lightbox')}
                   alt={media[lightboxIdx].alt || title}
                   className="category-lightbox-asset"
+                  {...protectedImageProps}
                 />
               )}
             </motion.div>
@@ -398,7 +408,7 @@ function FeaturedMedia({
   onOpen: () => void;
 }) {
   return (
-    <button type="button" onClick={onOpen} className="category-featured-media-btn group">
+    <button type="button" onClick={onOpen} className="category-featured-media-btn group" {...protectedMediaSurfaceProps}>
       {item.type === 'video' ? (
         <>
           <video
@@ -409,6 +419,7 @@ function FeaturedMedia({
             className="category-featured-asset group-hover:scale-[1.02]"
             onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
             onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
+            {...protectedVideoProps}
           />
           <div className="category-featured-play">
             <Play size={18} style={{ marginLeft: 2 }} />
@@ -420,6 +431,7 @@ function FeaturedMedia({
           alt={item.alt || title}
           loading="lazy"
           className="category-featured-asset group-hover:scale-[1.02]"
+          {...protectedImageProps}
         />
       )}
     </button>
@@ -448,6 +460,7 @@ function MasonryItem({
       transition={{ delay: totalDelay, duration: 0.5, ease: 'easeOut' }}
       className="category-masonry-item group"
       onClick={() => onOpen(index)}
+      {...protectedMediaSurfaceProps}
     >
       {item.type === 'video' ? (
         <>
@@ -459,6 +472,7 @@ function MasonryItem({
             className="category-masonry-asset"
             onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
             onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
+            {...protectedVideoProps}
           />
           <div className="category-masonry-play">
             <Play size={14} style={{ marginLeft: 2 }} />
@@ -474,6 +488,7 @@ function MasonryItem({
           height={item.height}
           sizes="(max-width: 639px) calc((100vw - 42px) / 2), (max-width: 1199px) calc((100vw - 80px) / 3), calc((100vw - 160px) / 5)"
           className="category-masonry-asset"
+          {...protectedImageProps}
         />
       )}
     </motion.div>

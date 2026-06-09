@@ -1008,6 +1008,14 @@ body {
 }
 
 /* ── Category / Gallery Pages ────────────────── */
+.gallery-page img,
+.gallery-page video,
+.gallery-page .category-hero-image,
+.category-section-media {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 .gallery-page {
   min-height: 100vh;
   background: var(--page-surface);

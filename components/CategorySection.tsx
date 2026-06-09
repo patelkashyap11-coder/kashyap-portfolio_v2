@@ -2,6 +2,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
 
 interface Props {
   title: string;
@@ -33,7 +34,7 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
       className="category-section relative overflow-hidden group"
       style={{ zIndex: index + 1 }}
     >
-      <motion.div style={{ scale, position: 'absolute', inset: 0 }}>
+      <motion.div style={{ scale, position: 'absolute', inset: 0 }} {...protectedMediaSurfaceProps}>
         {videoSrc ? (
           <video
             src={videoSrc}
@@ -42,6 +43,7 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
             loop
             playsInline
             className="category-section-media"
+            {...protectedVideoProps}
           />
         ) : (
           <div
@@ -50,6 +52,7 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
               backgroundImage: imageSrc ? `url(${imageSrc})` : undefined,
               backgroundColor: `hsl(${index * 22},5%,8%)`,
             }}
+            {...protectedMediaSurfaceProps}
           />
         )}
       </motion.div>

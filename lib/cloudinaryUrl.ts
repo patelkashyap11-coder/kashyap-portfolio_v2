@@ -1,11 +1,16 @@
 export type CloudinaryPreset = 'featured' | 'masonry' | 'lightbox' | 'hero' | 'logo';
 
-const PRESETS: Record<CloudinaryPreset, { width: number }> = {
-  featured: { width: 1600 },
-  masonry: { width: 800 },
-  lightbox: { width: 2400 },
-  hero: { width: 1920 },
-  logo: { width: 400 },
+const WATERMARK_TEXT = '© Kashyap Patel';
+
+const PRESETS: Record<
+  CloudinaryPreset,
+  { width: number; watermark?: boolean; watermarkSize?: number }
+> = {
+  featured: { width: 1600, watermark: true, watermarkSize: 14 },
+  masonry: { width: 800, watermark: true, watermarkSize: 12 },
+  lightbox: { width: 2400, watermark: true, watermarkSize: 18 },
+  hero: { width: 1920, watermark: true, watermarkSize: 16 },
+  logo: { width: 400, watermark: false },
 };
 
 export interface CloudinaryTransformOptions {
@@ -14,6 +19,8 @@ export interface CloudinaryTransformOptions {
   quality?: string | number;
   format?: string;
   crop?: string;
+  watermark?: boolean;
+  watermarkSize?: number;
 }
 
 const CLOUDINARY_UPLOAD =
@@ -26,6 +33,11 @@ export function isCloudinaryUrl(url: string): boolean {
 function assetPathFromUploadSegment(path: string): string {
   const versionMatch = path.match(/(v\d+\/.+)$/);
   return versionMatch ? versionMatch[1] : path;
+}
+
+function buildSubtleWatermark(fontSize: number): string {
+  const text = encodeURIComponent(WATERMARK_TEXT);
+  return `l_text:Arial_${fontSize}:${text},co_rgb:FFFFFF,o_32,g_south_east,x_16,y_16`;
 }
 
 /** Insert Cloudinary delivery transforms without changing non-Cloudinary URLs. */
@@ -52,10 +64,17 @@ export function cloudinaryUrl(
   }
 
   const base = url.slice(0, url.indexOf('/upload/') + '/upload/'.length);
-  return `${base}${transforms.join(',')}/${assetPath}`;
+  const delivery = transforms.join(',');
+
+  if (resourceType === 'image' && options.watermark) {
+    const size = options.watermarkSize ?? 14;
+    return `${base}${delivery}/${buildSubtleWatermark(size)}/${assetPath}`;
+  }
+
+  return `${base}${delivery}/${assetPath}`;
 }
 
 export function cloudinaryPreset(url: string, preset: CloudinaryPreset): string {
-  const { width } = PRESETS[preset];
-  return cloudinaryUrl(url, { width });
+  const { width, watermark = false, watermarkSize } = PRESETS[preset];
+  return cloudinaryUrl(url, { width, watermark, watermarkSize });
 }
