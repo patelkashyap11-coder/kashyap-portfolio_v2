@@ -42,8 +42,8 @@ function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOff
   const heights = Array(columnCount).fill(0);
 
   items.forEach((item, i) => {
-    const aspect = item.width && item.height ? item.height / item.width : 1.2;
-    const gapShare = 0.08;
+    const aspect = item.width && item.height ? item.height / item.width : 1.25;
+    const gapShare = 0.12;
 
     let shortest = 0;
     for (let c = 1; c < columnCount; c++) {
@@ -64,10 +64,9 @@ function isPortraitMedia(item: MediaItem): boolean {
 
 function getPinterestColumnCount(width: number): number {
   if (width < 640) return 2;
-  if (width < 900) return 3;
-  if (width < 1200) return 4;
-  if (width < 1600) return 5;
-  return 6;
+  if (width < 1024) return 3;
+  if (width < 1440) return 4;
+  return 5;
 }
 
 function usePinterestColumnCount() {
@@ -231,12 +230,7 @@ export function GalleryPage({
 
                   <div className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}`}>
                     <div
-                      className={`category-featured-media${i < 3 && isPortraitMedia(item) ? ' category-featured-media--half-height' : ''}`}
-                      style={
-                        i < 3 && isPortraitMedia(item) && item.width && item.height
-                          ? { ['--featured-half-ar' as string]: `${item.width} / ${item.height / 2}` }
-                          : undefined
-                      }
+                      className={`category-featured-media${i < 3 && isPortraitMedia(item) ? ' category-featured-media--portrait' : ''}`}
                     >
                       <FeaturedMedia item={item} title={title} onOpen={() => open(i)} />
                     </div>
@@ -471,7 +465,6 @@ function MasonryItem({
           className="category-masonry-asset"
         />
       )}
-      <div className="category-masonry-sheen" />
     </motion.div>
   );
 }
