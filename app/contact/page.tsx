@@ -1,17 +1,21 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { useSiteContent } from '@/lib/content/ContentProvider';
+import { SITE_CONTACT } from '@/lib/site';
 
 const socialLinks = [
   {
     label: 'Instagram',
-    href: 'https://instagram.com/ikashyap__',
+    href: SITE_CONTACT.instagram,
     image: '/fashion/fashion-3.jpeg',
   },
   {
     label: 'WhatsApp',
-    href: 'https://wa.me/919712727007',
+    href: SITE_CONTACT.whatsapp,
     image: '/interiors/DSC02369-HDR.jpg',
   },
 ];
@@ -29,6 +33,9 @@ const rise = (delay: number) => ({
 });
 
 export default function ContactPage() {
+  const { contact } = useSiteContent();
+  const subheadlineParts = contact.subheadline.split(contact.accentWord);
+
   return (
     <div className="contact-page">
       <div className="contact-shell">
@@ -41,7 +48,7 @@ export default function ContactPage() {
                 animate="show"
                 className="contact-headline t-display"
               >
-                Small idea or big project?
+                {contact.headline}
               </motion.span>
             </div>
           </div>
@@ -53,12 +60,25 @@ export default function ContactPage() {
                 animate="show"
                 className="contact-headline t-display"
               >
-                Let&apos;s <span className="contact-headline-accent">talk</span>!
+                {subheadlineParts[0]}
+                <span className="contact-headline-accent">{contact.accentWord}</span>
+                {subheadlineParts[1] ?? ''}
               </motion.span>
             </div>
           </div>
           <div className="contact-divider" />
         </header>
+
+        {contact.body ? (
+          <motion.p
+            className="contact-intro-text"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.24, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          >
+            {contact.body}
+          </motion.p>
+        ) : null}
 
         <div className="contact-main">
           <div className="contact-info">
@@ -69,8 +89,11 @@ export default function ContactPage() {
               transition={{ delay: 0.3, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
             >
               <p className="contact-field-label">Email Address</p>
-              <a href="mailto:letstalk@bykashyap.com" className="contact-field-value contact-field-value--email">
-                letstalk@bykashyap.com
+              <a
+                href={`mailto:${SITE_CONTACT.email}`}
+                className="contact-field-value contact-field-value--email"
+              >
+                {SITE_CONTACT.email}
               </a>
             </motion.div>
 
@@ -81,10 +104,23 @@ export default function ContactPage() {
               transition={{ delay: 0.4, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
             >
               <p className="contact-field-label">Phone Number</p>
-              <a href="tel:+919712727007" className="contact-field-value">
-                +91 97127 27007
+              <a href={`tel:${SITE_CONTACT.phone}`} className="contact-field-value">
+                {SITE_CONTACT.phoneDisplay}
               </a>
             </motion.div>
+
+            {contact.ctaLabel ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.48, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              >
+                <Link href={`mailto:${SITE_CONTACT.email}`} className="contact-cta-link">
+                  <span>{contact.ctaLabel}</span>
+                  <ArrowRight size={18} strokeWidth={1.75} aria-hidden />
+                </Link>
+              </motion.div>
+            ) : null}
           </div>
 
           <div className="contact-cards">

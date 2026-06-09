@@ -1,16 +1,16 @@
+import { siteContent } from '@/lib/content';
+
 export const SITE_URL = 'https://www.bykashyap.com';
 
 export const SITE_NAME = 'KASHYAP PATEL';
 
 export const SITE_TAGLINE = 'CINEMAGRAPH';
 
-export const SITE_TITLE = 'KASHYAP PATEL | CINEMAGRAPH';
+export const SITE_TITLE = siteContent.seo.homeTitle;
 
-export const SITE_DESCRIPTION =
-  'Kashyap Patel is a commercial photographer and filmmaker in Ahmedabad, India, creating cinemagraphs and visual stories for fashion, food, jewellery, product and interior brands.';
+export const SITE_DESCRIPTION = siteContent.seo.homeDescription;
 
-export const SITE_SHORT_DESCRIPTION =
-  'Commercial photographer & filmmaker creating cinemagraphs and brand visual stories in Ahmedabad, India.';
+export const SITE_SHORT_DESCRIPTION = siteContent.seo.homeDescription;
 
 /** Link preview title for WhatsApp, iMessage, and social shares. */
 export const SITE_SHARE_TITLE = "Let's Talk";

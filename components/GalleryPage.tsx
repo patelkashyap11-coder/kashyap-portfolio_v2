@@ -36,6 +36,7 @@ interface Props {
   heroImage?: string;
   featuredProjects?: FeaturedProjectMeta[];
   nextCategory?: NextCategory;
+  homeHref?: string;
 }
 
 const EASE = [0.76, 0, 0.24, 1] as [number, number, number, number];
@@ -98,6 +99,7 @@ export function GalleryPage({
   heroImage,
   featuredProjects = [],
   nextCategory,
+  homeHref = '/',
 }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
@@ -180,7 +182,7 @@ export function GalleryPage({
           <div className="category-hero-overlay" />
         </div>
 
-        <Link href="/" className="category-hero-back t-label">
+        <Link href={homeHref} className="category-hero-back t-label">
           <ArrowLeft size={12} /> Back
         </Link>
 

@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import { useSiteContent } from '@/lib/content/ContentProvider';
 
 const rise = (delay: number) => ({
   hidden: { opacity: 0, y: 32 },
@@ -11,43 +12,37 @@ const rise = (delay: number) => ({
 });
 
 export function HeroSection() {
+  const { hero } = useSiteContent();
+
   return (
     <section className="hero-section relative flex flex-col overflow-x-hidden">
       <div className="hero-content flex flex-col justify-start">
         <div className="hero-headline-block">
-          <div className="hero-headline-line">
-            <motion.h1
-              variants={rise(0.1)}
-              initial="hidden"
-              animate="show"
-              className="hero-headline hero-headline-sans"
-            >
-              CREATING
-            </motion.h1>
-          </div>
+          {hero.lines.map((line, index) => {
+            if (!line && index !== hero.accentLine) return null;
 
-          <div className="hero-headline-line">
-            <motion.h1
-              variants={rise(0.22)}
-              initial="hidden"
-              animate="show"
-              className="hero-headline hero-headline-sans"
-            >
-              VISUAL STORIES
-            </motion.h1>
-          </div>
+            const delay = 0.1 + index * 0.12;
 
-          <div className="hero-headline-line">
-            <motion.h1
-              variants={rise(0.34)}
-              initial="hidden"
-              animate="show"
-              className="hero-headline hero-headline-sans"
-            >
-              THAT{' '}
-              <span className="hero-headline-accent">LAST</span>
-            </motion.h1>
-          </div>
+            return (
+              <div key={`${line}-${index}`} className="hero-headline-line">
+                <motion.h1
+                  variants={rise(delay)}
+                  initial="hidden"
+                  animate="show"
+                  className="hero-headline hero-headline-sans"
+                >
+                  {index === hero.accentLine ? (
+                    <>
+                      {line ? `${line} ` : null}
+                      <span className="hero-headline-accent">{hero.accentWord}</span>
+                    </>
+                  ) : (
+                    line
+                  )}
+                </motion.h1>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -60,14 +55,17 @@ export function HeroSection() {
         className="hero-intro"
       >
         <p className="hero-intro-text">
-          We create{' '}
-          <span className="hero-text-highlight">visual stories</span> that help
-          brands stand out — from{' '}
-          <span className="hero-text-highlight">fashion campaigns</span> and{' '}
-          <span className="hero-text-highlight">restaurant content</span> to{' '}
-          <span className="hero-text-highlight">jewellery</span>,{' '}
-          <span className="hero-text-highlight">products</span> and{' '}
-          <span className="hero-text-highlight">interiors</span>.
+          {hero.subheadlineSegments
+            ? hero.subheadlineSegments.map((segment, index) =>
+                segment.highlight ? (
+                  <span key={index} className="hero-text-highlight">
+                    {segment.text}
+                  </span>
+                ) : (
+                  <span key={index}>{segment.text}</span>
+                ),
+              )
+            : hero.subheadline}
         </p>
       </motion.div>
 
@@ -78,7 +76,7 @@ export function HeroSection() {
         transition={{ duration: 0.6, delay: 1.05 }}
         aria-hidden
       >
-        <span className="hero-scroll-indicator-line" />
+        <span className="hero-scroll-line" />
       </motion.div>
     </section>
   );

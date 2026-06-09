@@ -3,14 +3,15 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getPreviewBase, isPreviewHome, withPreviewBase } from '@/lib/content/preview';
 
 const links = [
-  { href: '/fashion',          label: 'Fashion',            shortLabel: 'Fashion' },
+  { href: '/fashion', label: 'Fashion', shortLabel: 'Fashion' },
   { href: '/food-hospitality', label: 'Food & Hospitality', shortLabel: 'Food' },
-  { href: '/jewellery',        label: 'Jewellery',          shortLabel: 'Jewellery' },
-  { href: '/products',         label: 'Products',           shortLabel: 'Products' },
-  { href: '/interiors',        label: 'Interiors',          shortLabel: 'Interiors' },
-  { href: '/contact',          label: 'Contact',            shortLabel: 'Contact' },
+  { href: '/jewellery', label: 'Jewellery', shortLabel: 'Jewellery' },
+  { href: '/products', label: 'Products', shortLabel: 'Products' },
+  { href: '/interiors', label: 'Interiors', shortLabel: 'Interiors' },
+  { href: '/contact', label: 'Contact', shortLabel: 'Contact' },
 ];
 
 export function Navbar() {
@@ -24,11 +25,17 @@ export function Navbar() {
   const [overHomeCta, setOverHomeCta] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const lastScrollY           = useRef(0);
-  const pathname              = usePathname();
+  const pathname = usePathname();
+  const previewBase = getPreviewBase(pathname);
+  const navLinks = links.map((link) => ({
+    ...link,
+    href: withPreviewBase(previewBase, link.href),
+  }));
 
-  const isHomepage = pathname === '/';
-  const isDark = ['/contact','/fashion','/food-hospitality','/jewellery','/products','/interiors']
-    .some(p => pathname?.startsWith(p));
+  const isHomepage = isPreviewHome(pathname, previewBase);
+  const isDark = navLinks.some(
+    (link) => pathname === link.href || pathname?.startsWith(`${link.href}/`),
+  );
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -179,7 +186,7 @@ export function Navbar() {
             }}
           >
           <Link
-            href="/"
+            href={previewBase ?? '/'}
             className="logo-text site-nav-logo z-50 relative shrink-0"
             style={{ color: navFg }}
           >
@@ -187,7 +194,7 @@ export function Navbar() {
           </Link>
 
           <div className="site-nav-links hidden md:flex items-center min-w-0 flex-1 justify-end">
-            {links.map(l => (
+            {navLinks.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
@@ -223,7 +230,7 @@ export function Navbar() {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="site-nav-mobile-menu md:hidden flex flex-col"
               >
-                {links.map((l) => (
+                {navLinks.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}

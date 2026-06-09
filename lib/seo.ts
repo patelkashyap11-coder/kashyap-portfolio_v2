@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getCategoryBySlug } from '@/lib/categoryData';
+import { siteContent } from '@/lib/content';
 import {
   SITE_CONTACT,
   SITE_DESCRIPTION,
@@ -40,14 +41,22 @@ export function getHomeMetadata(): Metadata {
   };
 }
 
+const categorySeoTitles: Record<string, string> = {
+  fashion: siteContent.seo.fashionTitle,
+  'food-hospitality': siteContent.seo.foodTitle,
+  jewellery: siteContent.seo.jewelleryTitle,
+  products: siteContent.seo.productsTitle,
+  interiors: siteContent.seo.interiorsTitle,
+};
+
 export function getCategoryMetadata(slug: string): Metadata {
   const category = getCategoryBySlug(slug);
   if (!category) {
     return { title: SITE_TITLE, description: SITE_DESCRIPTION };
   }
 
-  const title = `${category.subtitle} Portfolio`;
-  const description = `${category.description} Commercial ${category.subtitle.toLowerCase()} by Kashyap Patel in Ahmedabad, India.`;
+  const title = categorySeoTitles[slug] ?? `${category.subtitle} Portfolio`;
+  const description = category.description;
   const path = `/${slug}`;
 
   return {
@@ -76,8 +85,10 @@ export function getCategoryMetadata(slug: string): Metadata {
 }
 
 export function getContactMetadata(): Metadata {
-  const title = 'Contact';
-  const description = `Contact Kashyap Patel for commercial photography, film and cinemagraph projects in ${SITE_LOCATION.city}, ${SITE_LOCATION.country}. Email ${SITE_CONTACT.email} or call ${SITE_CONTACT.phoneDisplay}.`;
+  const title = siteContent.seo.contactTitle;
+  const description =
+    siteContent.contact.body ||
+    `Contact Kashyap Patel for commercial photography, film and cinemagraph projects in ${SITE_LOCATION.city}, ${SITE_LOCATION.country}. Email ${SITE_CONTACT.email} or call ${SITE_CONTACT.phoneDisplay}.`;
 
   return {
     title,

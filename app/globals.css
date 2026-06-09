@@ -54,6 +54,46 @@
   }
 }
 
+.preview-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 20px;
+  background: #0a0a0a;
+  color: #f5f5f2;
+  border-bottom: 1px solid rgba(199, 226, 0, 0.35);
+}
+
+.preview-banner-text {
+  font-family: var(--font-inter);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.preview-banner-link {
+  flex-shrink: 0;
+  color: #c7e200;
+  font-family: var(--font-tight);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.preview-banner-link:hover {
+  opacity: 0.85;
+}
+
+body:has(.preview-banner) .site-nav-shell {
+  top: 42px;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: auto; }
@@ -710,6 +750,32 @@ body {
   line-height: 1.55;
   color: #5a5a5a;
   max-width: 44rem;
+}
+
+.what-we-do-static {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.5vw, 28px);
+  padding: 0 48px clamp(8px, 1vw, 16px);
+  max-width: 52rem;
+}
+
+.what-we-do-static-text {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  line-height: 1.65;
+  color: #3a3a3a;
+}
+
+.what-we-do-static-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  line-height: 1.5;
+  color: var(--dark);
+  padding-top: 8px;
 }
 
 /* ── CLIENTS ─────────────────────────────────── */
@@ -1778,6 +1844,32 @@ body {
   margin-top: clamp(40px, 5vh, 56px);
   margin-bottom: clamp(48px, 6vh, 72px);
   background: var(--page-line-strong);
+}
+
+.contact-intro-text {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.65;
+  color: var(--page-text-muted);
+  max-width: 42rem;
+  margin-bottom: clamp(28px, 4vw, 40px);
+}
+
+.contact-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  color: var(--page-text);
+  font-family: var(--font-inter);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.contact-cta-link:hover {
+  color: var(--accent);
 }
 
 .contact-main {

@@ -1,3 +1,6 @@
+import { getContentVersion, siteContent } from '@/lib/content';
+import type { SiteContent } from '@/lib/content/types';
+
 export interface FeaturedProjectMeta {
   name: string;
   client: string;
@@ -19,7 +22,7 @@ export interface CategoryMeta {
   featuredProjects: FeaturedProjectMeta[];
 }
 
-export const categories: CategoryMeta[] = [
+const baseCategories: CategoryMeta[] = [
   {
     slug: 'fashion',
     title: 'FASHION',
@@ -187,12 +190,31 @@ export const categories: CategoryMeta[] = [
   },
 ];
 
-export function getCategoryBySlug(slug: string): CategoryMeta | undefined {
-  return categories.find((c) => c.slug === slug);
+export function getCategoriesWithContent(content: SiteContent): CategoryMeta[] {
+  return baseCategories.map((category) => {
+    const copy = content.categories[category.slug];
+    if (!copy) return category;
+    return {
+      ...category,
+      subtitle: copy.subtitle,
+      description: copy.description,
+    };
+  });
 }
 
-export function getNextCategory(slug: string): CategoryMeta {
-  const index = categories.findIndex((c) => c.slug === slug);
-  if (index === -1) return categories[0];
-  return categories[(index + 1) % categories.length];
+export const categories: CategoryMeta[] = getCategoriesWithContent(siteContent);
+
+export function getCategoryBySlug(slug: string, content: SiteContent = siteContent): CategoryMeta | undefined {
+  return getCategoriesWithContent(content).find((c) => c.slug === slug);
+}
+
+export function getNextCategory(slug: string, content: SiteContent = siteContent): CategoryMeta {
+  const list = getCategoriesWithContent(content);
+  const index = list.findIndex((c) => c.slug === slug);
+  if (index === -1) return list[0];
+  return list[(index + 1) % list.length];
+}
+
+export function getPreviewCategories() {
+  return getCategoriesWithContent(getContentVersion('timeless'));
 }

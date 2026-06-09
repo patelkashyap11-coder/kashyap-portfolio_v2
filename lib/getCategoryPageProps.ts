@@ -1,11 +1,15 @@
+import type { SiteContent } from '@/lib/content/types';
 import { getCategoryBySlug, getNextCategory } from './categoryData';
 import { getFeaturedGallery, getGallery } from './getGallery';
 import { resolveCategoryMedia } from './getHomepageMedia';
 import { shuffleGallery } from './shuffleGallery';
 import { splitFeaturedMedia } from './splitFeaturedMedia';
 
-export async function getCategoryPageProps(slug: string) {
-  const category = getCategoryBySlug(slug);
+export async function getCategoryPageProps(
+  slug: string,
+  options?: { linkBase?: string; content?: SiteContent },
+) {
+  const category = getCategoryBySlug(slug, options?.content);
   if (!category) throw new Error(`Unknown category: ${slug}`);
 
   const [media, featuredFolderMedia, resolvedMedia] = await Promise.all([
@@ -29,7 +33,8 @@ export async function getCategoryPageProps(slug: string) {
     featuredFolderMedia,
   );
 
-  const next = getNextCategory(slug);
+  const next = getNextCategory(slug, options?.content);
+  const linkBase = options?.linkBase ?? '';
 
   return {
     category: resolvedCategory,
@@ -38,7 +43,7 @@ export async function getCategoryPageProps(slug: string) {
     nextCategory: {
       title: next.title,
       subtitle: next.subtitle,
-      href: `/${next.slug}`,
+      href: `${linkBase}/${next.slug}`,
     },
   };
 }
