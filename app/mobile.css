@@ -238,12 +238,126 @@
   /* ── Navbar ── */
   .site-nav {
     padding: 20px 24px !important;
+    gap: 12px !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .site-nav-logo {
+    font-size: 0.75rem !important;
+    margin-right: 8px !important;
+    max-width: none !important;
+  }
+
+  .site-nav-links {
+    display: none !important;
+  }
+
+  .site-nav-panel--open {
+    margin: 0;
+  }
+
+  .site-nav-panel--open .site-nav-panel-inner {
+    padding: 20px var(--site-nav-inline, 24px) 14px;
+  }
+
+  .site-nav-panel--open .site-nav {
+    padding: 0 !important;
+  }
+
+  .site-nav-panel-bg {
+    inset: 0 !important;
+    border-radius: 0 0 4px 4px !important;
+    background-color: rgb(245, 245, 242) !important;
+  }
+
+  .site-nav-toggle {
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .site-nav-toggle--light,
+  .site-nav-toggle--dark,
+  .site-nav-toggle--open {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .site-nav-mobile-menu {
+    padding: 0 !important;
+  }
+
+  .site-nav-mobile-link {
+    font-size: clamp(1.05rem, 4.8vw, 1.25rem) !important;
+    padding: 9px 0 !important;
   }
 
   /* ── Contact & gallery pages ── */
-  .contact-page {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+  .contact-shell {
+    height: auto !important;
+    min-height: 100vh !important;
+    padding: 108px 24px 88px !important;
+  }
+
+  .contact-headline {
+    font-size: clamp(2.25rem, 11vw, 3.25rem) !important;
+  }
+
+  .contact-divider {
+    margin-top: 32px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .contact-main {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .contact-info {
+    gap: 36px !important;
+  }
+
+  .contact-cards {
+    grid-column: auto !important;
+    height: clamp(320px, 52vw, 420px) !important;
+    gap: 8px !important;
+  }
+
+  .contact-card-footer {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 14px !important;
+  }
+
+  .contact-card-label {
+    font-size: 10px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .contact-field-value,
+  .contact-field-value--email {
+    font-size: clamp(1.5rem, 6vw, 1.875rem) !important;
+  }
+
+  .contact-address {
+    position: static !important;
+    left: auto !important;
+    bottom: auto !important;
+    margin-top: 48px !important;
+    font-size: 13px !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .contact-address-sep {
+    display: inline !important;
   }
 
   .category-hero-back {
