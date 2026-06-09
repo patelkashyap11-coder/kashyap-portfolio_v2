@@ -1197,14 +1197,16 @@ body {
 }
 
 @media (min-width: 768px) {
-  .category-featured-media--portrait {
-    flex: 0 0 auto;
-    width: 50%;
-    max-width: 50%;
+  .category-featured-media--half-height .category-featured-media-btn {
+    aspect-ratio: var(--featured-half-ar, 2 / 3);
+    overflow: hidden;
   }
 
-  .category-featured-body--reverse .category-featured-media--portrait {
-    margin-left: auto;
+  .category-featured-media--half-height .category-featured-asset {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
 }
 
@@ -1290,7 +1292,7 @@ body {
   max-width: 52ch;
 }
 
-/* Masonry Gallery — row-aligned grid keeps portrait rows level */
+/* Masonry Gallery — Pinterest-style columns fill viewport width */
 .category-masonry-section {
   padding: clamp(80px, 12vh, 140px) 0 clamp(80px, 10vh, 120px);
   background: #080808;
@@ -1313,11 +1315,18 @@ body {
 }
 
 .category-masonry {
-  display: grid;
-  grid-template-columns: repeat(var(--masonry-cols, 4), minmax(0, 1fr));
-  align-items: start;
+  display: flex;
+  align-items: flex-start;
   gap: clamp(12px, 1.4vw, 20px);
   width: 100%;
+}
+
+.category-masonry-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.4vw, 20px);
 }
 
 .category-masonry-item {
