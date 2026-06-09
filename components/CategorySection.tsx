@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
@@ -14,6 +14,7 @@ interface Props {
 
 export function CategorySection({ title, href, videoSrc, imageSrc, index }: Props) {
   const ref = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -22,11 +23,19 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
     target: ref,
     offset: ['start end', 'start 0.2'],
   });
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1, 1.06]);
+  const scaleMotion = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1, 1.06]);
   const titleOpacity = useTransform(titleProgress, [0, 0.75], [0, 1]);
   const titleX = useTransform(titleProgress, [0, 0.75], [-32, 0]);
   const subtitleOpacity = useTransform(titleProgress, [0.12, 0.82], [0, 1]);
   const subtitleX = useTransform(titleProgress, [0.12, 0.82], [-32, 0]);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
   return (
     <section
@@ -34,7 +43,10 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
       className="category-section relative overflow-hidden group"
       style={{ zIndex: index + 1 }}
     >
-      <motion.div style={{ scale, position: 'absolute', inset: 0 }} {...protectedMediaSurfaceProps}>
+      <motion.div
+        style={{ scale: isMobile ? 1 : scaleMotion, position: 'absolute', inset: 0 }}
+        {...protectedMediaSurfaceProps}
+      >
         {videoSrc ? (
           <video
             src={videoSrc}

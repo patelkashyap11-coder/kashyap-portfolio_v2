@@ -7,6 +7,10 @@
     cursor: auto;
   }
 
+  :root {
+    --page-inline: 24px;
+  }
+
   /* ── Hero ── */
   .hero-section {
     padding: 0 0 20vh !important;
@@ -61,14 +65,40 @@
     line-height: 1.48 !important;
   }
 
-  /* ── Category sections — sticky full-screen portfolio stack ── */
+  /* ── Category sections — mobile full-bleed stack ── */
+  .category-stack-wrapper {
+    height: auto !important;
+  }
+
   .category-section {
+    position: relative !important;
+    top: auto !important;
     height: 100vh !important;
     height: 100svh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .category-section .category-section-media,
+  .category-section video.category-section-media {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .category-section-image {
+    width: 100% !important;
+    min-height: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
   }
 
   .category-content {
-    padding: 2.25rem 24px 0 !important;
+    padding: 2.25rem var(--page-inline) 0 !important;
   }
 
   .category-section .category-view-link {
@@ -88,6 +118,11 @@
   /* ── What I Do ── */
   .what-we-do {
     padding: 40px 0 56px !important;
+    margin-top: 0 !important;
+  }
+
+  .homepage-after-categories {
+    margin-top: 0 !important;
   }
 
   .what-we-do-eyebrow {
@@ -237,17 +272,21 @@
 
   /* ── Navbar ── */
   .site-nav {
-    padding: 20px 24px !important;
+    padding: 20px var(--page-inline) !important;
     gap: 12px !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
 
   .site-nav-logo {
     font-size: 0.75rem !important;
+    margin-left: 0 !important;
     margin-right: 8px !important;
     max-width: none !important;
+  }
+
+  .site-nav-shell:not(.site-nav-shell--open) .site-nav {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .site-nav-links {

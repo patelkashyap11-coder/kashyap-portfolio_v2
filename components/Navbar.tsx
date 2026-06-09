@@ -18,11 +18,30 @@ export function Navbar() {
   const [pinned, setPinned]   = useState(false);
   const [visible, setVisible] = useState(true);
   const [prefersDark, setPrefersDark] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(800);
   const lastScrollY           = useRef(0);
   const pathname              = usePathname();
 
+  const isHomepage = pathname === '/';
   const isDark = ['/contact','/fashion','/food-hospitality','/jewellery','/products','/interiors']
     .some(p => pathname?.startsWith(p));
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const sync = () => {
+      setIsMobile(mq.matches);
+      setViewportHeight(window.innerHeight);
+    };
+    sync();
+    mq.addEventListener('change', sync);
+    window.addEventListener('resize', sync);
+    return () => {
+      mq.removeEventListener('change', sync);
+      window.removeEventListener('resize', sync);
+    };
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -35,6 +54,7 @@ export function Navbar() {
   useEffect(() => {
     const fn = () => {
       const y = window.scrollY;
+      setScrollY(y);
       setPinned(y > 40);
 
       if (y <= 40) {
@@ -60,23 +80,30 @@ export function Navbar() {
   }, [open]);
 
   const onDarkHero = isDark && !pinned;
+  const onHomeCategoryStack =
+    isHomepage && !open && scrollY > viewportHeight * 0.72;
   const navFg = open
     ? '#0A0A0A'
-    : onDarkHero
+    : onDarkHero || onHomeCategoryStack
       ? '#ffffff'
       : isDark && prefersDark
         ? '#ffffff'
         : '#0A0A0A';
-  const bg = pinned
+  const showNavBackground =
+    pinned &&
+    !open &&
+    !isMobile &&
+    !(isHomepage && onHomeCategoryStack);
+  const bg = showNavBackground
     ? isDark && prefersDark
       ? 'rgba(10,10,10,0.88)'
-      : 'rgba(245,245,242,0.88)'
+      : 'rgba(245,245,242,0.92)'
     : 'transparent';
   const useLightToggle = !open && navFg === '#ffffff';
 
   return (
     <header
-      className={`site-nav-shell fixed top-0 left-0 right-0 z-50${open ? ' site-nav-shell--open' : ''}`}
+      className={`site-nav-shell fixed top-0 left-0 right-0 z-50${open ? ' site-nav-shell--open' : ''}${pinned ? ' site-nav-shell--pinned' : ''}`}
       style={{
         transform: visible ? 'translateY(0)' : 'translateY(calc(-100% - 8px))',
         transition: 'transform 0.45s cubic-bezier(0.76, 0, 0.24, 1)',
@@ -105,7 +132,7 @@ export function Navbar() {
             className={`site-nav flex items-center justify-between gap-3${open ? ' site-nav--menu-open' : ''}`}
             style={{
               background: open ? 'transparent' : bg,
-              backdropFilter: pinned && !open ? 'blur(16px)' : 'none',
+              backdropFilter: showNavBackground ? 'blur(16px)' : 'none',
               transition: 'background 0.5s ease, backdrop-filter 0.5s ease',
             }}
           >
