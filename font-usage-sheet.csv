@@ -1,0 +1,46 @@
+Page/Section,Element,Font,Weight,Style,CSS Class,Source File
+Global,Body default text,Inter,400,Normal,body,app/globals.css
+Global,Big display headlines,Inter Tight,900,Uppercase,.t-display,app/globals.css
+Global,Small labels / nav,Inter Tight,500,Uppercase,.t-label,app/globals.css
+Global,Serif accent utility,Cormorant Garamond,300,Italic,.t-serif,app/globals.css
+Global,Site logo text,Inter Tight,800,Uppercase,.logo-text,app/globals.css
+Homepage - Navbar,Logo (KASHYAP PATEL),Inter Tight,800,Uppercase,.logo-text,components/Navbar.tsx
+Homepage - Navbar,Desktop nav links,Inter Tight,500,Uppercase,.t-label,components/Navbar.tsx
+Homepage - Navbar,Mobile menu links,Inter Tight,900,Uppercase,.t-display,components/Navbar.tsx
+Homepage - Navbar,Mobile contact email/phone,Inter Tight,500,Uppercase,.t-label,components/Navbar.tsx
+Homepage - Hero,Headline (CREATING / VISUAL STORIES / THAT),Inter,800,Uppercase,.hero-headline-sans,components/HeroSection.tsx
+Homepage - Hero,Accent word (LAST),Cormorant Garamond,600,Italic uppercase,.hero-headline-accent,components/HeroSection.tsx
+Homepage - Hero,Intro paragraph,Inter,500,Normal,.hero-intro-text,components/HeroSection.tsx
+Homepage - Categories,Category titles (Fashion etc.),Inter,800,Uppercase,.category-title,components/CategorySection.tsx
+Homepage - Categories,View Work button,Inter,500,Uppercase,.category-view-link,components/CategorySection.tsx
+Homepage - What I Do,WHAT I DO eyebrow,Inter,400,Uppercase,.what-we-do-eyebrow,components/WhatWeDoSection.tsx
+Homepage - What I Do,Accordion titles (Conception etc.),Inter,700,Normal,.what-we-do-trigger-title,components/WhatWeDoSection.tsx
+Homepage - What I Do,Detail titles,Inter,700,Normal,.what-we-do-detail-title,components/WhatWeDoSection.tsx
+Homepage - What I Do,Detail body text,Inter,400,Normal,.what-we-do-detail-text,components/WhatWeDoSection.tsx
+Homepage - Trusted By,TRUSTED BY heading,Inter Tight,900,Uppercase,.clients-heading .t-display,components/TrustedBySection.tsx
+Homepage - Trusted By,Client name fallback (no logo),Inter Tight,700,Uppercase,.clients-logo-text,components/TrustedBySection.tsx
+Homepage - CTA,BRINGING / STORIES lines,Inter,800,Uppercase,.cta-line,components/CTASection.tsx
+Homepage - CTA,TO LIFE accent,Cormorant Garamond,600,Italic,.cta-line-accent,components/CTASection.tsx
+Homepage - CTA,Contact us link,Inter,400,Normal,.cta-contact-link,components/CTASection.tsx
+Homepage - CTA,Footer copyright / tagline / links,Inter,400,Uppercase,.cta-footer-copy / .cta-footer-tagline / .cta-footer-link,components/CTASection.tsx
+Category Pages - Hero,Back link,Inter Tight,500,Uppercase,.category-hero-back .t-label,components/GalleryPage.tsx
+Category Pages - Hero,Category label,Inter Tight,500,Uppercase,.category-hero-label .t-label,components/GalleryPage.tsx
+Category Pages - Hero,Category title,Inter Tight,900,Uppercase,.category-hero-title .t-display,components/GalleryPage.tsx
+Category Pages - Hero,Description,Inter,300,Normal,.category-hero-description,components/GalleryPage.tsx
+Category Pages - Hero,Scroll to explore,Inter Tight,500,Uppercase,.t-label,components/GalleryPage.tsx
+Category Pages - Featured,Section label,Inter Tight,500,Uppercase,.category-section-label .t-label,components/GalleryPage.tsx
+Category Pages - Featured,Project numbers,Inter Tight,500,Uppercase,.category-featured-number .t-label,components/GalleryPage.tsx
+Category Pages - Featured,Project name,Inter,800,Uppercase,.category-featured-name,components/GalleryPage.tsx
+Category Pages - Featured,Meta info,Inter,400,Normal,.category-featured-meta,components/GalleryPage.tsx
+Category Pages - Featured,Description,Inter,300,Normal,.category-featured-description,components/GalleryPage.tsx
+Category Pages - Gallery,Visual Gallery label,Inter Tight,500,Uppercase,.category-section-label .t-label,components/GalleryPage.tsx
+Category Pages - Gallery,Empty state hint,Inter Tight,500,Uppercase,.category-empty-hint .t-label,components/GalleryPage.tsx
+Category Pages - Next,Next label,Inter Tight,500,Uppercase,.category-next-label .t-label,components/GalleryPage.tsx
+Category Pages - Next,Next category title,Inter Tight,500,Uppercase,.category-next-title,components/GalleryPage.tsx
+Category Pages - Lightbox,Image counter,Inter Tight,500,Uppercase,.category-lightbox-counter .t-label,components/GalleryPage.tsx
+Contact Page,Eyebrow label,Inter Tight,500,Uppercase,.t-label,app/contact/page.tsx
+Contact Page,Headline lines,Inter Tight,900,Uppercase,.t-display,app/contact/page.tsx
+Contact Page,Field labels (Email Phone etc.),Inter Tight,500,Uppercase,.t-label,app/contact/page.tsx
+Contact Page,Location / availability notes,Inter Tight,500,Uppercase,.t-label,app/contact/page.tsx
+Footer,Logo,Inter Tight,800,Uppercase,.site-footer-logo .logo-text,components/Footer.tsx
+Footer,Tagline,Inter,400,Uppercase,.site-footer-tagline,components/Footer.tsx

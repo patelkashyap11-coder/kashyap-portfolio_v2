@@ -1,23 +1,12 @@
 'use client';
 import { motion } from 'framer-motion';
+import type { Client } from '@/lib/getClients';
 
-const clients = [
-  { name: 'Maison Noir', logo: null },
-  { name: 'Velvet Line', logo: null },
-  { name: 'Atelier 11', logo: null },
-  { name: 'Ember Kitchen', logo: null },
-  { name: 'The Copper Room', logo: null },
-  { name: 'Saffron House', logo: null },
-  { name: 'Orion Fine', logo: null },
-  { name: 'Lustre Co.', logo: null },
-  { name: 'Form Studio', logo: null },
-  { name: 'Arc Space', logo: null },
-  { name: 'North & Co.', logo: null },
-  { name: 'Studio K', logo: null },
-  { name: 'Axis Brands', logo: null },
-];
+interface Props {
+  clients: Client[];
+}
 
-export function TrustedBySection() {
+export function TrustedBySection({ clients }: Props) {
   return (
     <section className="clients-section">
       <div className="clients-inner">
@@ -39,7 +28,7 @@ export function TrustedBySection() {
           transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
         >
           {clients.map((client) => (
-            <div key={client.name} className="clients-logo-cell">
+            <div key={client.id} className="clients-logo-cell">
               {client.logo ? (
                 <img src={client.logo} alt={client.name} className="clients-logo-img" />
               ) : (

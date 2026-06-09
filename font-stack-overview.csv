@@ -1,0 +1,9 @@
+Type,Name,CSS Variable / Class,Weights,Style,Source,Primary Use
+Font Family,Inter,--font-inter,"400, 500, 600, 700, 800, 900",Sans-serif,Google Fonts (globals.css),"Body default, hero headlines, category titles, accordion, CTA, gallery body text"
+Font Family,Inter Tight,--font-tight,"300, 400, 500, 600, 700, 800, 900",Sans-serif condensed,Google Fonts (globals.css),"Logo, nav links, labels, display headlines, Trusted By heading"
+Font Family,Cormorant Garamond,--font-serif,"400, 500, 600, 700 (+ italic 500, 600)",Serif,Google Fonts (globals.css),"Italic accent words only — Hero LAST, CTA TO LIFE"
+Utility Class,.t-display,Inter Tight,900,Uppercase tight tracking,app/globals.css,Big section headlines site-wide
+Utility Class,.t-label,Inter Tight,500,Small uppercase labels,app/globals.css,"Nav, eyebrows, section labels, metadata"
+Utility Class,.t-serif,Cormorant Garamond,300,Italic light,app/globals.css,Optional serif accent utility class
+Utility Class,.logo-text,Inter Tight,800,Uppercase logo lockup,app/globals.css,Navbar + footer logo text
+Utility Class,body (default),Inter,400,Normal body copy,app/globals.css,Fallback for all text without a specific class

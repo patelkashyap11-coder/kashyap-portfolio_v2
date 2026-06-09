@@ -144,16 +144,22 @@
   .clients-heading {
     font-size: clamp(2.25rem, 11vw, 3.5rem) !important;
     margin-bottom: 40px !important;
+    text-align: left !important;
   }
 
   .clients-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 20px 16px !important;
+    justify-content: flex-start !important;
+    gap: 6px 10px !important;
   }
 
   .clients-logo-cell {
-    min-height: 44px !important;
-    opacity: 0.55 !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .clients-logo-img {
+    height: 52px !important;
+    max-width: 150px !important;
   }
 
   .clients-logo-text {
@@ -358,12 +364,5 @@
   .category-masonry-item,
   .category-hero-scroll {
     cursor: pointer !important;
-  }
-}
-
-/* Tablet-only refinements */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .clients-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }

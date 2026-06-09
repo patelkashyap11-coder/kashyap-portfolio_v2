@@ -4,6 +4,9 @@ import { WhatWeDoSection } from '@/components/WhatWeDoSection';
 import { TrustedBySection } from '@/components/TrustedBySection';
 import { CTASection } from '@/components/CTASection';
 import { categories } from '@/lib/categoryData';
+import { getClients } from '@/lib/getClients';
+
+export const revalidate = 60;
 
 const homepageCategories = categories.map((cat) => ({
   title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
@@ -12,7 +15,9 @@ const homepageCategories = categories.map((cat) => ({
   imageSrc: cat.imageSrc,
 }));
 
-export default function HomePage() {
+export default async function HomePage() {
+  const clients = await getClients();
+
   return (
     <>
       <HeroSection />
@@ -34,7 +39,7 @@ export default function HomePage() {
 
       <div className="homepage-after-categories">
         <WhatWeDoSection />
-        <TrustedBySection />
+        <TrustedBySection clients={clients} />
         <CTASection />
       </div>
     </>
