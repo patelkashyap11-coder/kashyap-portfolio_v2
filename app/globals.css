@@ -1848,14 +1848,14 @@ body {
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--page-text);
+  color: #ffffff;
   transition: color 0.35s ease, text-shadow 0.35s ease;
 }
 
 .contact-card-arrow {
   font-size: 1rem;
   line-height: 1;
-  color: var(--page-text);
+  color: #ffffff;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease, text-shadow 0.35s ease;
 }
 

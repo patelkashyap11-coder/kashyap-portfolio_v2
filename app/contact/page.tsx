@@ -69,8 +69,8 @@ export default function ContactPage() {
               transition={{ delay: 0.3, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
             >
               <p className="contact-field-label">Email Address</p>
-              <a href="mailto:patelkashyap11@gmail.com" className="contact-field-value contact-field-value--email">
-                patelkashyap11@gmail.com
+              <a href="mailto:letstalk@bykashyap.com" className="contact-field-value contact-field-value--email">
+                letstalk@bykashyap.com
               </a>
             </motion.div>
 
