@@ -5,13 +5,15 @@ function itemLabel(item: MediaItem): string {
   return `${item.publicId ?? ''} ${item.src}`.toLowerCase();
 }
 
-/** Matches Cloudinary names like "project 1", "project-2", "project_3", "project1" */
+/** Matches Cloudinary names like "project 1", "project_2", "product 3", "project1" */
 function getProjectSlot(item: MediaItem): 1 | 2 | 3 | null {
   const label = itemLabel(item);
+  const slotPattern = (slot: number) =>
+    new RegExp(`pro(?:ject|duct)[\\s_-]?0?${slot}(?![0-9])`);
 
-  if (/project[\s_-]?0?1(?![0-9])/.test(label)) return 1;
-  if (/project[\s_-]?0?2(?![0-9])/.test(label)) return 2;
-  if (/project[\s_-]?0?3(?![0-9])/.test(label)) return 3;
+  if (slotPattern(1).test(label)) return 1;
+  if (slotPattern(2).test(label)) return 2;
+  if (slotPattern(3).test(label)) return 3;
 
   return null;
 }
@@ -37,7 +39,7 @@ function assignSlot(
 
 /**
  * Priority per slot (project 1 → index 0, project 2 → index 1, project 3 → index 2):
- * 1. Files renamed in Cloudinary as "project 1", "project 2", "project 3"
+ * 1. Files renamed in Cloudinary as "project 1/2/3" or "product 1/2/3"
  * 2. Photos in `category/featured/` subfolder (01-, 02-, 03- order)
  * 3. Optional `image` filename in categoryData.ts
  *
