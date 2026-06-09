@@ -415,6 +415,41 @@
     gap: 24px !important;
   }
 
+  .category-featured-body--portrait {
+    width: 100% !important;
+    margin-left: 0 !important;
+    min-height: unset !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .category-featured-body--portrait .category-featured-media {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .category-featured-body--portrait .category-featured-copy {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .category-featured-body--portrait .category-featured-media-btn {
+    height: auto !important;
+    min-height: 0 !important;
+    background: var(--card-bg) !important;
+  }
+
+  .category-featured-body--portrait .category-featured-asset {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    object-fit: contain !important;
+  }
+
   .category-featured-copy,
   .category-featured-body--reverse .category-featured-copy {
     text-align: left !important;
@@ -446,6 +481,7 @@
 
   .category-masonry-item {
     border-radius: 3px !important;
+    border: none !important;
   }
 
   .category-masonry-item:hover {

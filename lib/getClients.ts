@@ -1,4 +1,5 @@
 import cloudinary from './cloudinary';
+import { cloudinaryPreset } from './cloudinaryUrl';
 
 const CLIENT_FOLDERS = ['client', 'clients'] as const;
 
@@ -50,7 +51,7 @@ function mapResources(resources: CloudinaryResource[]): Client[] {
     .map((item) => ({
       id: item.public_id,
       name: nameFromPublicId(item.public_id),
-      logo: item.secure_url,
+      logo: cloudinaryPreset(item.secure_url, 'logo'),
     }))
     .sort((a, b) => a.id.localeCompare(b.id));
 }

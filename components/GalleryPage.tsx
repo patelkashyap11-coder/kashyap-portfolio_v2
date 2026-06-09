@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
+import { cloudinaryPreset, cloudinaryUrl } from '@/lib/cloudinaryUrl';
 
 interface NextCategory {
   title: string;
@@ -115,6 +116,9 @@ export function GalleryPage({
   const featuredItems = featuredMedia;
   const galleryItems = galleryMedia;
   const heroFallbackImage = heroImage || featuredMedia[0]?.src || galleryMedia[0]?.src;
+  const heroFallbackImageSrc = heroFallbackImage
+    ? cloudinaryPreset(heroFallbackImage, 'hero')
+    : undefined;
   const columnCount = usePinterestColumnCount();
   const masonryColumns = useMemo(
     () => buildPinterestColumns(galleryItems, columnCount, featuredCount),
@@ -139,10 +143,10 @@ export function GalleryPage({
               playsInline
               className="category-hero-video"
             />
-          ) : heroFallbackImage ? (
+          ) : heroFallbackImageSrc ? (
             <div
               className="category-hero-image"
-              style={{ backgroundImage: `url(${heroFallbackImage})` }}
+              style={{ backgroundImage: `url(${heroFallbackImageSrc})` }}
             />
           ) : null}
           <div className="category-hero-overlay" />
@@ -229,10 +233,10 @@ export function GalleryPage({
                     <span className="category-featured-index-line" aria-hidden />
                   </div>
 
-                  <div className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}`}>
-                    <div
-                      className={`category-featured-media${i < 3 && isPortraitMedia(item) ? ' category-featured-media--portrait' : ''}`}
-                    >
+                  <div
+                    className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}${i < 3 && isPortraitMedia(item) ? ' category-featured-body--portrait' : ''}`}
+                  >
+                    <div className="category-featured-media">
                       <FeaturedMedia item={item} title={title} onOpen={() => open(i)} />
                     </div>
 
@@ -358,14 +362,14 @@ export function GalleryPage({
             >
               {media[lightboxIdx].type === 'video' ? (
                 <video
-                  src={media[lightboxIdx].src}
+                  src={cloudinaryUrl(media[lightboxIdx].src, { width: 1920 })}
                   controls
                   autoPlay
                   className="category-lightbox-asset"
                 />
               ) : (
                 <img
-                  src={media[lightboxIdx].src}
+                  src={cloudinaryPreset(media[lightboxIdx].src, 'lightbox')}
                   alt={media[lightboxIdx].alt || title}
                   className="category-lightbox-asset"
                 />
@@ -395,7 +399,7 @@ function FeaturedMedia({
       {item.type === 'video' ? (
         <>
           <video
-            src={item.src}
+            src={cloudinaryUrl(item.src, { width: 1280 })}
             muted
             loop
             playsInline
@@ -409,7 +413,7 @@ function FeaturedMedia({
         </>
       ) : (
         <img
-          src={item.src}
+          src={cloudinaryPreset(item.src, 'featured')}
           alt={item.alt || title}
           loading="lazy"
           className="category-featured-asset group-hover:scale-[1.02]"
@@ -445,7 +449,7 @@ function MasonryItem({
       {item.type === 'video' ? (
         <>
           <video
-            src={item.src}
+            src={cloudinaryUrl(item.src, { width: 800 })}
             muted
             loop
             playsInline
@@ -459,7 +463,7 @@ function MasonryItem({
         </>
       ) : (
         <img
-          src={item.src}
+          src={cloudinaryPreset(item.src, 'masonry')}
           alt={item.alt || ''}
           loading="lazy"
           decoding="async"
