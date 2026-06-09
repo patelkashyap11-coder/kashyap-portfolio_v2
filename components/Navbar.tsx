@@ -17,11 +17,20 @@ export function Navbar() {
   const [open, setOpen]       = useState(false);
   const [pinned, setPinned]   = useState(false);
   const [visible, setVisible] = useState(true);
+  const [prefersDark, setPrefersDark] = useState(false);
   const lastScrollY           = useRef(0);
   const pathname              = usePathname();
 
   const isDark = ['/contact','/fashion','/food-hospitality','/jewellery','/products','/interiors']
     .some(p => pathname?.startsWith(p));
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const sync = () => setPrefersDark(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
   useEffect(() => {
     const fn = () => {
@@ -50,10 +59,20 @@ export function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  const fg = open ? '#0A0A0A' : isDark ? '#ffffff' : '#0A0A0A';
+  const onDarkHero = isDark && !pinned;
+  const navFg = open
+    ? '#0A0A0A'
+    : onDarkHero
+      ? '#ffffff'
+      : isDark && prefersDark
+        ? '#ffffff'
+        : '#0A0A0A';
   const bg = pinned
-    ? isDark ? 'rgba(10,10,10,0.88)' : 'rgba(245,245,242,0.88)'
+    ? isDark && prefersDark
+      ? 'rgba(10,10,10,0.88)'
+      : 'rgba(245,245,242,0.88)'
     : 'transparent';
+  const useLightToggle = !open && navFg === '#ffffff';
 
   return (
     <header
@@ -93,7 +112,7 @@ export function Navbar() {
           <Link
             href="/"
             className="logo-text site-nav-logo z-50 relative shrink-0"
-            style={{ color: fg }}
+            style={{ color: navFg }}
           >
             KASHYAP PATEL
           </Link>
@@ -104,7 +123,7 @@ export function Navbar() {
                 key={l.href}
                 href={l.href}
                 className={`nav-ul t-label transition-opacity hover:opacity-100 whitespace-nowrap${pathname === l.href ? ' nav-ul--active' : ''}`}
-                style={{ color: fg, opacity: pathname === l.href ? 1 : 0.55 }}
+                style={{ color: navFg, opacity: pathname === l.href ? 1 : 0.55 }}
               >
                 <span className="site-nav-label-short">{l.shortLabel}</span>
                 <span className="site-nav-label-full">{l.label}</span>
@@ -114,7 +133,7 @@ export function Navbar() {
 
           <button
             type="button"
-            className={`site-nav-toggle md:hidden z-50 relative flex shrink-0 flex-col items-center justify-center gap-[5px] w-11 h-11${open ? ' site-nav-toggle--open' : isDark ? ' site-nav-toggle--light' : ' site-nav-toggle--dark'}`}
+            className={`site-nav-toggle md:hidden z-50 relative flex shrink-0 flex-col items-center justify-center gap-[5px] w-11 h-11${open ? ' site-nav-toggle--open' : useLightToggle ? ' site-nav-toggle--light' : ' site-nav-toggle--dark'}`}
             onClick={() => setOpen(v => !v)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}

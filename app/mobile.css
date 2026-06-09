@@ -375,7 +375,7 @@
   }
 
   .category-featured {
-    padding: 72px var(--category-gutter) 88px !important;
+    padding: 72px var(--category-gutter) 30px !important;
   }
 
   .gallery-page {
@@ -432,7 +432,7 @@
   }
 
   .category-masonry-section {
-    padding: 56px var(--category-gutter) 72px !important;
+    padding: 24px var(--category-gutter) 72px !important;
   }
 
   .category-masonry-section .category-section-header {
