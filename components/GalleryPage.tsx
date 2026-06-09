@@ -34,27 +34,9 @@ interface Props {
 
 const EASE = [0.76, 0, 0.24, 1] as [number, number, number, number];
 
-type ColumnEntry = { item: MediaItem; originalIndex: number };
-
-/** Pinterest-style: place each pin in the shortest column */
-function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOffset: number): ColumnEntry[][] {
-  const cols: ColumnEntry[][] = Array.from({ length: columnCount }, () => []);
-  const heights = Array(columnCount).fill(0);
-
-  items.forEach((item, i) => {
-    const aspect = item.width && item.height ? item.height / item.width : 1.2;
-    const gapShare = 0.08;
-
-    let shortest = 0;
-    for (let c = 1; c < columnCount; c++) {
-      if (heights[c] < heights[shortest]) shortest = c;
-    }
-
-    cols[shortest].push({ item, originalIndex: indexOffset + i });
-    heights[shortest] += aspect + gapShare;
-  });
-
-  return cols;
+function isPortraitMedia(item: MediaItem): boolean {
+  if (item.width && item.height) return item.height > item.width;
+  return true;
 }
 
 function getPinterestColumnCount(width: number): number {
@@ -112,10 +94,6 @@ export function GalleryPage({
   const galleryItems = galleryMedia;
   const heroFallbackImage = heroImage || featuredMedia[0]?.src || galleryMedia[0]?.src;
   const columnCount = usePinterestColumnCount();
-  const masonryColumns = useMemo(
-    () => buildPinterestColumns(galleryItems, columnCount, featuredCount),
-    [galleryItems, columnCount, featuredCount],
-  );
 
   const scrollToFeatured = () => {
     document.getElementById('category-featured')?.scrollIntoView({ behavior: 'smooth' });
@@ -225,7 +203,7 @@ export function GalleryPage({
                   </div>
 
                   <div className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}`}>
-                    <div className="category-featured-media">
+                    <div className={`category-featured-media${isPortraitMedia(item) ? ' category-featured-media--portrait' : ''}`}>
                       <FeaturedMedia item={item} title={title} onOpen={() => open(i)} />
                     </div>
 
@@ -269,24 +247,21 @@ export function GalleryPage({
           <div className="category-masonry-scroll">
             <motion.div
               className="category-masonry"
+              style={{ ['--masonry-cols' as string]: columnCount }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 0.7 }}
             >
-              {masonryColumns.map((col, colIndex) => (
-                <div key={colIndex} className="category-masonry-col">
-                  {col.map(({ item, originalIndex }, itemIndex) => (
-                    <MasonryItem
-                      key={originalIndex}
-                      item={item}
-                      index={originalIndex}
-                      totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
-                      onOpen={open}
-                      title={title}
-                    />
-                  ))}
-                </div>
+              {galleryItems.map((item, i) => (
+                <MasonryItem
+                  key={featuredCount + i}
+                  item={item}
+                  index={featuredCount + i}
+                  totalDelay={Math.min(i * 0.03, 0.35)}
+                  onOpen={open}
+                  title={title}
+                />
               ))}
             </motion.div>
           </div>
