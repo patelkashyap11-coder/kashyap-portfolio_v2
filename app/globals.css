@@ -1225,7 +1225,7 @@ body {
 .category-featured-body {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  align-items: start;
+  align-items: center;
   gap: clamp(48px, 6vw, 88px);
   width: 100%;
 }
@@ -1247,18 +1247,6 @@ body {
 .category-featured-media {
   min-width: 0;
   width: 100%;
-}
-
-@media (min-width: 768px) {
-  .category-featured-media--portrait .category-featured-media-btn {
-    width: 100%;
-  }
-
-  .category-featured-media--portrait .category-featured-asset {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-  }
 }
 
 .category-featured-copy {
@@ -1290,6 +1278,69 @@ body {
   width: 100%;
   height: auto;
   transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@media (min-width: 768px) {
+  .category-featured-body--portrait {
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 0.25fr);
+    align-items: stretch;
+  }
+
+  .category-featured-body--reverse.category-featured-body--portrait {
+    grid-template-columns: minmax(0, 0.25fr) minmax(0, 0.75fr);
+  }
+
+  .category-featured-body--portrait .category-featured-copy {
+    align-self: center;
+  }
+
+  .category-featured-media--portrait {
+    align-self: stretch;
+    display: flex;
+    width: 100%;
+  }
+
+  .category-featured-media--portrait .category-featured-media-btn {
+    display: block;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .category-featured-media--portrait .category-featured-media-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: clamp(520px, 70vh, 780px);
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .category-featured-media--portrait .category-featured-media-frame--photo {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .category-featured-media--portrait .category-featured-media-frame .category-featured-asset {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .category-featured-media--portrait .category-featured-media-frame .category-featured-play {
+    z-index: 1;
+  }
 }
 
 .category-featured-play {
