@@ -22,6 +22,27 @@ function assetFolderSearchExpression(folders: readonly string[]): string {
   return folders.map((folder) => `asset_folder:${folder}`).join(' OR ');
 }
 
+async function listByAssetFolderApi(
+  folders: readonly string[],
+  maxResults: number,
+): Promise<CloudinaryListedResource[]> {
+  for (const folder of folders) {
+    try {
+      const result = await cloudinary.api.resources_by_asset_folder(folder, {
+        max_results: maxResults,
+      });
+
+      if (result.resources?.length) {
+        return result.resources;
+      }
+    } catch {
+      // Try the next asset folder.
+    }
+  }
+
+  return [];
+}
+
 /** List Cloudinary assets using the fewest Admin API calls possible. */
 export async function listCloudinaryFolderResources({
   folders,
@@ -29,11 +50,14 @@ export async function listCloudinaryFolderResources({
   sortBy = 'public_id',
   sortDirection = 'asc',
 }: ListOptions): Promise<CloudinaryListedResource[]> {
-  const folderExpression = folderSearchExpression(folders);
+  const fromAssetFolderApi = await listByAssetFolderApi(folders, maxResults);
+  if (fromAssetFolderApi.length > 0) {
+    return fromAssetFolderApi;
+  }
 
   try {
     const result = await cloudinary.search
-      .expression(folderExpression)
+      .expression(assetFolderSearchExpression(folders))
       .sort_by(sortBy, sortDirection)
       .max_results(maxResults)
       .execute();
@@ -42,12 +66,12 @@ export async function listCloudinaryFolderResources({
       return result.resources;
     }
   } catch {
-    // Fall through to asset_folder lookup.
+    // Fall through to legacy folder lookup.
   }
 
   try {
     const result = await cloudinary.search
-      .expression(assetFolderSearchExpression(folders))
+      .expression(folderSearchExpression(folders))
       .sort_by(sortBy, sortDirection)
       .max_results(maxResults)
       .execute();
