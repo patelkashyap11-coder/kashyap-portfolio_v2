@@ -57,6 +57,10 @@ function buildPinterestColumns(items: MediaItem[], columnCount: number, indexOff
   return cols;
 }
 
+function isPortraitMedia(item: MediaItem): boolean {
+  if (item.width && item.height) return item.height > item.width;
+  return true;
+}
 
 function getPinterestColumnCount(width: number): number {
   if (width < 640) return 2;
@@ -208,7 +212,6 @@ export function GalleryPage({
             {featuredItems.map((item, i) => {
               const meta = featuredProjects[i];
               const isReversed = i % 2 === 1;
-              const useFeaturedFrame = i === 1 || i === 2;
 
               return (
                 <motion.article
@@ -226,18 +229,11 @@ export function GalleryPage({
                     <span className="category-featured-index-line" aria-hidden />
                   </div>
 
-                  <div
-                    className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}${useFeaturedFrame ? ' category-featured-body--portrait' : ''}`}
-                  >
+                  <div className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}`}>
                     <div
-                      className={`category-featured-media${useFeaturedFrame ? ' category-featured-media--portrait' : ''}`}
+                      className={`category-featured-media${i < 3 && isPortraitMedia(item) ? ' category-featured-media--portrait' : ''}`}
                     >
-                    <FeaturedMedia
-                      item={item}
-                      title={title}
-                      framed={useFeaturedFrame}
-                      onOpen={() => open(i)}
-                    />
+                      <FeaturedMedia item={item} title={title} onOpen={() => open(i)} />
                     </div>
 
                     {meta && (
@@ -389,51 +385,35 @@ function FeaturedMedia({
   item,
   title,
   onOpen,
-  framed = false,
 }: {
   item: MediaItem;
   title: string;
   onOpen: () => void;
-  framed?: boolean;
 }) {
-  const asset =
-    item.type === 'video' ? (
-      <>
-        <video
-          src={item.src}
-          muted
-          loop
-          playsInline
-          className="category-featured-asset group-hover:scale-[1.02]"
-          onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
-          onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
-        />
-        <div className="category-featured-play">
-          <Play size={18} style={{ marginLeft: 2 }} />
-        </div>
-      </>
-    ) : framed ? (
-      <span
-        className="category-featured-media-frame category-featured-media-frame--photo group-hover:scale-[1.02]"
-        style={{ backgroundImage: `url(${item.src})` }}
-        role="img"
-        aria-label={item.alt || title}
-      />
-    ) : (
-      <img
-        src={item.src}
-        alt={item.alt || title}
-        loading="lazy"
-        className="category-featured-asset group-hover:scale-[1.02]"
-      />
-    );
-
   return (
     <button type="button" onClick={onOpen} className="category-featured-media-btn group">
-      {framed && item.type === 'video' ? (
-        <span className="category-featured-media-frame">{asset}</span>
+      {item.type === 'video' ? (
+        <>
+          <video
+            src={item.src}
+            muted
+            loop
+            playsInline
+            className="category-featured-asset group-hover:scale-[1.02]"
+            onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
+            onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
+          />
+          <div className="category-featured-play">
+            <Play size={18} style={{ marginLeft: 2 }} />
+          </div>
+        </>
       ) : (
-        asset
+        <img
+          src={item.src}
+          alt={item.alt || title}
+          loading="lazy"
+          className="category-featured-asset group-hover:scale-[1.02]"
+        />
       )}
     </button>
   );
