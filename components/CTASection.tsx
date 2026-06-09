@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { SITE_TAGLINE } from '@/lib/site';
 
 const container = {
   hidden: {},
@@ -70,7 +71,7 @@ export function CTASection() {
       <div className="cta-footer-bar">
         <div className="cta-footer-left">
           <p className="cta-footer-copy">© 2026 KASHYAP PATEL</p>
-          <p className="cta-footer-tagline">Photographer &amp; Filmmaker</p>
+          <p className="cta-footer-tagline">{SITE_TAGLINE}</p>
         </div>
         <div className="cta-footer-right">
           {footerLinks.map((link) => (

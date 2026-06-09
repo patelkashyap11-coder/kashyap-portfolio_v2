@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { SITE_TAGLINE } from '@/lib/site';
 
 export function Footer() {
   return (
@@ -9,7 +10,7 @@ export function Footer() {
           KASHYAP PATEL
         </Link>
         <p className="site-footer-tagline">
-          Photographer &amp; Filmmaker
+          {SITE_TAGLINE}
         </p>
       </div>
     </footer>
