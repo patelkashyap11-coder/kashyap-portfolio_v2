@@ -125,6 +125,9 @@ export function GalleryPage({
     [galleryItems, columnCount, featuredCount],
   );
 
+  const heroTitle = title.replace(/ & /g, ' &\n');
+  const heroTitleLong = title.length > 12;
+
   const scrollToFeatured = () => {
     document.getElementById('category-featured')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -171,9 +174,9 @@ export function GalleryPage({
               initial={{ y: '110%' }}
               animate={{ y: 0 }}
               transition={{ duration: 1, ease: EASE }}
-              className="category-hero-title t-display"
+              className={`category-hero-title t-display${heroTitleLong ? ' category-hero-title--long' : ''}`}
             >
-              {title}
+              {heroTitle}
             </motion.h1>
           </div>
 

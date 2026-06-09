@@ -1092,7 +1092,8 @@ body {
   z-index: 1;
   text-align: center;
   padding: 0 48px;
-  max-width: 900px;
+  max-width: min(1200px, calc(100vw - 96px));
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -1103,14 +1104,19 @@ body {
 
 .category-hero-title-wrap {
   overflow: hidden;
+  padding: 0.14em 0 0.1em;
   margin-bottom: clamp(20px, 3vh, 36px);
 }
 
 .category-hero-title {
-  font-size: clamp(3.25rem, 9vw, 9rem);
-  line-height: 0.88;
+  font-size: clamp(2.25rem, min(7.5vw, 12vh), 7.5rem);
+  line-height: 0.96;
   white-space: pre-line;
   color: #ffffff;
+}
+
+.category-hero-title--long {
+  font-size: clamp(2rem, min(6vw, 10vh), 6rem);
 }
 
 .category-hero-description {
@@ -1288,6 +1294,7 @@ body {
     height: 100%;
     min-height: 100%;
     background: #0a0a0a;
+    border-radius: 0;
   }
 
   .category-featured-body--portrait .category-featured-asset {
@@ -1317,6 +1324,7 @@ body {
   width: 100%;
   padding: 0;
   border: none;
+  border-radius: 4px;
   background: var(--card-bg);
   overflow: hidden;
   cursor: pointer;
