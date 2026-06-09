@@ -5,6 +5,7 @@ export type CloudinaryListedResource = {
   secure_url: string;
   resource_type?: string;
   format?: string;
+  created_at?: string;
 };
 
 type ListOptions = {
@@ -20,6 +21,22 @@ function folderSearchExpression(folders: readonly string[]): string {
 
 function assetFolderSearchExpression(folders: readonly string[]): string {
   return folders.map((folder) => `asset_folder:${folder}`).join(' OR ');
+}
+
+function sortListedResources(
+  resources: CloudinaryListedResource[],
+  sortBy: 'public_id' | 'created_at',
+  sortDirection: 'asc' | 'desc',
+): CloudinaryListedResource[] {
+  const direction = sortDirection === 'asc' ? 1 : -1;
+
+  return [...resources].sort((left, right) => {
+    const leftValue = left[sortBy] ?? '';
+    const rightValue = right[sortBy] ?? '';
+
+    if (leftValue === rightValue) return 0;
+    return leftValue < rightValue ? -direction : direction;
+  });
 }
 
 async function listByAssetFolderApi(
@@ -52,7 +69,7 @@ export async function listCloudinaryFolderResources({
 }: ListOptions): Promise<CloudinaryListedResource[]> {
   const fromAssetFolderApi = await listByAssetFolderApi(folders, maxResults);
   if (fromAssetFolderApi.length > 0) {
-    return fromAssetFolderApi;
+    return sortListedResources(fromAssetFolderApi, sortBy, sortDirection);
   }
 
   try {

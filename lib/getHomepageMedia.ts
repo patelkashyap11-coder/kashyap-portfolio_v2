@@ -33,6 +33,7 @@ function normalizeMediaKey(raw: string): string {
     .toLowerCase()
     .replace(/\.[^.]+$/, '')
     .replace(/_[a-z0-9]{5,}$/i, '')
+    .replace(/^\d+[-_\s]+/, '')
     .replace(/_/g, '-')
     .trim();
 }
@@ -65,8 +66,8 @@ async function listHomepageResources(): Promise<CloudinaryResource[]> {
 
 const getCachedHomepageResources = unstable_cache(
   listHomepageResources,
-  ['cloudinary-homepage-media'],
-  { revalidate: 3600, tags: ['homepage-media'] },
+  ['cloudinary-homepage-media-v2'],
+  { revalidate: 300, tags: ['homepage-media'] },
 );
 
 /**
@@ -76,7 +77,9 @@ const getCachedHomepageResources = unstable_cache(
  */
 export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => {
   try {
-    const resources = await getCachedHomepageResources();
+    const resources = [...(await getCachedHomepageResources())].sort((left, right) =>
+      (right.created_at ?? '').localeCompare(left.created_at ?? ''),
+    );
     const map: HomepageMediaMap = {};
 
     for (const item of resources) {
