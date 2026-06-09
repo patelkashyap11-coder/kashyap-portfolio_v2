@@ -129,22 +129,26 @@ export function Navbar() {
   const onDarkHero = isDark && !pinned;
   const onHomeCategoryStack = isHomepage && !open && overHomeCategoryStack;
   const onHomeCta = isHomepage && !open && overHomeCta;
+  const onHomeHero =
+    isHomepage && !open && !overHomeCategoryStack && !overHomeAfterCategories && !overHomeCta;
+  const onHomeLightPanel = isHomepage && !open && overHomeAfterCategories && !overHomeCta;
   const hideHomeNavBackground =
     isHomepage && (onHomeCategoryStack || overHomeAfterCategories);
-  const navFg = open
-    ? '#0A0A0A'
-    : onDarkHero || onHomeCategoryStack || onHomeCta
-      ? '#ffffff'
-      : isDark && prefersDark
-        ? '#ffffff'
-        : '#0A0A0A';
+  const useLightNavText =
+    onDarkHero ||
+    onHomeCategoryStack ||
+    onHomeCta ||
+    (prefersDark && (onHomeHero || onHomeLightPanel));
+  const navFg = open ? '#0A0A0A' : useLightNavText ? '#ffffff' : '#0A0A0A';
   const showNavBackground =
     pinned &&
     !open &&
     !isMobile &&
     !hideHomeNavBackground;
+  const useDarkNavBackground =
+    (isDark && prefersDark) || (isHomepage && prefersDark && (onHomeHero || onHomeLightPanel));
   const bg = showNavBackground
-    ? isDark && prefersDark
+    ? useDarkNavBackground
       ? 'rgba(10,10,10,0.88)'
       : 'rgba(245,245,242,0.92)'
     : 'transparent';

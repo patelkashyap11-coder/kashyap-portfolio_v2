@@ -26,7 +26,7 @@ export default async function HomePage() {
   }));
 
   return (
-    <>
+    <div className="homepage">
       <HeroSection />
 
       <div className="hero-category-spacer" aria-hidden />
@@ -49,6 +49,6 @@ export default async function HomePage() {
         <TrustedBySection clients={clients} />
         <CTASection />
       </div>
-    </>
+    </div>
   );
 }

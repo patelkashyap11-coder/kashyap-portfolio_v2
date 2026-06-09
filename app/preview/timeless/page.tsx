@@ -26,7 +26,7 @@ export default async function TimelessPreviewPage() {
   }));
 
   return (
-    <>
+    <div className="homepage">
       <HeroSection />
 
       <div className="hero-category-spacer" aria-hidden />
@@ -45,6 +45,6 @@ export default async function TimelessPreviewPage() {
         <TrustedBySection clients={clients} />
         <CTASection />
       </div>
-    </>
+    </div>
   );
 }
