@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
@@ -78,7 +78,7 @@ function getPinterestColumnCount(width: number): number {
 function usePinterestColumnCount() {
   const [count, setCount] = useState(4);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const update = () => setCount(getPinterestColumnCount(window.innerWidth));
     update();
     window.addEventListener('resize', update);
@@ -290,28 +290,21 @@ export function GalleryPage({
             </div>
 
             <div className="category-masonry-scroll">
-            <motion.div
-              className="category-masonry"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, amount: 0.05 }}
-              transition={{ duration: 0.7 }}
-            >
+            <div className="category-masonry">
               {masonryColumns.map((col, colIndex) => (
                 <div key={colIndex} className="category-masonry-col">
-                  {col.map(({ item, originalIndex }, itemIndex) => (
+                  {col.map(({ item, originalIndex }) => (
                     <MasonryItem
                       key={originalIndex}
                       item={item}
                       index={originalIndex}
-                      totalDelay={Math.min((colIndex + itemIndex) * 0.03, 0.35)}
                       onOpen={open}
                       title={title}
                     />
                   ))}
                 </div>
               ))}
-            </motion.div>
+            </div>
             </div>
           </div>
         </section>
@@ -442,22 +435,16 @@ function FeaturedMedia({
 function MasonryItem({
   item,
   index,
-  totalDelay,
   onOpen,
   title,
 }: {
   item: MediaItem;
   index: number;
-  totalDelay: number;
   onOpen: (i: number) => void;
   title: string;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.06 }}
-      transition={{ delay: totalDelay, duration: 0.5, ease: 'easeOut' }}
+    <div
       className="category-masonry-item group"
       onClick={() => onOpen(index)}
       {...protectedMediaSurfaceProps}
@@ -491,7 +478,7 @@ function MasonryItem({
           {...protectedImageProps}
         />
       )}
-    </motion.div>
+    </div>
   );
 }
 
