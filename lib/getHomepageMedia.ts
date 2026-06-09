@@ -12,7 +12,6 @@ const CATEGORY_SLUGS = new Set(categories.map((category) => category.slug));
 const SLUG_ALIASES: Record<string, string> = {
   food: 'food-hospitality',
   'food-hospitality': 'food-hospitality',
-  web: 'jewellery',
 };
 
 export type HomepageMedia = {
@@ -81,7 +80,7 @@ async function listHomepageResources(): Promise<CloudinaryResource[]> {
 
 const getCachedHomepageResources = unstable_cache(
   listHomepageResources,
-  ['cloudinary-homepage-media-v3'],
+  ['cloudinary-homepage-media-v5'],
   { revalidate: 300, tags: ['homepage-media'] },
 );
 
