@@ -30,7 +30,7 @@ interface Props {
   title: string;
   subtitle: string;
   description: string;
-  featuredMedia: MediaItem[];
+  featuredMedia: (MediaItem | null)[];
   galleryMedia: MediaItem[];
   heroVideo?: string;
   heroImage?: string;
@@ -101,9 +101,27 @@ export function GalleryPage({
 }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
+  const flatFeatured = useMemo(
+    () => featuredMedia.filter((item): item is MediaItem => item !== null),
+    [featuredMedia],
+  );
+
   const media = useMemo(
-    () => [...featuredMedia, ...galleryMedia],
-    [featuredMedia, galleryMedia],
+    () => [...flatFeatured, ...galleryMedia],
+    [flatFeatured, galleryMedia],
+  );
+
+  const getFeaturedLightboxIndex = useCallback(
+    (slotIndex: number) => {
+      if (!featuredMedia[slotIndex]) return -1;
+
+      let index = 0;
+      for (let i = 0; i < slotIndex; i++) {
+        if (featuredMedia[i]) index++;
+      }
+      return index;
+    },
+    [featuredMedia],
   );
 
   const open = useCallback((i: number) => setLightboxIdx(i), []);
@@ -117,10 +135,10 @@ export function GalleryPage({
     [media.length],
   );
 
-  const featuredCount = featuredMedia.length;
-  const featuredItems = featuredMedia;
+  const featuredCount = flatFeatured.length;
   const galleryItems = galleryMedia;
-  const heroFallbackImage = heroImage || featuredMedia[0]?.src || galleryMedia[0]?.src;
+  const heroFallbackImage =
+    heroImage || featuredMedia.find((item) => item)?.src || galleryMedia[0]?.src;
   const heroFallbackImageSrc = heroFallbackImage
     ? cloudinaryPreset(heroFallbackImage, 'hero')
     : undefined;
@@ -215,7 +233,7 @@ export function GalleryPage({
       </section>
 
       {/* ── Section 2: Featured Work ── */}
-      {featuredCount > 0 && (
+      {featuredMedia.some((item) => item !== null) && (
         <section id="category-featured" className="category-featured">
           <div className="category-page-inner">
             <div className="category-section-header category-section-header--solo">
@@ -223,7 +241,9 @@ export function GalleryPage({
             </div>
 
             <div className="category-featured-list">
-            {featuredItems.map((item, i) => {
+            {featuredMedia.map((item, i) => {
+              if (!item) return null;
+
               const meta = featuredProjects[i];
               const isReversed = i % 2 === 1;
 
@@ -247,7 +267,14 @@ export function GalleryPage({
                     className={`category-featured-body${isReversed ? ' category-featured-body--reverse' : ''}${i < 3 && isPortraitMedia(item) ? ' category-featured-body--portrait' : ''}`}
                   >
                     <div className="category-featured-media">
-                      <FeaturedMedia item={item} title={title} onOpen={() => open(i)} />
+                      <FeaturedMedia
+                        item={item}
+                        title={title}
+                        onOpen={() => {
+                          const lightboxIndex = getFeaturedLightboxIndex(i);
+                          if (lightboxIndex >= 0) open(lightboxIndex);
+                        }}
+                      />
                     </div>
 
                     {meta && (
