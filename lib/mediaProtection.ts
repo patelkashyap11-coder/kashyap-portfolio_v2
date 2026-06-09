@@ -23,8 +23,7 @@ export const protectedVideoProps = {
   disablePictureInPicture: true,
 } as const;
 
-/** For background-image panels and media wrappers. */
+/** For background-image panels and media wrappers (no onDragStart — conflicts with motion.div). */
 export const protectedMediaSurfaceProps = {
   onContextMenu: preventMediaContextMenu,
-  onDragStart: preventMediaDrag,
 } as const;
