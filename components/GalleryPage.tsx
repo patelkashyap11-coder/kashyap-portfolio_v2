@@ -203,11 +203,12 @@ export function GalleryPage({
       {/* ── Section 2: Featured Work ── */}
       {featuredCount > 0 && (
         <section id="category-featured" className="category-featured">
-          <div className="category-section-header category-section-header--solo">
-            <p className="t-label category-section-label">Featured Work</p>
-          </div>
+          <div className="category-page-inner">
+            <div className="category-section-header category-section-header--solo">
+              <p className="t-label category-section-label">Featured Work</p>
+            </div>
 
-          <div className="category-featured-list">
+            <div className="category-featured-list">
             {featuredItems.map((item, i) => {
               const meta = featuredProjects[i];
               const isReversed = i % 2 === 1;
@@ -250,6 +251,7 @@ export function GalleryPage({
                 </motion.article>
               );
             })}
+            </div>
           </div>
         </section>
       )}
@@ -268,11 +270,12 @@ export function GalleryPage({
       {/* ── Section 3: Visual Gallery ── */}
       {galleryItems.length > 0 && (
         <section className="category-masonry-section">
-          <div className="category-section-header category-section-header--solo">
-            <p className="t-label category-section-label">Visual Gallery</p>
-          </div>
+          <div className="category-page-inner">
+            <div className="category-section-header category-section-header--solo">
+              <p className="t-label category-section-label">Visual Gallery</p>
+            </div>
 
-          <div className="category-masonry-scroll">
+            <div className="category-masonry-scroll">
             <motion.div
               className="category-masonry"
               initial={{ opacity: 0 }}
@@ -295,6 +298,7 @@ export function GalleryPage({
                 </div>
               ))}
             </motion.div>
+            </div>
           </div>
         </section>
       )}

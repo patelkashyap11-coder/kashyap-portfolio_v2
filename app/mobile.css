@@ -375,7 +375,11 @@
   }
 
   .category-featured {
-    padding: 72px 24px 88px !important;
+    padding: 72px var(--category-gutter) 88px !important;
+  }
+
+  .gallery-page {
+    --category-gutter: 24px;
   }
 
   .category-featured .category-section-header {
@@ -428,19 +432,11 @@
   }
 
   .category-masonry-section {
-    padding: 56px 24px 72px !important;
+    padding: 56px var(--category-gutter) 72px !important;
   }
 
   .category-masonry-section .category-section-header {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
     margin-bottom: 24px !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .category-masonry-scroll {
-    padding: 0 !important;
   }
 
   .category-masonry,
