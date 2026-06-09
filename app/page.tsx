@@ -10,7 +10,7 @@ import { cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
 import { getHomeMetadata } from '@/lib/seo';
 
 export const metadata = getHomeMetadata();
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const [clients, homepageMedia] = await Promise.all([

@@ -720,6 +720,7 @@ body {
 }
 
 .clients-inner {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -729,7 +730,7 @@ body {
   color: #0A0A0A;
   letter-spacing: -0.05em;
   margin-bottom: clamp(48px, 6vw, 72px);
-  text-align: left;
+  text-align: center;
 }
 
 .clients-heading-accent {
@@ -737,28 +738,71 @@ body {
 }
 
 .clients-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(6, max-content);
+  justify-content: space-between;
   align-items: center;
-  gap: 8px 12px;
+  row-gap: 200px;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .clients-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: initial;
+    column-gap: 28px;
+    row-gap: 48px;
+  }
 }
 
 .clients-logo-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
-  opacity: 1;
-  filter: none;
+  width: auto;
+  height: clamp(96px, 10vw, 130px);
+  padding: 0;
+}
+
+/* Per-logo sizing for even visual balance */
+.clients-logo-cell:nth-child(3) {
+  height: clamp(80px, 8.5vw, 108px);
+}
+
+.clients-logo-cell:nth-child(4),
+.clients-logo-cell:nth-child(5) {
+  height: clamp(112px, 11.5vw, 148px);
+}
+
+.clients-logo-cell:nth-child(6) {
+  height: clamp(84px, 8.8vw, 112px);
 }
 
 .clients-logo-img {
   display: block;
-  height: 72px;
+  max-width: 100%;
+  max-height: 100%;
   width: auto;
-  max-width: 180px;
+  height: auto;
   object-fit: contain;
+  object-position: center;
+  filter: grayscale(100%);
+  opacity: 0.75;
+  transition: filter 0.35s ease, opacity 0.35s ease;
+}
+
+@media (hover: hover) {
+  .clients-logo-cell:hover .clients-logo-img {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .clients-logo-img {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
 }
 
 .clients-logo-text {

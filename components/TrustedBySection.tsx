@@ -30,7 +30,13 @@ export function TrustedBySection({ clients }: Props) {
           {clients.map((client) => (
             <div key={client.id} className="clients-logo-cell">
               {client.logo ? (
-                <img src={client.logo} alt={client.name} className="clients-logo-img" />
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="clients-logo-img"
+                  loading="lazy"
+                  decoding="async"
+                />
               ) : (
                 <span className="clients-logo-text">{client.name}</span>
               )}

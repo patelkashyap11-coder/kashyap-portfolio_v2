@@ -179,22 +179,31 @@
   .clients-heading {
     font-size: clamp(2.25rem, 11vw, 3.5rem) !important;
     margin-bottom: 40px !important;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .clients-grid {
-    justify-content: flex-start !important;
-    gap: 6px 10px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    justify-items: center !important;
+    column-gap: 24px !important;
+    row-gap: 48px !important;
+    width: 100% !important;
   }
 
   .clients-logo-cell {
-    opacity: 1 !important;
-    filter: none !important;
+    width: 100% !important;
+    height: 88px !important;
+    justify-content: center !important;
+    padding: 0 !important;
   }
 
   .clients-logo-img {
-    height: 52px !important;
-    max-width: 150px !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-position: center !important;
   }
 
   .clients-logo-text {

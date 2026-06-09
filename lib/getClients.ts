@@ -1,9 +1,5 @@
-import { unstable_cache } from 'next/cache';
-import { cloudinaryLogoUrl } from './cloudinaryUrl';
-import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
-
-/** Cloudinary DAM folders checked for client logos, in priority order. */
-const CLIENT_FOLDERS = ['clients', 'client'] as const;
+import fs from 'fs/promises';
+import path from 'path';
 
 export interface Client {
   id: string;
@@ -11,62 +7,53 @@ export interface Client {
   logo: string | null;
 }
 
-function nameFromPublicId(publicId: string): string {
-  const base = publicId.split('/').pop() ?? publicId;
+const CLIENTS_DIR = path.join(process.cwd(), 'public', 'clients');
+const IMAGE_EXT = /\.(png|jpe?g|svg|webp)$/i;
+
+function nameFromFilename(filename: string): string {
+  const base = filename.replace(IMAGE_EXT, '');
   const stripped = base
+    .replace(/^\d+\s*/, '')
     .replace(/^\d+[-_]/, '')
-    .replace(/\.[^.]+$/, '')
-    .replace(/_[a-z0-9]{5,}$/i, '');
+    .replace(/\.[^.]+$/, '');
 
   return stripped
     .split(/[-_]/)
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join(' ');
+    .join(' ')
+    .trim();
 }
 
-function sortKey(publicId: string): string {
-  const base = publicId.split('/').pop() ?? publicId;
-  const orderMatch = base.match(/^(\d+)/);
-  return orderMatch ? orderMatch[1].padStart(4, '0') : base;
+function sortKey(filename: string): string {
+  const match = filename.match(/^(\d+)/);
+  return match ? match[1].padStart(4, '0') : filename;
 }
 
-async function fetchClientsFromCloudinary(): Promise<Client[]> {
-  const resources = await listCloudinaryFolderResources({
-    folders: CLIENT_FOLDERS,
-    maxResults: 100,
-    sortBy: 'public_id',
-    sortDirection: 'asc',
-  });
-
-  return resources
-    .filter((item) => !item.resource_type || item.resource_type === 'image')
-    .map((item) => ({
-      id: item.public_id,
-      name: nameFromPublicId(item.public_id),
-      logo: cloudinaryLogoUrl(item.secure_url),
-    }))
-    .sort((a, b) => sortKey(a.id).localeCompare(sortKey(b.id)));
+function publicLogoPath(filename: string): string {
+  return `/clients/${encodeURIComponent(filename)}`;
 }
 
-const getCachedClients = unstable_cache(
-  fetchClientsFromCloudinary,
-  ['cloudinary-client-logos-v2'],
-  { revalidate: 3600, tags: ['client-logos'] },
-);
-
-/** Client logos from Cloudinary DAM folder `clients/`. Name files e.g. `01-zara.png`. */
+/** Client logos from files in `public/clients/`. Name files e.g. `1 Brand Name.png`. */
 export async function getClients(): Promise<Client[]> {
   try {
-    const clients = await getCachedClients();
-    if (clients.length > 0) return clients;
+    const files = await fs.readdir(CLIENTS_DIR);
 
-    console.warn(
-      `[getClients] No logos found in Cloudinary asset folders: ${CLIENT_FOLDERS.join(', ')}`,
-    );
-    return [];
+    return files
+      .filter((file) => IMAGE_EXT.test(file))
+      .sort((a, b) => sortKey(a).localeCompare(sortKey(b)))
+      .map((filename) => ({
+        id: filename,
+        name: nameFromFilename(filename) || filename,
+        logo: publicLogoPath(filename),
+      }));
   } catch (error) {
-    console.error('[getClients] Cloudinary lookup failed:', error);
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        '[getClients] No logos found. Add PNG/SVG files to public/clients/.',
+      );
+      console.warn(error);
+    }
     return [];
   }
 }
