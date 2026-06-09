@@ -1,0 +1,228 @@
+.font-preview-page {
+  min-height: 100vh;
+  background: #f5f5f2;
+  color: #0a0a0a;
+  padding: clamp(32px, 5vw, 72px) clamp(20px, 4vw, 48px) 80px;
+}
+
+.font-preview-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.font-preview-eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.45);
+  margin-bottom: 10px;
+}
+
+.font-preview-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+  margin-bottom: 10px;
+}
+
+.font-preview-intro {
+  max-width: 42rem;
+  line-height: 1.55;
+  color: rgba(10, 10, 10, 0.62);
+}
+
+.font-preview-intro code {
+  font-size: 0.92em;
+}
+
+.font-preview-back {
+  flex-shrink: 0;
+  padding: 12px 18px;
+  border: 1px solid rgba(10, 10, 10, 0.14);
+  border-radius: 999px;
+  text-decoration: none;
+  color: #0a0a0a;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.font-preview-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.font-preview-tab {
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  background: #fff;
+  color: #0a0a0a;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.font-preview-tab.is-active {
+  background: #0a0a0a;
+  color: #f5f5f2;
+  border-color: #0a0a0a;
+}
+
+.font-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.font-preview-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0.72;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.font-preview-card-wrap.is-active {
+  opacity: 1;
+  transform: scale(1.01);
+}
+
+.font-preview-card-wrap:focus-visible {
+  outline: 2px solid #c7e200;
+  outline-offset: 4px;
+}
+
+.font-specimen {
+  background: #fff;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 100%;
+}
+
+.font-specimen-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.font-specimen-name {
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
+
+.font-specimen-tagline {
+  font-size: 0.875rem;
+  color: rgba(10, 10, 10, 0.55);
+  margin-top: 4px;
+}
+
+.font-specimen-badge {
+  background: #0a0a0a;
+  color: #f5f5f2;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.font-specimen-badge--backup {
+  background: #c7e200;
+  color: #0a0a0a;
+}
+
+.font-specimen-meta {
+  font-size: 0.75rem;
+  color: rgba(10, 10, 10, 0.5);
+  margin-bottom: 20px;
+}
+
+.font-specimen-hero-sans {
+  font-family: var(--spec-tight);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.font-specimen-hero-accent {
+  font-family: var(--spec-serif);
+  font-style: italic;
+  font-weight: 600;
+  color: #c7e200;
+}
+
+.font-specimen-body {
+  font-family: var(--spec-inter);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 18px 0 20px;
+}
+
+.font-specimen-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.font-specimen-label,
+.font-specimen-logo {
+  font-family: var(--spec-tight);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.font-specimen-logo {
+  font-weight: 800;
+  margin-left: auto;
+}
+
+.font-specimen-block--dark {
+  background: #0a0a0a;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.font-specimen-cta {
+  font-family: var(--spec-inter);
+  font-weight: 800;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.font-specimen-cta-accent {
+  font-family: var(--spec-serif);
+  font-style: italic;
+  font-weight: 600;
+  color: #c7e200;
+}
+
+@media (max-width: 767px) {
+  .font-preview-header {
+    flex-direction: column;
+  }
+
+  .font-specimen-logo {
+    margin-left: 0;
+  }
+}

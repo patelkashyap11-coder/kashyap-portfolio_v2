@@ -1,0 +1,68 @@
+/* Backup fonts — Editorial Fashion (not loaded; swap in when needed)
+ *
+ * To switch from Luxury Minimal to Editorial Fashion:
+ * 1. In app/layout.tsx, replace `./site-fonts.css` with this file.
+ * 2. In app/globals.css :root, set:
+ *      --font-inter: 'Outfit', sans-serif;
+ *      --font-tight: 'Antonio', sans-serif;
+ *      --font-serif: 'Antic Didone', serif;
+ */
+
+@font-face {
+  font-family: 'Antonio';
+  src: url('/fonts/Antonio-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antonio';
+  src: url('/fonts/Antonio-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antonio';
+  src: url('/fonts/Antonio-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Antic Didone';
+  src: url('/fonts/AnticDidone-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/fonts/Outfit-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/fonts/Outfit-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/fonts/Outfit-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/fonts/Outfit-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

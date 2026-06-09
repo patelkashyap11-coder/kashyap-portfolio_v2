@@ -35,7 +35,7 @@
 
   .hero-headline-sans {
     font-size: clamp(2.5rem, 13vw, 4.25rem) !important;
-    font-weight: 800 !important;
+    font-weight: 400 !important;
     line-height: 0.88 !important;
     letter-spacing: -0.035em !important;
   }

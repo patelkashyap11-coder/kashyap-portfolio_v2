@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -30,9 +29,10 @@
   --page-line-strong: rgba(10, 10, 10, 0.15);
   --card-bg: #EFEFEC;
   --card-border: rgba(10, 10, 10, 0.1);
-  --font-inter: 'Inter', sans-serif;
-  --font-tight: 'Inter Tight', sans-serif;
-  --font-serif: 'Cormorant Garamond', serif;
+  /* Luxury Minimal — backup: Editorial Fashion (see lib/siteFonts.ts) */
+  --font-inter: 'Proza Libre', sans-serif;
+  --font-tight: 'Aboreto', sans-serif;
+  --font-serif: 'Bodoni Moda', serif;
   --page-inline: 48px;
 }
 
@@ -70,7 +70,7 @@ body {
 /* ── Typography ──────────────────────────────── */
 .t-display {
   font-family: var(--font-tight);
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.9;
   text-transform: uppercase;
@@ -89,7 +89,7 @@ body {
 }
 .logo-text {
   font-family: var(--font-tight);
-  font-weight: 800;
+  font-weight: 400;
   font-size: 1rem;
   letter-spacing: -0.03em;
   text-transform: uppercase;
@@ -399,8 +399,8 @@ body {
 }
 
 .hero-headline-sans {
-  font-family: var(--font-inter);
-  font-weight: 800;
+  font-family: var(--font-tight);
+  font-weight: 400;
   font-size: clamp(3rem, 10.5vw, 11.5rem);
   line-height: 0.86;
   letter-spacing: -0.04em;
@@ -570,9 +570,9 @@ body {
 
 .category-section .category-title {
   margin: 0;
-  font-family: var(--font-inter);
+  font-family: var(--font-tight);
   font-size: clamp(3rem, 9vw, 7.5rem);
-  font-weight: 800;
+  font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.03em;
   text-transform: uppercase;
@@ -619,7 +619,7 @@ body {
 
 .what-we-do-eyebrow {
   color: var(--dark);
-  font-family: var(--font-inter);
+  font-family: var(--font-tight);
   font-size: clamp(2.25rem, 4.5vw, 3.5rem);
   font-weight: 400;
   font-style: normal;
@@ -661,8 +661,8 @@ body {
 }
 
 .what-we-do-trigger-title {
-  font-family: var(--font-inter);
-  font-weight: 700;
+  font-family: var(--font-tight);
+  font-weight: 400;
   font-size: clamp(1.875rem, 3.8vw, 3.75rem);
   letter-spacing: -0.03em;
   line-height: 0.95;
@@ -872,8 +872,8 @@ body {
   margin: 0;
   width: auto;
   white-space: nowrap;
-  font-family: var(--font-inter);
-  font-weight: 800;
+  font-family: var(--font-tight);
+  font-weight: 400;
   font-size: clamp(2.75rem, 11vw, 10rem);
   line-height: 0.9;
   letter-spacing: -0.04em;
@@ -1420,8 +1420,8 @@ body {
 }
 
 .category-featured-name {
-  font-family: var(--font-inter);
-  font-weight: 800;
+  font-family: var(--font-tight);
+  font-weight: 400;
   font-size: clamp(2rem, 4.5vw, 3.5rem);
   line-height: 0.95;
   letter-spacing: -0.03em;

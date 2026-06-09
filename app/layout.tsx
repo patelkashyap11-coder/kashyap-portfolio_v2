@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import './site-fonts.css';
 import './globals.css';
 import './mobile.css';
 import { Navbar } from '@/components/Navbar';
