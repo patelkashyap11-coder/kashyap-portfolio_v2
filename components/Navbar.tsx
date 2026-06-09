@@ -19,8 +19,10 @@ export function Navbar() {
   const [visible, setVisible] = useState(true);
   const [prefersDark, setPrefersDark] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [overHomeCategoryStack, setOverHomeCategoryStack] = useState(false);
+  const [overHomeAfterCategories, setOverHomeAfterCategories] = useState(false);
+  const [overHomeCta, setOverHomeCta] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [viewportHeight, setViewportHeight] = useState(800);
   const lastScrollY           = useRef(0);
   const pathname              = usePathname();
 
@@ -30,18 +32,56 @@ export function Navbar() {
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
-    const sync = () => {
-      setIsMobile(mq.matches);
-      setViewportHeight(window.innerHeight);
-    };
+    const sync = () => setIsMobile(mq.matches);
     sync();
     mq.addEventListener('change', sync);
-    window.addEventListener('resize', sync);
-    return () => {
-      mq.removeEventListener('change', sync);
-      window.removeEventListener('resize', sync);
-    };
+    return () => mq.removeEventListener('change', sync);
   }, []);
+
+  useEffect(() => {
+    if (!isHomepage) {
+      setOverHomeCategoryStack(false);
+      setOverHomeAfterCategories(false);
+      setOverHomeCta(false);
+      return;
+    }
+
+    const syncHomeNavZones = () => {
+      const navBottom = 88;
+      const stack = document.querySelector('.category-stack-wrapper');
+      const after = document.querySelector('.homepage-after-categories');
+      const cta = document.querySelector('.cta-section');
+
+      if (stack) {
+        const rect = stack.getBoundingClientRect();
+        setOverHomeCategoryStack(rect.top < navBottom && rect.bottom > navBottom);
+      } else {
+        setOverHomeCategoryStack(false);
+      }
+
+      if (after) {
+        const rect = after.getBoundingClientRect();
+        setOverHomeAfterCategories(rect.top < navBottom && rect.bottom > navBottom);
+      } else {
+        setOverHomeAfterCategories(false);
+      }
+
+      if (cta) {
+        const rect = cta.getBoundingClientRect();
+        setOverHomeCta(rect.top < navBottom && rect.bottom > navBottom);
+      } else {
+        setOverHomeCta(false);
+      }
+    };
+
+    syncHomeNavZones();
+    window.addEventListener('scroll', syncHomeNavZones, { passive: true });
+    window.addEventListener('resize', syncHomeNavZones);
+    return () => {
+      window.removeEventListener('scroll', syncHomeNavZones);
+      window.removeEventListener('resize', syncHomeNavZones);
+    };
+  }, [isHomepage, pathname]);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -80,11 +120,13 @@ export function Navbar() {
   }, [open]);
 
   const onDarkHero = isDark && !pinned;
-  const onHomeCategoryStack =
-    isHomepage && !open && scrollY > viewportHeight * 0.72;
+  const onHomeCategoryStack = isHomepage && !open && overHomeCategoryStack;
+  const onHomeCta = isHomepage && !open && overHomeCta;
+  const hideHomeNavBackground =
+    isHomepage && (onHomeCategoryStack || overHomeAfterCategories);
   const navFg = open
     ? '#0A0A0A'
-    : onDarkHero || onHomeCategoryStack
+    : onDarkHero || onHomeCategoryStack || onHomeCta
       ? '#ffffff'
       : isDark && prefersDark
         ? '#ffffff'
@@ -93,7 +135,7 @@ export function Navbar() {
     pinned &&
     !open &&
     !isMobile &&
-    !(isHomepage && onHomeCategoryStack);
+    !hideHomeNavBackground;
   const bg = showNavBackground
     ? isDark && prefersDark
       ? 'rgba(10,10,10,0.88)'

@@ -7,6 +7,8 @@ interface Props {
 }
 
 export function TrustedBySection({ clients }: Props) {
+  const count = clients.length;
+
   return (
     <section className="clients-section">
       <div className="clients-inner">
@@ -22,6 +24,8 @@ export function TrustedBySection({ clients }: Props) {
 
         <motion.div
           className="clients-grid"
+          data-logo-count={count}
+          style={{ '--client-count': count } as React.CSSProperties}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}

@@ -187,13 +187,18 @@
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     justify-items: center !important;
     column-gap: 24px !important;
-    row-gap: 48px !important;
+    row-gap: 24px !important;
     width: 100% !important;
   }
 
   .clients-logo-cell {
     width: 100% !important;
-    height: 88px !important;
+    height: clamp(
+      56px,
+      calc(88px - max(0, var(--client-count, 6) - 6) * 8px),
+      88px
+    ) !important;
+    max-width: 100% !important;
     justify-content: center !important;
     padding: 0 !important;
   }
