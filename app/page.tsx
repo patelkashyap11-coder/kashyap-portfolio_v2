@@ -5,18 +5,23 @@ import { TrustedBySection } from '@/components/TrustedBySection';
 import { CTASection } from '@/components/CTASection';
 import { categories } from '@/lib/categoryData';
 import { getClients } from '@/lib/getClients';
+import { getHomepageMediaMap } from '@/lib/getHomepageMedia';
+import { cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
 
 export const revalidate = 60;
 
-const homepageCategories = categories.map((cat) => ({
-  title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
-  href: `/${cat.slug}`,
-  videoSrc: cat.videoSrc,
-  imageSrc: cat.imageSrc,
-}));
-
 export default async function HomePage() {
-  const clients = await getClients();
+  const [clients, homepageMedia] = await Promise.all([
+    getClients(),
+    getHomepageMediaMap(),
+  ]);
+
+  const homepageCategories = categories.map((cat) => ({
+    title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
+    href: `/${cat.slug}`,
+    videoSrc: cloudinaryVideoUrl(homepageMedia[cat.slug]?.videoSrc ?? cat.videoSrc, 'hero'),
+    imageSrc: homepageMedia[cat.slug]?.imageSrc ?? cat.imageSrc,
+  }));
 
   return (
     <>

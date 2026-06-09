@@ -1,3 +1,12 @@
+export type CloudinaryVideoPreset = 'hero' | 'featured' | 'masonry' | 'lightbox';
+
+const VIDEO_PRESETS: Record<CloudinaryVideoPreset, { width: number; quality: string }> = {
+  hero: { width: 1920, quality: 'auto:good' },
+  featured: { width: 1280, quality: 'auto:good' },
+  masonry: { width: 800, quality: 'auto:good' },
+  lightbox: { width: 1920, quality: 'auto:best' },
+};
+
 export type CloudinaryPreset = 'featured' | 'masonry' | 'lightbox' | 'hero' | 'logo';
 
 const WATERMARK_TEXT = '© Kashyap Patel';
@@ -77,4 +86,32 @@ export function cloudinaryUrl(
 export function cloudinaryPreset(url: string, preset: CloudinaryPreset): string {
   const { width, watermark = false, watermarkSize } = PRESETS[preset];
   return cloudinaryUrl(url, { width, watermark, watermarkSize });
+}
+
+/** Deliver a compressed H.264 MP4 from a Cloudinary video master (e.g. 100MB upload → web-sized stream). */
+export function cloudinaryVideoUrl(
+  url: string,
+  preset: CloudinaryVideoPreset = 'hero',
+): string {
+  if (!isCloudinaryUrl(url)) return url;
+
+  const match = url.match(CLOUDINARY_UPLOAD);
+  if (!match) return url;
+
+  const [, resourceType, uploadPath] = match;
+  if (resourceType !== 'video') return url;
+
+  const { width, quality } = VIDEO_PRESETS[preset];
+  const assetPath = assetPathFromUploadSegment(uploadPath);
+  const transforms = [
+    `w_${width}`,
+    'c_limit',
+    `q_${quality}`,
+    'vc_h264',
+    'ac_aac',
+    'f_mp4',
+  ].join(',');
+
+  const base = url.slice(0, url.indexOf('/upload/') + '/upload/'.length);
+  return `${base}${transforms}/${assetPath}`;
 }

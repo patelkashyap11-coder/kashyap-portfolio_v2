@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
-import { cloudinaryPreset, cloudinaryUrl } from '@/lib/cloudinaryUrl';
+import { cloudinaryPreset, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
 import {
   protectedImageProps,
   protectedMediaSurfaceProps,
@@ -366,7 +366,7 @@ export function GalleryPage({
             >
               {media[lightboxIdx].type === 'video' ? (
                 <video
-                  src={cloudinaryUrl(media[lightboxIdx].src, { width: 1920 })}
+                  src={cloudinaryVideoUrl(media[lightboxIdx].src, 'lightbox')}
                   controls
                   autoPlay
                   className="category-lightbox-asset"
@@ -405,7 +405,7 @@ function FeaturedMedia({
       {item.type === 'video' ? (
         <>
           <video
-            src={cloudinaryUrl(item.src, { width: 1280 })}
+            src={cloudinaryVideoUrl(item.src, 'featured')}
             muted
             loop
             playsInline
@@ -452,7 +452,7 @@ function MasonryItem({
       {item.type === 'video' ? (
         <>
           <video
-            src={cloudinaryUrl(item.src, { width: 800 })}
+            src={cloudinaryVideoUrl(item.src, 'masonry')}
             muted
             loop
             playsInline

@@ -12,7 +12,9 @@ export interface CategoryMeta {
   title: string;
   subtitle: string;
   description: string;
+  /** Fallback when no matching file exists in Cloudinary `homepage/` folder. */
   videoSrc: string;
+  /** Fallback when no matching poster exists in Cloudinary `homepage/` folder. */
   imageSrc: string;
   featuredProjects: FeaturedProjectMeta[];
 }
