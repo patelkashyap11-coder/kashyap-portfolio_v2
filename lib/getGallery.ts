@@ -22,7 +22,7 @@ function mapResource(item: {
 export async function getGallery(folder: string): Promise<MediaItem[]> {
   const result = await cloudinary.search
     .expression(`folder:${folder}`)
-    .sort_by("created_at", "desc")
+    .sort_by("public_id", "asc")
     .max_results(500)
     .execute();
 

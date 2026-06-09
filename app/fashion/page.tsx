@@ -2,6 +2,7 @@ import { GalleryPage } from '@/components/GalleryPage';
 import { getCategoryPageProps } from '@/lib/getCategoryPageProps';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 export default async function Page() {
   const { category, featuredMedia, galleryMedia, nextCategory } = await getCategoryPageProps('fashion');

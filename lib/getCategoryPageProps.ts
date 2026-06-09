@@ -1,15 +1,7 @@
 import { getCategoryBySlug, getNextCategory } from './categoryData';
 import { getFeaturedGallery, getGallery } from './getGallery';
+import { shuffleGallery } from './shuffleGallery';
 import { splitFeaturedMedia } from './splitFeaturedMedia';
-
-function shuffleGallery<T>(items: T[]): T[] {
-  const shuffled = [...items];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
 
 export async function getCategoryPageProps(slug: string) {
   const category = getCategoryBySlug(slug);
