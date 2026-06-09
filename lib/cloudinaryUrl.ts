@@ -88,6 +88,18 @@ export function cloudinaryPreset(url: string, preset: CloudinaryPreset): string 
   return cloudinaryUrl(url, { width, watermark, watermarkSize });
 }
 
+/** Logo delivery — keep SVGs as vectors and skip watermark overlays. */
+export function cloudinaryLogoUrl(url: string): string {
+  if (!isCloudinaryUrl(url)) return url;
+
+  const isSvg = /\.svg(\?|$)/i.test(url) || url.includes('/upload/') && url.endsWith('.svg');
+  if (isSvg) {
+    return cloudinaryUrl(url, { width: PRESETS.logo.width, format: 'svg', watermark: false });
+  }
+
+  return cloudinaryPreset(url, 'logo');
+}
+
 /** Deliver a compressed H.264 MP4 from a Cloudinary video master (e.g. 100MB upload → web-sized stream). */
 export function cloudinaryVideoUrl(
   url: string,

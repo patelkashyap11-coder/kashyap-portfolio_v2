@@ -7,7 +7,9 @@ import { categories } from '@/lib/categoryData';
 import { getClients } from '@/lib/getClients';
 import { getHomepageMediaMap } from '@/lib/getHomepageMedia';
 import { cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { getHomeMetadata } from '@/lib/seo';
 
+export const metadata = getHomeMetadata();
 export const revalidate = 60;
 
 export default async function HomePage() {

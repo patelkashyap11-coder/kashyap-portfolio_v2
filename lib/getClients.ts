@@ -1,7 +1,17 @@
-import cloudinary from './cloudinary';
-import { cloudinaryPreset } from './cloudinaryUrl';
+import { unstable_cache } from 'next/cache';
+import { cloudinaryLogoUrl } from './cloudinaryUrl';
+import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
 
-const CLIENT_FOLDERS = ['client', 'clients'] as const;
+/** Cloudinary folders checked for client logos, in priority order. */
+const CLIENT_FOLDERS = [
+  'clients',
+  'client',
+  'trusted-by',
+  'trusted_by',
+  'trusted',
+  'logos',
+  'brands',
+] as const;
 
 export interface Client {
   id: string;
@@ -25,12 +35,6 @@ const FALLBACK_CLIENTS: Client[] = [
   { id: 'axis-brands', name: 'Axis Brands', logo: null },
 ];
 
-type CloudinaryResource = {
-  public_id: string;
-  secure_url: string;
-  resource_type?: string;
-};
-
 function nameFromPublicId(publicId: string): string {
   const base = publicId.split('/').pop() ?? publicId;
   const stripped = base
@@ -45,69 +49,51 @@ function nameFromPublicId(publicId: string): string {
     .join(' ');
 }
 
-function mapResources(resources: CloudinaryResource[]): Client[] {
+function sortKey(publicId: string): string {
+  const base = publicId.split('/').pop() ?? publicId;
+  const orderMatch = base.match(/^(\d+)/);
+  return orderMatch ? orderMatch[1].padStart(4, '0') : base;
+}
+
+async function fetchClientsFromCloudinary(): Promise<Client[]> {
+  const resources = await listCloudinaryFolderResources({
+    folders: CLIENT_FOLDERS,
+    maxResults: 100,
+    sortBy: 'public_id',
+    sortDirection: 'asc',
+  });
+
   return resources
-    .filter((item) => !item.resource_type || item.resource_type === 'image')
+    .filter((item) => {
+      if (item.resource_type && item.resource_type !== 'image') return false;
+      return true;
+    })
     .map((item) => ({
       id: item.public_id,
       name: nameFromPublicId(item.public_id),
-      logo: cloudinaryPreset(item.secure_url, 'logo'),
+      logo: cloudinaryLogoUrl(item.secure_url),
     }))
-    .sort((a, b) => a.id.localeCompare(b.id));
+    .sort((a, b) => sortKey(a.id).localeCompare(sortKey(b.id)));
 }
 
-async function listClientResources(): Promise<CloudinaryResource[]> {
-  for (const folder of CLIENT_FOLDERS) {
-    const attempts: Array<() => Promise<CloudinaryResource[]>> = [
-      async () => {
-        const result = await cloudinary.search
-          .expression(`asset_folder:${folder}`)
-          .sort_by('public_id', 'asc')
-          .max_results(100)
-          .execute();
-        return result.resources;
-      },
-      async () => {
-        const result = await cloudinary.search
-          .expression(`folder:${folder}`)
-          .sort_by('public_id', 'asc')
-          .max_results(100)
-          .execute();
-        return result.resources;
-      },
-      async () => {
-        const result = await cloudinary.api.resources({
-          type: 'upload',
-          prefix: `${folder}/`,
-          max_results: 100,
-        });
-        return result.resources;
-      },
-    ];
+const getCachedClients = unstable_cache(
+  fetchClientsFromCloudinary,
+  ['cloudinary-client-logos'],
+  { revalidate: 3600, tags: ['client-logos'] },
+);
 
-    for (const attempt of attempts) {
-      try {
-        const resources = await attempt();
-        if (resources.length > 0) return resources;
-      } catch {
-        // Try the next lookup strategy.
-      }
-    }
-  }
-
-  return [];
-}
-
-/** Client logos from Cloudinary folder `client/` or `clients/`. Name files e.g. `01-zara.png` for order + label. */
+/** Client logos from Cloudinary folders such as `clients/` or `client/`. Name files e.g. `01-zara.png`. */
 export async function getClients(): Promise<Client[]> {
   try {
-    const resources = await listClientResources();
-    const clients = mapResources(resources);
-    return clients.length > 0 ? clients : FALLBACK_CLIENTS;
+    const clients = await getCachedClients();
+    if (clients.length > 0) return clients;
+
+    console.warn(
+      `[getClients] No logos found in Cloudinary folders: ${CLIENT_FOLDERS.join(', ')}`,
+    );
+    return FALLBACK_CLIENTS;
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('getClients failed:', error);
-    }
+    console.error('[getClients] Cloudinary lookup failed:', error);
     return FALLBACK_CLIENTS;
   }
 }

@@ -1,6 +1,7 @@
+import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import cloudinary from './cloudinary';
 import { cloudinaryPreset, cloudinaryVideoUrl } from './cloudinaryUrl';
+import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
 import { categories } from './categoryData';
 
 const HOMEPAGE_FOLDERS = ['homepage'] as const;
@@ -52,46 +53,21 @@ function slugFromPublicId(publicId: string): string | null {
 }
 
 async function listHomepageResources(): Promise<CloudinaryResource[]> {
-  for (const folder of HOMEPAGE_FOLDERS) {
-    const attempts: Array<() => Promise<CloudinaryResource[]>> = [
-      async () => {
-        const result = await cloudinary.search
-          .expression(`asset_folder:${folder}`)
-          .sort_by('created_at', 'desc')
-          .max_results(30)
-          .execute();
-        return result.resources;
-      },
-      async () => {
-        const result = await cloudinary.search
-          .expression(`folder:${folder}`)
-          .sort_by('created_at', 'desc')
-          .max_results(30)
-          .execute();
-        return result.resources;
-      },
-      async () => {
-        const result = await cloudinary.api.resources({
-          type: 'upload',
-          prefix: `${folder}/`,
-          max_results: 30,
-        });
-        return result.resources;
-      },
-    ];
+  const resources = await listCloudinaryFolderResources({
+    folders: HOMEPAGE_FOLDERS,
+    maxResults: 30,
+    sortBy: 'created_at',
+    sortDirection: 'desc',
+  });
 
-    for (const attempt of attempts) {
-      try {
-        const resources = await attempt();
-        if (resources.length > 0) return resources;
-      } catch {
-        // Try the next lookup strategy.
-      }
-    }
-  }
-
-  return [];
+  return resources as CloudinaryResource[];
 }
+
+const getCachedHomepageResources = unstable_cache(
+  listHomepageResources,
+  ['cloudinary-homepage-media'],
+  { revalidate: 3600, tags: ['homepage-media'] },
+);
 
 /**
  * Homepage category backgrounds from Cloudinary folder `homepage/`.
@@ -100,7 +76,7 @@ async function listHomepageResources(): Promise<CloudinaryResource[]> {
  */
 export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => {
   try {
-    const resources = await listHomepageResources();
+    const resources = await getCachedHomepageResources();
     const map: HomepageMediaMap = {};
 
     for (const item of resources) {

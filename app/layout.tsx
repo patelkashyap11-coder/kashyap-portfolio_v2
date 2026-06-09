@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import './globals.css';
 import './mobile.css';
 import { Navbar } from '@/components/Navbar';
+import { SiteStructuredData } from '@/components/StructuredData';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import {
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
   SITE_NAME,
+  SITE_SHORT_DESCRIPTION,
   SITE_TITLE,
   SITE_URL,
 } from '@/lib/site';
@@ -23,6 +25,7 @@ export const metadata: Metadata = {
   creator: SITE_NAME,
   publisher: SITE_NAME,
   applicationName: SITE_NAME,
+  category: 'photography',
   formatDetection: {
     email: false,
     address: false,
@@ -49,7 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    description: SITE_SHORT_DESCRIPTION,
   },
   robots: {
     index: true,
@@ -65,8 +68,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <body>
+        <SiteStructuredData />
         <SmoothScroll>
           <Navbar />
           <main>{children}</main>

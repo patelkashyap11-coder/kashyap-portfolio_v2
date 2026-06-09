@@ -1,23 +1,34 @@
 import { GalleryPage } from '@/components/GalleryPage';
+import { CategoryStructuredData } from '@/components/StructuredData';
 import { getCategoryPageProps } from '@/lib/getCategoryPageProps';
+import { getCategoryMetadata } from '@/lib/seo';
+
+const SLUG = 'interiors';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
+export async function generateMetadata() {
+  return getCategoryMetadata(SLUG);
+}
+
 export default async function Page() {
-  const { category, featuredMedia, galleryMedia, nextCategory } = await getCategoryPageProps('interiors');
+  const { category, featuredMedia, galleryMedia, nextCategory } = await getCategoryPageProps(SLUG);
 
   return (
-    <GalleryPage
-      title={category.title}
-      subtitle={category.subtitle}
-      description={category.description}
-      featuredMedia={featuredMedia}
-      galleryMedia={galleryMedia}
-      heroVideo={category.videoSrc}
-      heroImage={category.imageSrc}
-      featuredProjects={category.featuredProjects}
-      nextCategory={nextCategory}
-    />
+    <>
+      <CategoryStructuredData slug={SLUG} />
+      <GalleryPage
+        title={category.title}
+        subtitle={category.subtitle}
+        description={category.description}
+        featuredMedia={featuredMedia}
+        galleryMedia={galleryMedia}
+        heroVideo={category.videoSrc}
+        heroImage={category.imageSrc}
+        featuredProjects={category.featuredProjects}
+        nextCategory={nextCategory}
+      />
+    </>
   );
 }

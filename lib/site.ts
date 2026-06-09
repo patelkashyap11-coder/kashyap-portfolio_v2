@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://bykashyap.com';
+export const SITE_URL = 'https://www.bykashyap.com';
 
 export const SITE_NAME = 'KASHYAP PATEL';
 
@@ -7,22 +7,52 @@ export const SITE_TAGLINE = 'CINEMAGRAPH';
 export const SITE_TITLE = 'KASHYAP PATEL | CINEMAGRAPH';
 
 export const SITE_DESCRIPTION =
-  'Visual stories for brands. Fashion campaigns, food & hospitality, jewellery, products and interiors photography & film in Ahmedabad, India.';
+  'Kashyap Patel is a commercial photographer and filmmaker in Ahmedabad, India, creating cinemagraphs and visual stories for fashion, food, jewellery, product and interior brands.';
+
+export const SITE_SHORT_DESCRIPTION =
+  'Commercial photographer & filmmaker creating cinemagraphs and brand visual stories in Ahmedabad, India.';
 
 export const SITE_KEYWORDS = [
   'Kashyap Patel',
+  'Kashyap Patel photographer',
+  'Kashyap Patel filmmaker',
   'cinemagraph',
-  'photographer',
-  'filmmaker',
-  'commercial photographer',
-  'fashion photography',
-  'food photography',
-  'jewellery photography',
-  'product photography',
-  'interior photography',
-  'Ahmedabad photographer',
-  'India photographer',
+  'cinemagraph photographer India',
+  'commercial photographer Ahmedabad',
+  'commercial filmmaker India',
+  'fashion photographer Ahmedabad',
+  'food photographer India',
+  'jewellery photographer',
+  'product photographer Ahmedabad',
+  'interior photographer Gujarat',
+  'brand photography India',
+  'visual storyteller',
 ];
+
+export const SITE_CONTACT = {
+  email: 'letstalk@bykashyap.com',
+  phone: '+919712727007',
+  phoneDisplay: '+91 97127 27007',
+  instagram: 'https://instagram.com/ikashyap__',
+  whatsapp: 'https://wa.me/919712727007',
+} as const;
+
+export const SITE_LOCATION = {
+  city: 'Ahmedabad',
+  region: 'Gujarat',
+  country: 'India',
+  countryCode: 'IN',
+} as const;
+
+export const SITE_SERVICES = [
+  'Fashion photography',
+  'Food & hospitality photography',
+  'Jewellery photography',
+  'Product photography',
+  'Interior photography',
+  'Commercial film',
+  'Cinemagraph production',
+] as const;
 
 export const BRAND = {
   dark: '#0A0A0A',
