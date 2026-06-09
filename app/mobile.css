@@ -416,8 +416,20 @@
 
   .category-featured-body,
   .category-featured-body--reverse {
-    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
     gap: 24px !important;
+  }
+
+  .category-featured-body .category-featured-media,
+  .category-featured-body--reverse .category-featured-media {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .category-featured-body .category-featured-copy,
+  .category-featured-body--reverse .category-featured-copy {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
   }
 
   .category-featured-body--portrait {
