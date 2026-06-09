@@ -9,6 +9,7 @@ import {
   SITE_KEYWORDS,
   SITE_NAME,
   SITE_SHARE_DESCRIPTION,
+  SITE_SHARE_TITLE,
   SITE_SHORT_DESCRIPTION,
   SITE_TITLE,
   SITE_URL,
@@ -47,12 +48,12 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: SITE_TITLE,
+    title: SITE_SHARE_TITLE,
     description: SITE_SHARE_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: SITE_TITLE,
+    title: SITE_SHARE_TITLE,
     description: SITE_SHARE_DESCRIPTION,
   },
   robots: {

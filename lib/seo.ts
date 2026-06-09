@@ -8,6 +8,7 @@ import {
   SITE_NAME,
   SITE_SERVICES,
   SITE_SHARE_DESCRIPTION,
+  SITE_SHARE_TITLE,
   SITE_SHORT_DESCRIPTION,
   SITE_TAGLINE,
   SITE_TITLE,
@@ -27,13 +28,13 @@ export function getHomeMetadata(): Metadata {
       canonical: '/',
     },
     openGraph: {
-      title: SITE_TITLE,
+      title: SITE_SHARE_TITLE,
       description: SITE_SHARE_DESCRIPTION,
       url: SITE_URL,
       type: 'website',
     },
     twitter: {
-      title: SITE_TITLE,
+      title: SITE_SHARE_TITLE,
       description: SITE_SHARE_DESCRIPTION,
     },
   };
