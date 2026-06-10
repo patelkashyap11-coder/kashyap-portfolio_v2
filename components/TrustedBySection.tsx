@@ -6,6 +6,14 @@ interface Props {
   clients: Client[];
 }
 
+const INVERT_LOGO_NUMBERS = new Set([2, 4, 5]);
+
+function logoNumberFromClientId(id: string): number | null {
+  const basename = id.split('/').pop() ?? id;
+  const match = basename.match(/^(\d+)/);
+  return match ? Number.parseInt(match[1], 10) : null;
+}
+
 export function TrustedBySection({ clients }: Props) {
   const count = clients.length;
 
@@ -31,21 +39,31 @@ export function TrustedBySection({ clients }: Props) {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
         >
-          {clients.map((client) => (
-            <div key={client.id} className="clients-logo-cell">
-              {client.logo ? (
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="clients-logo-img clients-logo-img--keep-original"
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <span className="clients-logo-text">{client.name}</span>
-              )}
-            </div>
-          ))}
+          {clients.map((client) => {
+            const logoNumber = logoNumberFromClientId(client.id);
+            const invertOnDark =
+              logoNumber !== null && INVERT_LOGO_NUMBERS.has(logoNumber);
+
+            return (
+              <div key={client.id} className="clients-logo-cell">
+                {client.logo ? (
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className={
+                      invertOnDark
+                        ? 'clients-logo-img clients-logo-img--invert-dark'
+                        : 'clients-logo-img clients-logo-img--keep-original'
+                    }
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <span className="clients-logo-text">{client.name}</span>
+                )}
+              </div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
