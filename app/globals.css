@@ -873,8 +873,8 @@ body {
   );
   justify-items: center;
   align-items: center;
-  column-gap: clamp(12px, 2vw, 36px);
-  row-gap: 100px;
+  column-gap: clamp(6px, 1vw, 18px);
+  row-gap: clamp(18px, 6vw, 75px);
   width: 100%;
 }
 
@@ -890,8 +890,8 @@ body {
 @media (max-width: 767px) {
   .clients-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 28px;
-    row-gap: 24px;
+    column-gap: 14px;
+    row-gap: 12px;
   }
 }
 
@@ -901,14 +901,14 @@ body {
   justify-content: center;
   width: 100%;
   height: clamp(
-    64px,
-    calc(10vw - max(0, var(--client-count) - 6) * 0.55vw),
-    calc(130px - max(0, var(--client-count) - 6) * 10px)
+    96px,
+    calc((10vw - max(0, var(--client-count) - 6) * 0.55vw) * 1.5),
+    calc((130px - max(0, var(--client-count) - 6) * 10px) * 1.5)
   );
   max-width: clamp(
-    96px,
-    calc(16vw - max(0, var(--client-count) - 6) * 0.9vw),
-    calc(200px - max(0, var(--client-count) - 6) * 14px)
+    144px,
+    calc((16vw - max(0, var(--client-count) - 6) * 0.9vw) * 1.5),
+    calc((200px - max(0, var(--client-count) - 6) * 14px) * 1.5)
   );
   padding: 0;
 }
