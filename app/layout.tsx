@@ -5,6 +5,7 @@ import './mobile.css';
 import { Navbar } from '@/components/Navbar';
 import { SiteStructuredData } from '@/components/StructuredData';
 import { SmoothScroll } from '@/components/SmoothScroll';
+import { Analytics } from '@vercel/analytics/next';
 import {
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           <main>{children}</main>
         </SmoothScroll>
+        <Analytics />
       </body>
     </html>
   );
