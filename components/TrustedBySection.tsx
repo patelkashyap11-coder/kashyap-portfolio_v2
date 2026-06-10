@@ -7,7 +7,7 @@ interface Props {
 }
 
 const DARK_INVERT_LOGO_NUMBERS = new Set([2, 4, 5, 6]);
-const DARK_ORIGINAL_LOGO_NUMBERS = new Set([1, 3, 7]);
+const DARK_ORIGINAL_LOGO_NUMBERS = new Set([1, 3, 7, 8]);
 
 function logoNumberFromClientId(id: string): number | null {
   const basename = id.split('/').pop() ?? id;
