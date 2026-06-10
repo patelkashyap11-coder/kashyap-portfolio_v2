@@ -9,11 +9,11 @@ export const visualStoriesContent: SiteContent = {
     accentLine: 2,
     accentWord: 'LAST',
     subheadline:
-      'We create visual stories that help brands stand out — from fashion campaigns and restaurant content to jewellery, products and interiors.',
+      'We create visual stories that help brands stand out, from fashion campaigns and restaurant content to jewellery, products and interiors.',
     subheadlineSegments: [
       { text: 'We create ' },
       { text: 'visual stories', highlight: true },
-      { text: ' that help brands stand out — from ' },
+      { text: ' that help brands stand out, from ' },
       { text: 'fashion campaigns', highlight: true },
       { text: ' and ' },
       { text: 'restaurant content', highlight: true },
@@ -94,12 +94,12 @@ export const visualStoriesContent: SiteContent = {
           {
             title: 'Animation',
             description:
-              'Motion that adds rhythm, emphasis and polish — never just decoration.',
+              'Motion that adds rhythm, emphasis and polish, never just decoration.',
           },
           {
             title: 'Mix, sound design',
             description:
-              'We shape sound to heighten emotion and set the mood — fully tailored to your story.',
+              'We shape sound to heighten emotion and set the mood, fully tailored to your story.',
           },
           {
             title: 'Color grading',
@@ -125,7 +125,7 @@ export const visualStoriesContent: SiteContent = {
     'food-hospitality': {
       subtitle: 'Food & Hospitality',
       description:
-        'Refined imagery celebrating cuisine, gathering, and atmosphere — from restaurant editorials to hospitality campaigns.',
+        'Refined imagery celebrating cuisine, gathering, and atmosphere, from restaurant editorials to hospitality campaigns.',
     },
     jewellery: {
       subtitle: 'Fine Jewellery',

@@ -45,7 +45,7 @@ export const timelessContent: SiteContent = {
     'food-hospitality': {
       subtitle: 'Food & Hospitality',
       description:
-        'Refined imagery celebrating cuisine, gathering, and atmosphere — from restaurant editorials to hospitality campaigns.',
+        'Refined imagery celebrating cuisine, gathering, and atmosphere, from restaurant editorials to hospitality campaigns.',
     },
     jewellery: {
       subtitle: 'Fine Jewellery',

@@ -25,7 +25,7 @@ export const fontCombos: FontCombo[] = [
   {
     id: 'current',
     name: 'Current',
-    tagline: 'Google Fonts — live site today',
+    tagline: 'Google Fonts, live site today',
     display: 'Inter Tight',
     serif: 'Cormorant Garamond',
     body: 'Inter',
@@ -39,7 +39,7 @@ export const fontCombos: FontCombo[] = [
   {
     id: 'editorial',
     name: 'Editorial Fashion',
-    tagline: 'Backup pairing — condensed headlines + high-fashion serif',
+    tagline: 'Backup pairing: condensed headlines + high-fashion serif',
     display: 'Antonio',
     serif: 'Antic Didone',
     body: 'Outfit',
@@ -65,7 +65,7 @@ export const fontCombos: FontCombo[] = [
   {
     id: 'luxury',
     name: 'Luxury Minimal',
-    tagline: 'Active on site — refined caps + soft readable body',
+    tagline: 'Active on site: refined caps + soft readable body',
     display: 'Aboreto',
     serif: 'Bodoni Moda',
     body: 'Proza Libre',

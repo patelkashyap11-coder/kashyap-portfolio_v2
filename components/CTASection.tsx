@@ -57,7 +57,10 @@ export function CTASection() {
               <div key={`${line}-${index}`} className={`cta-line-anchor ${anchorClass}`}>
                 <motion.h2 variants={rise} className="cta-line">
                   {index === homeCta.accentLine ? (
-                    <span className="cta-line-accent">{homeCta.accentText}</span>
+                    <span className="cta-line-accent">
+                      {line ? `${line} ` : ''}
+                      {homeCta.accentText}
+                    </span>
                   ) : (
                     line
                   )}

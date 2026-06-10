@@ -50,7 +50,7 @@ function Specimen({ combo }: { combo: FontCombo }) {
       </div>
 
       <p className="font-specimen-body">
-        We create visual stories that help brands stand out — from fashion campaigns and
+        We create visual stories that help brands stand out, from fashion campaigns and
         restaurant content to jewellery, products and interiors.
       </p>
 
@@ -81,7 +81,7 @@ export default function FontPreviewPage() {
           <h1 className="font-preview-title">Font combinations</h1>
           <p className="font-preview-intro">
             Compare pairings from your local <code>public/fonts/</code> folder. Your live site
-            stays unchanged — tell me which one you want when you&apos;re ready.
+            stays unchanged. Tell me which one you want when you&apos;re ready.
           </p>
         </div>
         <Link href="/" className="font-preview-back">

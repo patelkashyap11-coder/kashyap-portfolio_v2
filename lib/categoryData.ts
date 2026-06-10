@@ -61,7 +61,7 @@ const baseCategories: CategoryMeta[] = [
     title: 'FOOD & HOSPITALITY',
     subtitle: 'Food & Hospitality',
     description:
-      'Refined imagery celebrating cuisine, gathering, and atmosphere — from restaurant editorials to hospitality campaigns.',
+      'Refined imagery celebrating cuisine, gathering, and atmosphere, from restaurant editorials to hospitality campaigns.',
     videoSrc:
       'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803361/food_ba669d.mp4',
     imageSrc: '/homepage/food.jpg',
