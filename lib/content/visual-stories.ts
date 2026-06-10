@@ -118,25 +118,29 @@ export const visualStoriesContent: SiteContent = {
   },
   categories: {
     fashion: {
-      subtitle: 'Fashion Photography',
-      description: 'Editorial campaigns, lookbooks and visual storytelling for brands.',
+      subtitle: 'Editorial Fashion',
+      description:
+        'Editorial campaigns, lookbooks and visual storytelling crafted with clarity, elegance, and intention.',
     },
     'food-hospitality': {
-      subtitle: 'Food & Hospitality Photography',
+      subtitle: 'Food & Hospitality',
       description:
-        'Restaurants, hotels and culinary experiences captured with refined visual storytelling.',
+        'Refined imagery celebrating cuisine, gathering, and atmosphere — from restaurant editorials to hospitality campaigns.',
     },
     jewellery: {
-      subtitle: 'Jewellery Photography',
-      description: 'Precision lighting and detail-led imagery where every sparkle tells a story.',
+      subtitle: 'Fine Jewellery',
+      description:
+        'Celebrating craftsmanship, light, and timeless design through imagery inspired by heritage, portraiture, and luxury editorial.',
     },
     products: {
-      subtitle: 'Product Photography',
-      description: 'Clean, commercial product imagery designed for brands, campaigns and e-commerce.',
+      subtitle: 'Product & Brand',
+      description:
+        'Elevating products through refined compositions, natural light, and intentional storytelling across campaigns and editorials.',
     },
     interiors: {
-      subtitle: 'Interior Photography',
-      description: 'Architectural and interior imagery that highlights design, atmosphere and detail.',
+      subtitle: 'Interiors & Spaces',
+      description:
+        'Imagery highlighting spatial harmony, materiality, and the quiet elegance of contemporary living.',
     },
   },
   contact: {

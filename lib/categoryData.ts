@@ -26,9 +26,9 @@ const baseCategories: CategoryMeta[] = [
   {
     slug: 'fashion',
     title: 'FASHION',
-    subtitle: 'Fashion Photography',
+    subtitle: 'Editorial Fashion',
     description:
-      'Editorial campaigns, lookbooks and visual storytelling for brands.',
+      'Editorial campaigns, lookbooks and visual storytelling crafted with clarity, elegance, and intention.',
     videoSrc:
       'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803366/fashion_fjqklk.mp4',
     imageSrc: '/homepage/fashion.jpg',
@@ -59,132 +59,132 @@ const baseCategories: CategoryMeta[] = [
   {
     slug: 'food-hospitality',
     title: 'FOOD & HOSPITALITY',
-    subtitle: 'Food & Hospitality Photography',
+    subtitle: 'Food & Hospitality',
     description:
-      'Restaurants, hotels and culinary experiences captured with refined visual storytelling.',
+      'Refined imagery celebrating cuisine, gathering, and atmosphere — from restaurant editorials to hospitality campaigns.',
     videoSrc:
       'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803361/food_ba669d.mp4',
     imageSrc: '/homepage/food.jpg',
     featuredProjects: [
       {
-        name: 'Restaurant Feature',
-        client: 'Fine Dining Group',
-        year: '2024',
+        name: 'THE BEAUTY OF SIMPLICITY',
+        client: 'Restaurant Editorial',
+        year: '2026',
         description:
-          'Atmospheric imagery celebrating cuisine, craft and the dining experience from kitchen to table.',
+          'Refined imagery focused on balance, texture, and the quiet elegance of contemporary dining.',
       },
       {
-        name: 'Hotel Campaign',
-        client: 'Boutique Hotel',
-        year: '2023',
+        name: 'TABLESIDE STORIES',
+        client: 'Hospitality Campaign',
+        year: '2026',
         description:
-          'Lifestyle and architectural frames that convey warmth, luxury and the spirit of hospitality.',
+          'Capturing moments of gathering, flavour, and atmosphere through carefully crafted visual narratives.',
       },
       {
-        name: 'Culinary Editorial',
-        client: 'Food Magazine',
-        year: '2024',
+        name: 'CRAFTED TO TASTE',
+        client: 'Food Editorial',
+        year: '2026',
         description:
-          'Editorial food photography with dramatic lighting and composition for print and digital features.',
+          'A study of colour, composition, and culinary artistry designed to elevate every dish beyond the plate.',
       },
     ],
   },
   {
     slug: 'jewellery',
     title: 'JEWELLERY',
-    subtitle: 'Jewellery Photography',
+    subtitle: 'Fine Jewellery',
     description:
-      'Precision lighting and detail-led imagery where every sparkle tells a story.',
+      'Celebrating craftsmanship, light, and timeless design through imagery inspired by heritage, portraiture, and luxury editorial.',
     videoSrc:
       'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803368/jewellery_prcnbx.mp4',
     imageSrc: '/homepage/jewellery.jpg',
     featuredProjects: [
       {
-        name: 'Fine Jewellery Collection',
-        client: 'Heritage Jeweller',
+        name: 'HEIRLOOM ELEGANCE',
+        client: 'Jewellery Collection',
         year: '2024',
         description:
-          'Macro precision and controlled reflections that reveal craftsmanship in every stone and setting.',
+          'Celebrating intricate craftsmanship and timeless design through richly styled imagery inspired by heritage and tradition.',
       },
       {
-        name: 'Campaign Imagery',
-        client: 'Luxury Brand',
+        name: 'LUMINOUS CONTRAST',
+        client: 'Luxury Campaign',
+        year: '2022',
+        description:
+          'A dramatic exploration of light, shadow, and brilliance, crafted to highlight the artistry and presence of fine jewellery.',
+      },
+      {
+        name: 'ADORNED PORTRAITS',
+        client: 'Jewellery Editorial',
         year: '2023',
         description:
-          'Hero product shots and lifestyle pairings designed for campaign, retail and e-commerce.',
-      },
-      {
-        name: 'Editorial Spread',
-        client: 'Fashion Publication',
-        year: '2024',
-        description:
-          'Art-directed jewellery editorial blending portraiture with product detail for magazine features.',
+          'Refined portraiture that brings together beauty, craftsmanship, and storytelling to showcase every detail with elegance.',
       },
     ],
   },
   {
     slug: 'products',
     title: 'PRODUCTS',
-    subtitle: 'Product Photography',
+    subtitle: 'Product & Brand',
     description:
-      'Clean, commercial product imagery designed for brands, campaigns and e-commerce.',
+      'Elevating products through refined compositions, natural light, and intentional storytelling across campaigns and editorials.',
     videoSrc:
       'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803363/products_pwdlyy.mp4',
     imageSrc: '/homepage/products.jpg',
     featuredProjects: [
       {
-        name: 'Brand Campaign',
-        client: 'Consumer Brand',
-        year: '2024',
+        name: 'CRAFTED OBJECTS',
+        client: 'Product Campaign',
+        year: '2022',
         description:
-          'Studio and lifestyle product frames built for multi-channel campaign deployment.',
+          'Elevating everyday products through refined compositions, natural light, and intentional storytelling.',
       },
       {
-        name: 'E-Commerce Suite',
-        client: 'Retail Partner',
-        year: '2023',
-        description:
-          'Consistent, conversion-focused product imagery across catalogues and marketplaces.',
-      },
-      {
-        name: 'Packaging & Detail',
-        client: 'Design Studio',
+        name: 'BOTANICAL NOTES',
+        client: 'Fragrance Campaign',
         year: '2024',
         description:
-          'Close-up detail and packaging shots that highlight material, finish and brand identity.',
+          'An editorial approach to fragrance photography inspired by texture, florals, and sensory experience.',
+      },
+      {
+        name: 'STATEMENT FRAMES',
+        client: 'Eyewear Editorial',
+        year: '2024',
+        description:
+          'Contemporary portraiture focused on form, character, and the timeless appeal of modern design.',
       },
     ],
   },
   {
     slug: 'interiors',
     title: 'INTERIORS',
-    subtitle: 'Interior Photography',
+    subtitle: 'Interiors & Spaces',
     description:
-      'Architectural and interior imagery that highlights design, atmosphere and detail.',
+      'Imagery highlighting spatial harmony, materiality, and the quiet elegance of contemporary living.',
     videoSrc:
       'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803362/interiors_flgrmx.mp4',
     imageSrc: '/homepage/interiors.jpg',
     featuredProjects: [
       {
-        name: 'Residential Project',
-        client: 'Interior Designer',
-        year: '2024',
+        name: 'MODERN DWELLINGS',
+        client: 'Residential Interior',
+        year: '2025',
         description:
-          'Natural light and spatial composition that showcase material palettes and design intent.',
+          'Refined imagery highlighting spatial harmony, materiality, and the quiet elegance of contemporary living.',
       },
       {
-        name: 'Commercial Space',
-        client: 'Architecture Firm',
-        year: '2023',
-        description:
-          'Wide-angle architectural frames capturing flow, scale and the relationship between spaces.',
-      },
-      {
-        name: 'Hospitality Interior',
-        client: 'Hotel Group',
+        name: 'PASTEL STORIES',
+        client: 'Bakery Interior',
         year: '2024',
         description:
-          'Atmospheric interior photography that conveys mood, luxury and the guest experience.',
+          'A celebration of colour, character, and thoughtful design, creating a space as delightful as the products it presents.',
+      },
+      {
+        name: 'GATHERING SPACES',
+        client: 'Hospitality Interior',
+        year: '2024',
+        description:
+          'An architectural study of light, texture, and atmosphere crafted for modern hospitality brands.',
       },
     ],
   },

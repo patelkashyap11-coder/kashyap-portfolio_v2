@@ -38,29 +38,29 @@ export const timelessContent: SiteContent = {
   },
   categories: {
     fashion: {
-      subtitle: 'Fashion imagery built around identity, style and attention to detail.',
+      subtitle: 'Editorial Fashion',
       description:
-        'From campaigns and editorials to lookbooks and brand launches, every frame is created to elevate the product and strengthen the brand.',
+        'Editorial campaigns, lookbooks and visual storytelling crafted with clarity, elegance, and intention.',
     },
     'food-hospitality': {
-      subtitle: 'Photography that makes people feel the atmosphere before they arrive.',
+      subtitle: 'Food & Hospitality',
       description:
-        'Designed for restaurants, cafés, hotels and hospitality brands that understand the value of first impressions.',
+        'Refined imagery celebrating cuisine, gathering, and atmosphere — from restaurant editorials to hospitality campaigns.',
     },
     jewellery: {
-      subtitle: 'Highlighting craftsmanship, texture and the details that matter.',
+      subtitle: 'Fine Jewellery',
       description:
-        'Jewellery photography focused on precision, elegance and the unique character of every piece.',
+        'Celebrating craftsmanship, light, and timeless design through imagery inspired by heritage, portraiture, and luxury editorial.',
     },
     products: {
-      subtitle: 'Commercial imagery designed to elevate products across every platform.',
+      subtitle: 'Product & Brand',
       description:
-        'Built for campaigns, e-commerce, packaging, advertising and everything in between.',
+        'Elevating products through refined compositions, natural light, and intentional storytelling across campaigns and editorials.',
     },
     interiors: {
-      subtitle: 'Capturing architecture and interiors with clarity, balance and intention.',
+      subtitle: 'Interiors & Spaces',
       description:
-        'Thoughtful imagery that communicates the design, atmosphere and experience of a space.',
+        'Imagery highlighting spatial harmony, materiality, and the quiet elegance of contemporary living.',
     },
   },
   contact: {
