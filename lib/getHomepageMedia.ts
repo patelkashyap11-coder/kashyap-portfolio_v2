@@ -49,7 +49,8 @@ function slugForMediaKey(key: string): string | null {
       normalized === categorySlug ||
       normalized.startsWith(`${categorySlug}-`) ||
       normalized.endsWith(`-${categorySlug}`) ||
-      normalized.includes(`-${categorySlug}-`)
+      normalized.includes(`-${categorySlug}-`) ||
+      new RegExp(`^${categorySlug}\\d*$`).test(normalized)
     ) {
       return categorySlug;
     }
@@ -80,7 +81,7 @@ async function listHomepageResources(): Promise<CloudinaryResource[]> {
 
 const getCachedHomepageResources = unstable_cache(
   listHomepageResources,
-  ['cloudinary-homepage-media-v5'],
+  ['cloudinary-homepage-media-v6'],
   { revalidate: 300, tags: ['homepage-media'] },
 );
 
