@@ -71,7 +71,7 @@ async function listCloudinaryClientResources(): Promise<CloudinaryClientResource
 
 const getCachedCloudinaryClientResources = unstable_cache(
   listCloudinaryClientResources,
-  ['cloudinary-clients-v2'],
+  ['cloudinary-clients-v3'],
   { revalidate: 3600, tags: ['client-logos'] },
 );
 
