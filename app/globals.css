@@ -883,7 +883,8 @@ body {
 .clients-grid[data-logo-count='9'],
 .clients-grid[data-logo-count='10'],
 .clients-grid[data-logo-count='11'],
-.clients-grid[data-logo-count='12'] {
+.clients-grid[data-logo-count='12'],
+.clients-grid[data-logo-count='13'] {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
