@@ -1,7 +1,17 @@
-export type CloudinaryVideoPreset = 'hero' | 'featured' | 'masonry' | 'lightbox';
+export type CloudinaryVideoPreset =
+  | 'hero'
+  | 'hero-hd'
+  | 'featured'
+  | 'masonry'
+  | 'lightbox';
 
-const VIDEO_PRESETS: Record<CloudinaryVideoPreset, { width: number; quality: string }> = {
+const VIDEO_PRESETS: Record<
+  CloudinaryVideoPreset,
+  { width: number; height?: number; quality: string }
+> = {
   hero: { width: 1920, quality: 'auto:good' },
+  /** Full HD web delivery from 4K masters — Cloudinary transcodes, site never serves the raw upload. */
+  'hero-hd': { width: 1920, height: 1080, quality: 'auto:best' },
   featured: { width: 1280, quality: 'auto:good' },
   masonry: { width: 800, quality: 'auto:good' },
   lightbox: { width: 1920, quality: 'auto:best' },
@@ -113,10 +123,11 @@ export function cloudinaryVideoUrl(
   const [, resourceType, uploadPath] = match;
   if (resourceType !== 'video') return url;
 
-  const { width, quality } = VIDEO_PRESETS[preset];
+  const { width, height, quality } = VIDEO_PRESETS[preset];
   const assetPath = assetPathFromUploadSegment(uploadPath);
   const transforms = [
     `w_${width}`,
+    ...(height ? [`h_${height}`] : []),
     'c_limit',
     `q_${quality}`,
     'vc_h264',

@@ -10,11 +10,21 @@ interface Props {
   videoSrc?: string;
   imageSrc?: string;
   index: number;
+  /** Prefetch video earlier — used for the first category panel (fashion). */
+  priorityLoad?: boolean;
 }
 
-export function CategorySection({ title, href, videoSrc, imageSrc, index }: Props) {
+export function CategorySection({
+  title,
+  href,
+  videoSrc,
+  imageSrc,
+  index,
+  priorityLoad = false,
+}: Props) {
   const ref = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -37,6 +47,29 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
     return () => mq.removeEventListener('change', sync);
   }, []);
 
+  useEffect(() => {
+    if (!videoSrc) return;
+
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setShouldLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: priorityLoad ? '100% 0px' : '20% 0px',
+        threshold: 0,
+      },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [videoSrc, priorityLoad]);
+
   return (
     <section
       ref={ref}
@@ -49,11 +82,13 @@ export function CategorySection({ title, href, videoSrc, imageSrc, index }: Prop
       >
         {videoSrc ? (
           <video
-            src={videoSrc}
+            src={shouldLoadVideo ? videoSrc : undefined}
+            poster={imageSrc}
             autoPlay
             muted
             loop
             playsInline
+            preload={shouldLoadVideo ? (priorityLoad ? 'auto' : 'metadata') : 'none'}
             className="category-section-media"
             {...protectedVideoProps}
           />

@@ -21,7 +21,11 @@ export default async function TimelessPreviewPage() {
   const homepageCategories = categories.map((cat) => ({
     title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
     href: `${PREVIEW_TIMELESS_PATH}/${cat.slug}`,
-    videoSrc: cloudinaryVideoUrl(homepageMedia[cat.slug]?.videoSrc ?? cat.videoSrc, 'hero'),
+    slug: cat.slug,
+    videoSrc: cloudinaryVideoUrl(
+      homepageMedia[cat.slug]?.videoSrc ?? cat.videoSrc,
+      cat.slug === 'fashion' ? 'hero-hd' : 'hero',
+    ),
     imageSrc: homepageMedia[cat.slug]?.imageSrc ?? cat.imageSrc,
   }));
 
@@ -36,7 +40,12 @@ export default async function TimelessPreviewPage() {
         style={{ height: `${homepageCategories.length * 100}vh` }}
       >
         {homepageCategories.map((cat, i) => (
-          <CategorySection key={cat.href} {...cat} index={i} />
+          <CategorySection
+            key={cat.href}
+            {...cat}
+            index={i}
+            priorityLoad={cat.slug === 'fashion'}
+          />
         ))}
       </div>
 

@@ -34,25 +34,25 @@ const baseCategories: CategoryMeta[] = [
     imageSrc: '/homepage/fashion.jpg',
     featuredProjects: [
       {
-        name: 'Editorial Campaign',
-        client: 'Luxury Fashion House',
-        year: '2024',
+        name: 'CRAFTED HERITAGE',
+        client: 'Handicraft Campaign',
+        year: '2025',
         description:
-          'A seasonal editorial exploring movement, texture and light — crafted for campaign rollout across print and digital.',
+          'Celebrating the richness of Indian craftsmanship through imagery that honours tradition, artistry, and cultural storytelling.',
       },
       {
-        name: 'Lookbook Series',
-        client: 'Contemporary Brand',
+        name: 'MODERN SILHOUETTES',
+        client: 'Fashion Lookbook',
         year: '2023',
         description:
-          'Clean, considered frames that let fabric and form speak — designed for e-commerce and social channels.',
+          'Refined compositions designed to showcase contemporary fashion with clarity, elegance, and intention.',
       },
       {
-        name: 'Visual Storytelling',
-        client: 'Creative Agency',
-        year: '2024',
+        name: 'NATURAL NARRATIVES',
+        client: 'Editorial Fashion Story',
+        year: '2022',
         description:
-          'Narrative-driven imagery that connects collection themes to culture, mood and brand identity.',
+          'An exploration of light, architecture, and movement, creating imagery that feels both timeless and contemporary.',
       },
     ],
   },
