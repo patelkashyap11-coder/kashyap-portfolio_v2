@@ -33,9 +33,13 @@ export function Navbar() {
   }));
 
   const isHomepage = isPreviewHome(pathname, previewBase);
+  const contactHref = withPreviewBase(previewBase, '/contact');
+  const isContactPage =
+    pathname === contactHref || pathname?.startsWith(`${contactHref}/`);
   const isDark = navLinks.some(
     (link) => pathname === link.href || pathname?.startsWith(`${link.href}/`),
   );
+  const isGalleryPage = isDark && !isContactPage;
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -126,19 +130,20 @@ export function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  const onDarkHero = isDark && !pinned;
+  const onDarkHero = isGalleryPage && !pinned;
   const onHomeCategoryStack = isHomepage && !open && overHomeCategoryStack;
   const onHomeCta = isHomepage && !open && overHomeCta;
   const onHomeHero =
     isHomepage && !open && !overHomeCategoryStack && !overHomeAfterCategories && !overHomeCta;
   const onHomeLightPanel = isHomepage && !open && overHomeAfterCategories && !overHomeCta;
+  const onContactHero = isContactPage && !open && !pinned;
   const hideHomeNavBackground =
-    isHomepage && (onHomeCategoryStack || overHomeAfterCategories);
+    isHomepage && (onHomeCategoryStack || overHomeAfterCategories || overHomeCta);
   const useLightNavText =
     onDarkHero ||
     onHomeCategoryStack ||
     onHomeCta ||
-    (prefersDark && (onHomeHero || onHomeLightPanel));
+    (prefersDark && (onHomeHero || onHomeLightPanel || onContactHero));
   const navFg = open ? '#0A0A0A' : useLightNavText ? '#ffffff' : '#0A0A0A';
   const showNavBackground =
     pinned &&
