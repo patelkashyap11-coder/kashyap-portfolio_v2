@@ -6,7 +6,7 @@ interface Props {
   clients: Client[];
 }
 
-const INVERT_LOGO_NUMBERS = new Set([2, 4, 5, 6]);
+const INVERT_LOGO_NUMBERS = new Set([2, 4, 6]);
 
 function logoNumberFromClientId(id: string): number | null {
   const basename = id.split('/').pop() ?? id;
