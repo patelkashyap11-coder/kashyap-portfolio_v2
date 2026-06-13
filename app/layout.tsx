@@ -7,6 +7,7 @@ import { SiteStructuredData } from '@/components/StructuredData';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { CRITICAL_FONT_PRELOADS } from '@/lib/criticalFonts';
 import {
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
@@ -74,6 +75,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN">
+      <head>
+        {CRITICAL_FONT_PRELOADS.map((font) => (
+          <link
+            key={font.href}
+            rel="preload"
+            href={font.href}
+            as="font"
+            type={font.type}
+            crossOrigin="anonymous"
+          />
+        ))}
+      </head>
       <body>
         <SiteStructuredData />
         <SmoothScroll>

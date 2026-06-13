@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useMemo, useLayoutEffect } from 'react';
+import { useState, useCallback, useMemo, useLayoutEffect, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
@@ -144,6 +144,20 @@ export function GalleryPage({
   const heroFallbackImageSrc = heroFallbackImage
     ? cloudinaryPreset(heroFallbackImage, 'hero')
     : undefined;
+  const [loadHeroVideo, setLoadHeroVideo] = useState(false);
+
+  useEffect(() => {
+    if (!heroVideo) return;
+
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(() => setLoadHeroVideo(true), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+
+    const timer = window.setTimeout(() => setLoadHeroVideo(true), 200);
+    return () => window.clearTimeout(timer);
+  }, [heroVideo]);
+
   const columnCount = usePinterestColumnCount();
   const masonryColumns = useMemo(
     () => buildPinterestColumns(galleryItems, columnCount, featuredCount),
@@ -162,21 +176,23 @@ export function GalleryPage({
       {/* ── Section 1: Hero ── */}
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
-          {heroVideo ? (
+          {heroFallbackImageSrc ? (
+            <div
+              className="category-hero-image"
+              style={{ backgroundImage: `url(${heroFallbackImageSrc})` }}
+              {...protectedMediaSurfaceProps}
+            />
+          ) : null}
+          {heroVideo && loadHeroVideo ? (
             <video
               src={heroVideo}
               autoPlay
               muted
               loop
               playsInline
+              preload="metadata"
               className="category-hero-video"
               {...protectedVideoProps}
-            />
-          ) : heroFallbackImageSrc ? (
-            <div
-              className="category-hero-image"
-              style={{ backgroundImage: `url(${heroFallbackImageSrc})` }}
-              {...protectedMediaSurfaceProps}
             />
           ) : null}
           <div className="category-hero-overlay" />

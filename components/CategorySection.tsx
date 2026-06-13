@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { heroPosterUrl } from '@/lib/posterUrl';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
 
 interface Props {
@@ -53,6 +54,8 @@ export function CategorySection({
     const node = ref.current;
     if (!node) return;
 
+    const eagerLoad = priorityLoad && !isMobile;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -61,14 +64,17 @@ export function CategorySection({
         }
       },
       {
-        rootMargin: priorityLoad ? '100% 0px' : '20% 0px',
+        rootMargin: eagerLoad ? '100% 0px' : '20% 0px',
         threshold: 0,
       },
     );
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [videoSrc, priorityLoad]);
+  }, [videoSrc, priorityLoad, isMobile]);
+
+  const posterSrc = heroPosterUrl(imageSrc);
+  const eagerLoad = priorityLoad && !isMobile;
 
   return (
     <section
@@ -81,22 +87,32 @@ export function CategorySection({
         {...protectedMediaSurfaceProps}
       >
         {videoSrc ? (
-          <video
-            src={shouldLoadVideo ? videoSrc : undefined}
-            poster={imageSrc}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload={shouldLoadVideo ? (priorityLoad ? 'auto' : 'metadata') : 'none'}
-            className="category-section-media"
-            {...protectedVideoProps}
-          />
+          <>
+            {posterSrc ? (
+              <div
+                className="category-section-media category-section-image"
+                style={{ backgroundImage: `url(${posterSrc})` }}
+                aria-hidden
+                {...protectedMediaSurfaceProps}
+              />
+            ) : null}
+            <video
+              src={shouldLoadVideo ? videoSrc : undefined}
+              poster={posterSrc}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload={shouldLoadVideo ? (eagerLoad ? 'auto' : 'metadata') : 'none'}
+              className="category-section-media"
+              {...protectedVideoProps}
+            />
+          </>
         ) : (
           <div
             className="category-section-media category-section-image"
             style={{
-              backgroundImage: imageSrc ? `url(${imageSrc})` : undefined,
+              backgroundImage: posterSrc ? `url(${posterSrc})` : undefined,
               backgroundColor: `hsl(${index * 22},5%,8%)`,
             }}
             {...protectedMediaSurfaceProps}

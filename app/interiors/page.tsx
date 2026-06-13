@@ -6,7 +6,6 @@ import { getCategoryMetadata } from '@/lib/seo';
 const SLUG = 'interiors';
 
 export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
 
 export async function generateMetadata() {
   return getCategoryMetadata(SLUG);

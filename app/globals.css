@@ -628,6 +628,12 @@ body {
   height: 100vh;
 }
 
+.category-section .category-section-image,
+.category-section video.category-section-media {
+  position: absolute;
+  inset: 0;
+}
+
 .category-section-media {
   width: 100%;
   height: 100%;
@@ -1300,6 +1306,8 @@ body {
 
 .category-hero-video,
 .category-hero-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;

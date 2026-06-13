@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { cloudinaryPreset, cloudinaryVideoUrl } from './cloudinaryUrl';
+import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
 import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
 import { categories } from './categoryData';
 
@@ -82,7 +83,7 @@ async function listHomepageResources(): Promise<CloudinaryResource[]> {
 const getCachedHomepageResources = unstable_cache(
   listHomepageResources,
   ['cloudinary-homepage-media-v6'],
-  { revalidate: 300, tags: ['homepage-media'] },
+  { revalidate: PAGE_REVALIDATE_SECONDS, tags: ['homepage-media'] },
 );
 
 /**
