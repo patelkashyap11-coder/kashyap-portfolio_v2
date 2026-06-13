@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getCategoryBySlug } from '@/lib/categoryData';
 import { siteContent } from '@/lib/content';
+import { REELS_LOCKED } from '@/lib/reels';
 import {
   SITE_CONTACT,
   SITE_DESCRIPTION,
@@ -68,6 +69,33 @@ export function getCategoryMetadata(slug: string): Metadata {
       `${category.subtitle.toLowerCase()} Ahmedabad`,
       `${category.subtitle.toLowerCase()} India`,
     ],
+    alternates: {
+      canonical: path,
+    },
+    openGraph: {
+      title: `${title} | ${SITE_NAME}`,
+      description,
+      url: absoluteUrl(path),
+      type: 'website',
+    },
+    twitter: {
+      title: `${title} | ${SITE_NAME}`,
+      description,
+    },
+  };
+}
+
+export function getReelsMetadata(): Metadata {
+  const title = 'Reels & Film';
+  const description =
+    'Vertical and horizontal reels, short films, and motion work by Kashyap Patel — commercial photography and filmmaking in Ahmedabad, India.';
+  const path = '/reels';
+
+  return {
+    title,
+    description,
+    keywords: [...SITE_KEYWORDS, 'reels', 'film', 'video', 'motion', 'filmmaker Ahmedabad'],
+    ...(REELS_LOCKED ? { robots: { index: false, follow: false } } : {}),
     alternates: {
       canonical: path,
     },

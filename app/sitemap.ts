@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { REELS_LOCKED } from '@/lib/reels';
 import { SITE_URL } from '@/lib/site';
 
 const ROUTES = [
@@ -8,6 +9,7 @@ const ROUTES = [
   '/jewellery',
   '/products',
   '/interiors',
+  ...(REELS_LOCKED ? [] : ['/reels']),
   '/contact',
 ] as const;
 
