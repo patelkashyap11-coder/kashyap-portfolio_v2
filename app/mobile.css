@@ -416,7 +416,6 @@
   .category-hero-back {
     left: 24px !important;
     top: 5.25rem !important;
-    padding: 9px 12px 9px 10px !important;
     font-size: 0.6875rem !important;
     letter-spacing: 0.12em !important;
   }
@@ -424,6 +423,11 @@
   .category-hero-back svg {
     width: 15px !important;
     height: 15px !important;
+  }
+
+  .category-hero-label {
+    font-size: 0.6875rem !important;
+    letter-spacing: 0.14em !important;
   }
 
   .category-hero-content {
