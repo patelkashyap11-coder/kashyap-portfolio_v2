@@ -37,7 +37,10 @@ export default async function HomePage() {
 
       <div
         className="category-stack-wrapper"
-        style={{ height: `${homepageCategories.length * 100}vh` }}
+        style={{
+          height: `${homepageCategories.length * 100}vh`,
+          ['--category-stack-count' as string]: homepageCategories.length,
+        }}
       >
         {homepageCategories.map((cat, i) => (
           <CategorySection

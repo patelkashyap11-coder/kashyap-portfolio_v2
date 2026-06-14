@@ -24,7 +24,11 @@ export function CategorySection({
   priorityLoad = false,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 767px)').matches,
+  );
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -79,11 +83,11 @@ export function CategorySection({
   return (
     <section
       ref={ref}
-      className="category-section relative overflow-hidden group"
+      className="category-section overflow-hidden group"
       style={{ zIndex: index + 1 }}
     >
       <motion.div
-        style={{ scale: isMobile ? 1 : scaleMotion, position: 'absolute', inset: 0 }}
+        style={isMobile ? { position: 'absolute', inset: 0 } : { scale: scaleMotion, position: 'absolute', inset: 0 }}
         {...protectedMediaSurfaceProps}
       >
         {videoSrc ? (
@@ -124,11 +128,15 @@ export function CategorySection({
         <div className="category-content-inner">
           <motion.h2
             className="category-title"
-            style={{ opacity: titleOpacity, x: titleX }}
+            style={
+              isMobile
+                ? undefined
+                : { opacity: titleOpacity, x: titleX }
+            }
           >
             {title}
           </motion.h2>
-          <motion.div style={{ opacity: subtitleOpacity, x: subtitleX }}>
+          <motion.div style={isMobile ? undefined : { opacity: subtitleOpacity, x: subtitleX }}>
             <Link href={href} className="category-view-link">
               View Work →
             </Link>

@@ -3,12 +3,18 @@
 @media (max-width: 767px) {
   html,
   body {
-    overflow-x: hidden;
+    overflow-x: visible !important;
     cursor: auto;
+  }
+
+  body:has(.homepage) main,
+  body:has(.homepage) .homepage {
+    overflow: visible !important;
   }
 
   :root {
     --page-inline: 24px;
+    --site-nav-height: 70px;
   }
 
   /* ── Hero ── */
@@ -65,15 +71,17 @@
     line-height: 1.48 !important;
   }
 
-  /* ── Category sections — mobile full-bleed stack ── */
+  /* ── Category sections — mobile sticky stack ── */
   .category-stack-wrapper {
-    height: auto !important;
+    height: calc(var(--category-stack-count, 5) * 100svh) !important;
+    position: relative !important;
+    isolation: isolate;
   }
 
   .category-section {
-    position: relative !important;
-    top: auto !important;
-    height: 100vh !important;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
     height: 100svh !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -98,7 +106,17 @@
   }
 
   .category-content {
-    padding: 2.25rem var(--page-inline) 0 !important;
+    padding: var(--site-nav-height) var(--page-inline) 0 !important;
+  }
+
+  .category-section .category-title {
+    font-size: clamp(3rem, 14vw, 5.5rem) !important;
+    line-height: 0.92 !important;
+    opacity: 1 !important;
+    transform: none !important;
+    text-shadow:
+      0 1px 18px rgba(0, 0, 0, 0.55),
+      0 0 1px rgba(0, 0, 0, 0.8);
   }
 
   .category-section .category-view-link {
@@ -106,9 +124,9 @@
     padding: 11px 18px !important;
   }
 
-  .category-section .category-title {
-    font-size: clamp(3rem, 14vw, 5.5rem) !important;
-    line-height: 0.92 !important;
+  .category-section .category-content-inner > div {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .category-section .category-view-link:active {
