@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { BrandLogo } from '@/components/BrandLogo';
 import { useSiteContent } from '@/lib/content/ContentProvider';
 import { getPreviewBase, withPreviewBase } from '@/lib/content/preview';
 import { SITE_CONTACT } from '@/lib/site';
@@ -83,29 +84,41 @@ export function CTASection() {
               <ArrowRight size={18} strokeWidth={1.75} />
             </span>
           </Link>
+          <a href={`mailto:${SITE_CONTACT.email}`} className="cta-contact-email">
+            {SITE_CONTACT.email}
+          </a>
         </motion.div>
       </div>
 
-      <div className="cta-footer-bar">
-        <div className="cta-footer-left">
-          <p className="cta-footer-copy">© 2026 KASHYAP PATEL</p>
-          <p className="cta-footer-tagline">{footer.statement}</p>
-        </div>
-        <div className="cta-footer-right">
-          <Link href={contactHref} className="cta-footer-link">
-            {footer.ctaLabel}
-          </Link>
-          {footerLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cta-footer-link"
-            >
-              {link.label}
-            </a>
-          ))}
+      <div className="cta-footer">
+        <div className="cta-footer-bar">
+          <div className="cta-footer-left">
+            <p className="cta-footer-copy">© 2026 KASHYAP PATEL</p>
+            <p className="cta-footer-tagline">{footer.statement}</p>
+          </div>
+
+          <div className="cta-footer-brand">
+            <Link href={previewBase ?? '/'} className="cta-footer-logo" aria-label="Kashyap Patel home">
+              <BrandLogo inverted />
+            </Link>
+          </div>
+
+          <div className="cta-footer-right">
+            <Link href={contactHref} className="cta-footer-link">
+              {footer.ctaLabel}
+            </Link>
+            {footerLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-footer-link"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

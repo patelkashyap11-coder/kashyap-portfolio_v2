@@ -14,7 +14,7 @@
 
   :root {
     --page-inline: 24px;
-    --site-nav-height: 70px;
+    --site-nav-height: 90px;
   }
 
   /* ── Hero ── */
@@ -271,22 +271,51 @@
     height: 40px !important;
   }
 
+  .cta-contact-email {
+    font-size: clamp(0.75rem, 3.2vw, 0.9375rem) !important;
+    letter-spacing: 0.02em !important;
+    text-transform: lowercase !important;
+  }
+
+  .cta-footer {
+    padding-top: 40px !important;
+  }
+
   .cta-footer-bar {
+    display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
     gap: 20px !important;
-    padding-top: 40px !important;
+  }
+
+  .cta-footer-left,
+  .cta-footer-brand,
+  .cta-footer-right {
+    justify-self: auto !important;
+    width: 100%;
+  }
+
+  .cta-footer-brand {
+    order: 3;
   }
 
   .cta-footer-left {
+    order: 1;
     align-items: center !important;
   }
 
   .cta-footer-right {
+    order: 2;
     justify-content: center !important;
+    align-items: center !important;
     gap: 20px !important;
-    flex-wrap: wrap;
+  }
+
+  .cta-footer-logo .brand-logo {
+    height: clamp(32px, 2.25rem, 40px) !important;
+    max-width: min(280px, 78vw) !important;
+    object-position: bottom center !important;
   }
 
   /* ── Footer ── */
@@ -309,10 +338,14 @@
   }
 
   .site-nav-logo {
-    font-size: 0.75rem !important;
     margin-left: 0 !important;
     margin-right: 8px !important;
     max-width: none !important;
+  }
+
+  .site-nav-logo .brand-logo {
+    height: clamp(46px, calc(1.75rem + 20px), 54px) !important;
+    max-width: min(360px, 72vw) !important;
   }
 
   .site-nav-shell:not(.site-nav-shell--open) .site-nav {

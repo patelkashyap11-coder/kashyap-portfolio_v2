@@ -34,6 +34,7 @@
   --font-tight: 'Aboreto', sans-serif;
   --font-serif: 'Bodoni Moda', serif;
   --page-inline: 48px;
+  --site-nav-height: 128px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -187,6 +188,33 @@ body {
   white-space: nowrap;
 }
 
+.brand-logo {
+  display: block;
+  height: clamp(54px, calc(2.75rem + 20px), 72px);
+  width: auto;
+  max-width: min(560px, 58vw);
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-logo--theme-adaptive.brand-logo--on-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .homepage .brand-logo--theme-adaptive.brand-logo--on-light,
+  .gallery-page .brand-logo--theme-adaptive.brand-logo--on-light,
+  .contact-page .brand-logo--theme-adaptive.brand-logo--on-light {
+    display: none;
+  }
+
+  .homepage .brand-logo--theme-adaptive.brand-logo--on-dark,
+  .gallery-page .brand-logo--theme-adaptive.brand-logo--on-dark,
+  .contact-page .brand-logo--theme-adaptive.brand-logo--on-dark {
+    display: block;
+  }
+}
+
 .nav-ul {
   position: relative;
   display: inline-block;
@@ -212,15 +240,20 @@ body {
 }
 
 .site-nav-logo {
+  display: block;
   margin-right: 24px;
   margin-left: 0;
-  max-width: 42%;
+  max-width: 58%;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.site-nav-logo .brand-logo {
+  max-width: min(560px, 100%);
 }
 
 @media (min-width: 768px) {
-  .site-nav-logo.logo-text {
-    font-family: var(--font-inter);
-    letter-spacing: -0.03em;
+  .site-nav-logo {
     margin-left: 6.5px;
   }
 }
@@ -246,14 +279,21 @@ body {
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
+  :root {
+    --site-nav-height: 104px;
+  }
+
   .site-nav {
     padding: 22px var(--page-inline);
   }
 
   .site-nav-logo {
-    font-size: 0.8125rem;
     margin-right: 12px;
-    max-width: 36%;
+    max-width: 52%;
+  }
+
+  .site-nav-logo .brand-logo {
+    height: clamp(48px, calc(2.2rem + 20px), 60px);
   }
 
   .site-nav-links {
@@ -660,6 +700,16 @@ body {
   padding: 2.25rem var(--page-inline) 0;
 }
 
+@media (min-width: 768px) {
+  .category-content {
+    padding-top: calc(var(--site-nav-height) - 15px);
+  }
+
+  .gallery-page .category-hero-back {
+    top: calc(var(--site-nav-height) + 16px);
+  }
+}
+
 .category-content-inner {
   display: flex;
   flex-direction: column;
@@ -674,7 +724,7 @@ body {
   font-family: var(--font-tight);
   font-size: clamp(3rem, 9vw, 7.5rem);
   font-weight: 400;
-  line-height: 0.92;
+  line-height: 0.88;
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: #ffffff;
@@ -1025,7 +1075,9 @@ body {
 
 .cta-contact-row {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 14px);
   margin-top: clamp(40px, 5.5vw, 72px);
 }
 
@@ -1070,19 +1122,65 @@ body {
   box-shadow: var(--accent-glow);
 }
 
+.cta-contact-email {
+  font-family: var(--font-tight);
+  font-size: clamp(0.8125rem, 1.5vw, 1.0625rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.cta-contact-email:hover {
+  color: var(--accent);
+  text-shadow: var(--accent-glow);
+}
+
+.cta-footer {
+  width: 100%;
+  margin-top: auto;
+  padding-top: clamp(28px, 4vw, 40px);
+}
+
 .cta-footer-bar {
   width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding-top: clamp(28px, 4vw, 40px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(16px, 3vw, 32px);
 }
 
 .cta-footer-left {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+  justify-self: start;
+}
+
+.cta-footer-brand {
+  display: flex;
+  align-items: flex-end;
+  justify-self: center;
+}
+
+.cta-footer-logo {
+  display: flex;
+  align-items: flex-end;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.cta-footer-logo .brand-logo {
+  height: clamp(36px, 2.75rem, 48px);
+  width: auto;
+  max-width: min(360px, 42vw);
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
 }
 
 .cta-footer-copy,
@@ -1106,8 +1204,12 @@ body {
 
 .cta-footer-right {
   display: flex;
-  align-items: center;
-  gap: clamp(28px, 4.5vw, 56px);
+  align-items: flex-end;
+  justify-content: flex-end;
+  justify-self: end;
+  flex-wrap: wrap;
+  gap: clamp(20px, 4.5vw, 56px);
+  min-width: 0;
 }
 
 .cta-footer-link {
@@ -1140,8 +1242,16 @@ body {
 }
 
 .site-footer-logo {
+  display: inline-flex;
   color: var(--page-text);
   text-decoration: none;
+  line-height: 0;
+}
+
+.site-footer-logo .brand-logo {
+  height: clamp(54px, calc(2.75rem + 20px), 72px);
+  max-width: min(560px, 85vw);
+  object-position: center;
 }
 
 .site-footer-tagline {

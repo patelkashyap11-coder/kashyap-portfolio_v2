@@ -65,3 +65,11 @@ export const BRAND = {
   accent: '#C7E200',
   cream: '#F5F5F2',
 } as const;
+
+/** Brand wordmarks on transparent PNG. */
+export const BRAND_LOGO = {
+  src: '/brand/logo.png',
+  srcLight: '/brand/logo-light.png',
+  width: 800,
+  height: 400,
+} as const;

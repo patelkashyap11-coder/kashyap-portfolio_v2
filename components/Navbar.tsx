@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPreviewBase, isPreviewHome, withPreviewBase } from '@/lib/content/preview';
+import { BrandLogo } from '@/components/BrandLogo';
 import { REELS_LOCKED } from '@/lib/reels';
 
 const links = [
@@ -217,10 +218,10 @@ export function Navbar() {
           >
           <Link
             href={previewBase ?? '/'}
-            className="logo-text site-nav-logo z-50 relative shrink-0"
-            style={{ color: navFg }}
+            className="site-nav-logo z-50 relative shrink-0"
+            aria-label="Kashyap Patel home"
           >
-            KASHYAP PATEL
+            <BrandLogo inverted={!open && useLightNavText} priority />
           </Link>
 
           <div className="site-nav-links hidden md:flex items-center min-w-0 flex-1 justify-end">
