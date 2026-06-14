@@ -202,8 +202,9 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
           <div className="category-hero-overlay" />
         </div>
 
-        <Link href={homeHref} className="category-hero-back t-label">
-          <ArrowLeft size={12} /> Back
+        <Link href={homeHref} className="category-hero-back">
+          <ArrowLeft size={16} strokeWidth={1.75} aria-hidden />
+          <span>Back</span>
         </Link>
 
         <div className="category-hero-content">

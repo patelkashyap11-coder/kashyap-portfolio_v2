@@ -2,10 +2,13 @@ import { BRAND } from '@/lib/site';
 
 type BrandMarkProps = {
   letterSize: number;
-  showUnderline?: boolean;
+  fontFamily?: string;
 };
 
-export function BrandMark({ letterSize, showUnderline = true }: BrandMarkProps) {
+export function BrandMark({
+  letterSize,
+  fontFamily = 'Aboreto',
+}: BrandMarkProps) {
   return (
     <div
       style={{
@@ -20,26 +23,26 @@ export function BrandMark({ letterSize, showUnderline = true }: BrandMarkProps) 
     >
       <div
         style={{
+          display: 'flex',
           fontSize: letterSize,
-          fontWeight: 800,
+          fontWeight: 400,
           color: BRAND.accent,
-          letterSpacing: '-0.06em',
+          letterSpacing: -0.04,
           lineHeight: 1,
-          fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+          fontFamily,
         }}
       >
         KP
       </div>
-      {showUnderline ? (
-        <div
-          style={{
-            marginTop: letterSize * 0.12,
-            width: letterSize * 1.35,
-            height: Math.max(2, letterSize * 0.08),
-            background: BRAND.accent,
-          }}
-        />
-      ) : null}
+      <div
+        style={{
+          display: 'flex',
+          marginTop: letterSize * 0.1,
+          width: letterSize * 1.35,
+          height: Math.max(2, letterSize * 0.08),
+          background: BRAND.accent,
+        }}
+      />
     </div>
   );
 }

@@ -187,7 +187,6 @@ body {
   white-space: nowrap;
 }
 
-/* ── Nav underline ───────────────────────────── */
 .nav-ul {
   position: relative;
   display: inline-block;
@@ -1337,15 +1336,39 @@ body {
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: rgba(255, 255, 255, 0.4);
+  gap: 10px;
+  padding: 10px 14px 10px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-tight);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
   text-decoration: none;
-  transition: color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.category-hero-back svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
 }
 
 .category-hero-back:hover {
   color: var(--accent);
-  text-shadow: var(--accent-glow);
+  background: rgba(0, 0, 0, 0.52);
+  border-color: rgba(199, 226, 0, 0.35);
 }
 
 .category-hero-content {
