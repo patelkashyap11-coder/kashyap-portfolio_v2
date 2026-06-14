@@ -25,6 +25,7 @@ export function Navbar() {
   const [overHomeCategoryStack, setOverHomeCategoryStack] = useState(false);
   const [overHomeAfterCategories, setOverHomeAfterCategories] = useState(false);
   const [overHomeCta, setOverHomeCta] = useState(false);
+  const [overGalleryHero, setOverGalleryHero] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const lastScrollY           = useRef(0);
   const pathname = usePathname();
@@ -97,18 +98,15 @@ export function Navbar() {
   }, [isHomepage, pathname]);
 
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const sync = () => setPrefersDark(mq.matches);
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
-
-  useEffect(() => {
     const fn = () => {
       const y = window.scrollY;
       setScrollY(y);
       setPinned(y > 40);
+
+      if (isGalleryPage && !isMobile) {
+        const hero = document.querySelector('.category-hero') as HTMLElement | null;
+        setOverGalleryHero(hero ? y < hero.offsetHeight : false);
+      }
 
       if (y <= 40) {
         setVisible(true);
@@ -120,9 +118,28 @@ export function Navbar() {
 
       lastScrollY.current = y;
     };
+    fn();
     window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
+    window.addEventListener('resize', fn);
+    return () => {
+      window.removeEventListener('scroll', fn);
+      window.removeEventListener('resize', fn);
+    };
+  }, [isGalleryPage, isMobile]);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const sync = () => setPrefersDark(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
   }, []);
+
+  useEffect(() => {
+    if (isMobile || !isGalleryPage) {
+      setOverGalleryHero(false);
+    }
+  }, [isGalleryPage, isMobile, pathname]);
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
@@ -132,7 +149,7 @@ export function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  const onDarkHero = isGalleryPage && !pinned;
+  const onDarkHero = isGalleryPage && (isMobile ? !pinned : overGalleryHero);
   const onHomeCategoryStack = isHomepage && !open && overHomeCategoryStack;
   const onHomeCta = isHomepage && !open && overHomeCta;
   const onHomeHero =
@@ -141,17 +158,19 @@ export function Navbar() {
   const onContactHero = isContactPage && !open && !pinned;
   const hideHomeNavBackground =
     isHomepage && (onHomeCategoryStack || overHomeAfterCategories || overHomeCta);
+  const hideGalleryNavBackground = isGalleryPage && overGalleryHero;
   const useLightNavText =
     onDarkHero ||
     onHomeCategoryStack ||
     onHomeCta ||
-    (prefersDark && (onHomeHero || onHomeLightPanel || onContactHero));
+    (prefersDark && (onHomeHero || onHomeLightPanel || onContactHero || isGalleryPage));
   const navFg = open ? '#0A0A0A' : useLightNavText ? '#ffffff' : '#0A0A0A';
   const showNavBackground =
     pinned &&
     !open &&
     !isMobile &&
-    !hideHomeNavBackground;
+    !hideHomeNavBackground &&
+    !hideGalleryNavBackground;
   const useDarkNavBackground =
     (isDark && prefersDark) || (isHomepage && prefersDark && (onHomeHero || onHomeLightPanel));
   const bg = showNavBackground
