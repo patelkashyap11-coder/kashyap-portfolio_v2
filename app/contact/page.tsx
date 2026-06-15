@@ -8,18 +8,26 @@ import { ArrowUpRight } from 'lucide-react';
 import { BrandLogo } from '@/components/BrandLogo';
 import { useSiteContent } from '@/lib/content/ContentProvider';
 import { getPreviewBase } from '@/lib/content/preview';
-import { SITE_CONTACT, SITE_LOCATION } from '@/lib/site';
+import { cloudinaryUrl } from '@/lib/cloudinaryUrl';
+import { CONTACT_PLAY_CARDS, SITE_CONTACT, SITE_LOCATION } from '@/lib/site';
+
+const playCardImage = (url: string) =>
+  cloudinaryUrl(url, { width: 800, quality: 'auto:good' });
 
 const socialLinks = [
   {
     label: 'Instagram',
     href: SITE_CONTACT.instagram,
-    image: '/fashion/fashion-3.jpeg',
+    image: playCardImage(CONTACT_PLAY_CARDS.instagram),
+    lead: 'Behind the frames.',
+    body: 'Latest campaigns, BTS moments and visual experiments.',
   },
   {
     label: 'WhatsApp',
     href: SITE_CONTACT.whatsapp,
-    image: '/interiors/DSC02369-HDR.jpg',
+    image: playCardImage(CONTACT_PLAY_CARDS.whatsapp),
+    lead: 'Have a project in mind?',
+    body: "Let's discuss ideas, timelines and possibilities.",
   },
 ];
 
@@ -118,7 +126,7 @@ export default function ContactPage() {
           </div>
 
           <div className="contact-cards">
-            {socialLinks.map(({ label, href, image }, i) => (
+            {socialLinks.map(({ label, href, image, lead, body }, i) => (
               <motion.div
                 key={label}
                 className="contact-card"
@@ -141,15 +149,20 @@ export default function ContactPage() {
                     priority={i === 0}
                   />
                   <span className="contact-card-overlay" aria-hidden />
-                  <span className="contact-card-footer">
-                    <span className="contact-card-title">
-                      <span className="contact-card-label">{label}</span>
+                  <span className="contact-card-copy">
+                    <span className="contact-card-heading">
+                      <span className="contact-card-label t-display">{label}</span>
                       <ArrowUpRight
                         className="contact-card-arrow"
-                        size={11}
+                        size={14}
                         strokeWidth={2.25}
                         aria-hidden
                       />
+                    </span>
+                    <span className="contact-card-rule" aria-hidden />
+                    <span className="contact-card-description">
+                      <span className="contact-card-lead">{lead}</span>
+                      <span className="contact-card-body">{body}</span>
                     </span>
                   </span>
                 </a>

@@ -466,21 +466,31 @@
     gap: 8px !important;
   }
 
-  .contact-card-footer {
+  .contact-card-copy {
     left: 12px !important;
     right: 12px !important;
     bottom: 14px !important;
+    gap: 8px !important;
   }
 
   .contact-card-label {
-    font-size: 10px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.12em !important;
+    font-size: 1.175rem !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .contact-card-description {
+    min-height: 3.45em !important;
+    max-width: 100% !important;
+  }
+
+  .contact-card-lead,
+  .contact-card-body {
+    font-size: 0.875rem !important;
   }
 
   .contact-card-arrow {
-    width: 10px !important;
-    height: 10px !important;
+    width: 13px !important;
+    height: 13px !important;
   }
 
   .contact-field-value,

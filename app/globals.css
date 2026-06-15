@@ -2244,38 +2244,78 @@ body {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.78) 0%,
-    rgba(0, 0, 0, 0.18) 42%,
-    transparent 68%
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.42) 38%,
+    rgba(0, 0, 0, 0.08) 62%,
+    transparent 78%
   );
   pointer-events: none;
 }
 
-.contact-card-footer {
+.contact-card-copy {
   position: absolute;
   left: 16px;
   right: 16px;
   bottom: 18px;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  align-items: start;
+  justify-items: start;
+  gap: 10px;
+  width: calc(100% - 32px);
 }
 
-.contact-card-title {
+.contact-card-heading {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 1.1em;
 }
 
 .contact-card-label {
   font-family: var(--font-tight);
-  font-weight: 800;
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 1.44vw, 1.72rem);
+  letter-spacing: -0.045em;
+  line-height: 0.9;
   text-transform: uppercase;
   color: #ffffff;
   transition: color 0.35s ease, text-shadow 0.35s ease;
+}
+
+.contact-card-rule {
+  display: block;
+  width: 2.75em;
+  height: 2px;
+  background: var(--accent);
+  margin-top: -2px;
+}
+
+.contact-card-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  max-width: 18.75rem;
+  min-height: 3.55em;
+}
+
+.contact-card-lead {
+  font-family: var(--font-inter);
+  font-size: clamp(0.875rem, 1.03vw, 1.015rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.contact-card-body {
+  font-family: var(--font-inter);
+  font-size: clamp(0.875rem, 1.03vw, 1.015rem);
+  font-weight: 400;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .contact-card-arrow {
@@ -2495,7 +2535,7 @@ body {
     min-height: 0;
   }
 
-  .contact-card-footer {
+  .contact-card-copy {
     left: 14px;
     right: 14px;
     bottom: 16px;
