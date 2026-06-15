@@ -84,9 +84,6 @@ export function CTASection() {
               <ArrowRight size={18} strokeWidth={1.75} />
             </span>
           </Link>
-          <a href={`mailto:${SITE_CONTACT.email}`} className="cta-contact-email">
-            {SITE_CONTACT.email}
-          </a>
         </motion.div>
       </div>
 

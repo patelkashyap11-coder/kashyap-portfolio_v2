@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
+import { BrandLogo } from '@/components/BrandLogo';
 import { useSiteContent } from '@/lib/content/ContentProvider';
-import { SITE_CONTACT } from '@/lib/site';
+import { getPreviewBase } from '@/lib/content/preview';
+import { SITE_CONTACT, SITE_LOCATION } from '@/lib/site';
 
 const socialLinks = [
   {
@@ -33,6 +36,8 @@ const rise = (delay: number) => ({
 });
 
 export default function ContactPage() {
+  const pathname = usePathname();
+  const previewBase = getPreviewBase(pathname);
   const { contact } = useSiteContent();
   const subheadlineParts = contact.subheadline.split(contact.accentWord);
 
@@ -58,7 +63,7 @@ export default function ContactPage() {
                 variants={rise(0.16)}
                 initial="hidden"
                 animate="show"
-                className="contact-headline t-display"
+                className="contact-headline contact-headline--sub t-display"
               >
                 {subheadlineParts[0]}
                 <span className="contact-headline-accent">{contact.accentWord}</span>
@@ -82,45 +87,34 @@ export default function ContactPage() {
 
         <div className="contact-main">
           <div className="contact-info">
-            <motion.div
-              className="contact-field"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            >
-              <p className="contact-field-label">Email Address</p>
-              <a
-                href={`mailto:${SITE_CONTACT.email}`}
-                className="contact-field-value contact-field-value--email"
-              >
-                {SITE_CONTACT.email}
-              </a>
-            </motion.div>
-
-            <motion.div
-              className="contact-field"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            >
-              <p className="contact-field-label">Phone Number</p>
-              <a href={`tel:${SITE_CONTACT.phone}`} className="contact-field-value">
-                {SITE_CONTACT.phoneDisplay}
-              </a>
-            </motion.div>
-
-            {contact.ctaLabel ? (
+            <div className="contact-fields-row">
               <motion.div
+                className="contact-field"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.48, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+                transition={{ delay: 0.3, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
               >
-                <Link href={`mailto:${SITE_CONTACT.email}`} className="contact-cta-link">
-                  <span>{contact.ctaLabel}</span>
-                  <ArrowRight size={18} strokeWidth={1.75} aria-hidden />
-                </Link>
+                <p className="contact-field-label">Email Address</p>
+                <a
+                  href={`mailto:${SITE_CONTACT.email}`}
+                  className="contact-field-value contact-field-value--email"
+                >
+                  {SITE_CONTACT.email}
+                </a>
               </motion.div>
-            ) : null}
+
+              <motion.div
+                className="contact-field"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              >
+                <p className="contact-field-label">Phone Number</p>
+                <a href={`tel:${SITE_CONTACT.phone}`} className="contact-field-value">
+                  {SITE_CONTACT.phoneDisplay}
+                </a>
+              </motion.div>
+            </div>
           </div>
 
           <div className="contact-cards">
@@ -148,9 +142,14 @@ export default function ContactPage() {
                   />
                   <span className="contact-card-overlay" aria-hidden />
                   <span className="contact-card-footer">
-                    <span className="contact-card-label">{label}</span>
-                    <span className="contact-card-arrow" aria-hidden>
-                      ↗
+                    <span className="contact-card-title">
+                      <span className="contact-card-label">{label}</span>
+                      <ArrowUpRight
+                        className="contact-card-arrow"
+                        size={11}
+                        strokeWidth={2.25}
+                        aria-hidden
+                      />
                     </span>
                   </span>
                 </a>
@@ -159,22 +158,27 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <motion.address
-          className="contact-address"
+        <motion.div
+          className="contact-footer-end"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.75, duration: 0.6 }}
         >
-          <span>Ahmedabad</span>
-          <span className="contact-address-sep" aria-hidden="true">
-            {' '}|{' '}
-          </span>
-          <span>Gujarat</span>
-          <span className="contact-address-sep" aria-hidden="true">
-            {' '}|{' '}
-          </span>
-          <span>India</span>
-        </motion.address>
+          <p className="contact-address">
+            {SITE_LOCATION.city}
+            <span className="contact-address-sep" aria-hidden="true">
+              |
+            </span>
+            {SITE_LOCATION.region}
+            <span className="contact-address-sep" aria-hidden="true">
+              |
+            </span>
+            {SITE_LOCATION.country}
+          </p>
+          <Link href={previewBase ?? '/'} className="contact-footer-logo" aria-label="Kashyap Patel home">
+            <BrandLogo themeAdaptive />
+          </Link>
+        </motion.div>
       </div>
     </div>
   );

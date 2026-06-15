@@ -145,10 +145,10 @@ export const visualStoriesContent: SiteContent = {
   },
   contact: {
     headline: 'Small idea or big project?',
-    subheadline: "Let's talk!",
-    accentWord: 'talk',
+    subheadline: "Let's ",
+    accentWord: 'Talk!',
     body: '',
-    ctaLabel: 'Contact us',
+    ctaLabel: '',
   },
   footer: {
     statement: 'CINEMAGRAPH',

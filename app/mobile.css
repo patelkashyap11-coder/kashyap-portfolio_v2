@@ -240,7 +240,11 @@
   }
 
   .cta-headline-grid {
-    min-height: clamp(220px, 58vw, 320px) !important;
+    min-height: clamp(200px, 52vw, 280px) !important;
+  }
+
+  .cta-stage {
+    padding-bottom: 32px !important;
   }
 
   .cta-line-anchor--top,
@@ -257,8 +261,9 @@
   }
 
   .cta-contact-row {
-    margin-top: 40px !important;
+    margin-top: calc(48px + 50px) !important;
     justify-content: center !important;
+    padding-top: 8px !important;
   }
 
   .cta-contact-link {
@@ -267,8 +272,13 @@
   }
 
   .cta-contact-icon {
-    width: 40px !important;
-    height: 40px !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .cta-contact-icon svg {
+    width: 18px !important;
+    height: 18px !important;
   }
 
   .cta-contact-email {
@@ -298,6 +308,10 @@
 
   .cta-footer-brand {
     order: 3;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
   }
 
   .cta-footer-left {
@@ -312,10 +326,16 @@
     gap: 20px !important;
   }
 
+  .cta-footer-logo {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
   .cta-footer-logo .brand-logo {
     height: clamp(32px, 2.25rem, 40px) !important;
     max-width: min(280px, 78vw) !important;
-    object-position: bottom center !important;
+    object-position: center center !important;
+    margin-inline: auto !important;
   }
 
   /* ── Footer ── */
@@ -407,7 +427,7 @@
   }
 
   .contact-headline {
-    font-size: clamp(2.25rem, 11vw, 3.25rem) !important;
+    font-size: clamp(2rem, 10vw, 3rem) !important;
   }
 
   .contact-divider {
@@ -422,11 +442,27 @@
 
   .contact-info {
     gap: 36px !important;
+    width: 100% !important;
+  }
+
+  .contact-fields-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 36px !important;
+    width: 100% !important;
+  }
+
+  .contact-field-label {
+    font-size: 11px !important;
+    letter-spacing: 0.18em !important;
+    margin-bottom: 18px !important;
   }
 
   .contact-cards {
     grid-column: auto !important;
+    width: 100% !important;
     height: clamp(320px, 52vw, 420px) !important;
+    min-height: 0 !important;
     gap: 8px !important;
   }
 
@@ -438,30 +474,45 @@
 
   .contact-card-label {
     font-size: 10px !important;
+    font-weight: 800 !important;
     letter-spacing: 0.12em !important;
+  }
+
+  .contact-card-arrow {
+    width: 10px !important;
+    height: 10px !important;
   }
 
   .contact-field-value,
   .contact-field-value--email {
     font-size: clamp(1.5rem, 6vw, 1.875rem) !important;
+    line-height: 1.08 !important;
+    word-break: break-word !important;
   }
 
   .contact-address {
     position: static !important;
-    left: auto !important;
-    bottom: auto !important;
-    margin-top: 48px !important;
-    font-size: 13px !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
+    margin-top: 0 !important;
     justify-content: center !important;
-    align-items: center !important;
-    text-align: center !important;
-    width: 100% !important;
+    font-size: 0.6875rem !important;
+    white-space: nowrap !important;
   }
 
-  .contact-address-sep {
-    display: inline !important;
+  .contact-footer-end {
+    align-items: center !important;
+    text-align: center !important;
+    padding-top: 48px !important;
+    gap: 20px !important;
+  }
+
+  .contact-footer-logo {
+    justify-content: center !important;
+  }
+
+  .contact-footer-logo .brand-logo {
+    height: clamp(32px, 2.25rem, 40px) !important;
+    max-width: min(280px, 78vw) !important;
+    object-position: center !important;
   }
 
   .category-hero-back {

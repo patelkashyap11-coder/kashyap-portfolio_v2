@@ -44,7 +44,7 @@ export const SITE_CONTACT = {
 } as const;
 
 export const SITE_LOCATION = {
-  city: 'Ahmedabad',
+  city: 'Amdavad',
   region: 'Gujarat',
   country: 'India',
   countryCode: 'IN',

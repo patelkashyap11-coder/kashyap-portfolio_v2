@@ -1078,7 +1078,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: clamp(10px, 1.5vw, 14px);
-  margin-top: clamp(40px, 5.5vw, 72px);
+  margin-top: calc(clamp(40px, 5.5vw, 72px) + 50px);
 }
 
 .cta-contact-link {
@@ -1103,8 +1103,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--surface-panel);
   color: #000000;
@@ -1114,6 +1114,9 @@ body {
 
 .cta-contact-icon svg {
   display: block;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .cta-contact-link:hover .cta-contact-icon {
@@ -2096,6 +2099,11 @@ body {
   line-height: 0.88;
 }
 
+.contact-headline--sub {
+  text-transform: none;
+  letter-spacing: -0.035em;
+}
+
 .contact-headline-accent {
   color: var(--accent);
 }
@@ -2136,7 +2144,7 @@ body {
 
 .contact-main {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 20% 20%;
+  grid-template-columns: minmax(0, 1fr) 24% 24%;
   column-gap: 10px;
   align-items: stretch;
   flex: 1;
@@ -2149,6 +2157,13 @@ body {
   align-items: flex-start;
   gap: clamp(56px, 7vh, 88px);
   padding-top: 4px;
+}
+
+.contact-fields-row {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(56px, 7vh, 88px);
+  width: 100%;
 }
 
 .contact-field-label {
@@ -2243,14 +2258,19 @@ body {
   bottom: 18px;
   z-index: 1;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.contact-card-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .contact-card-label {
   font-family: var(--font-tight);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2259,10 +2279,9 @@ body {
 }
 
 .contact-card-arrow {
-  font-size: 1rem;
-  line-height: 1;
+  flex-shrink: 0;
   color: #ffffff;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease, text-shadow 0.35s ease;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease, filter 0.35s ease;
 }
 
 .contact-card-link:hover .contact-card-label,
@@ -2272,28 +2291,305 @@ body {
 }
 
 .contact-card-link:hover .contact-card-arrow {
-  transform: translate(4px, -4px);
+  transform: translate(2px, -2px);
+  filter: drop-shadow(var(--accent-glow));
 }
 
 .contact-address {
-  position: absolute;
-  left: 40px;
-  bottom: clamp(32px, 4vh, 48px);
+  margin: 0;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   font-style: normal;
   font-family: var(--font-inter);
-  font-size: 14px;
+  font-size: clamp(0.75rem, 1.1vw, 0.875rem);
   font-weight: 400;
-  line-height: 1.65;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.5;
   color: var(--page-text-muted);
+  white-space: nowrap;
 }
 
 .contact-address-sep {
-  display: none;
+  display: inline;
+  padding-inline: 0.4em;
+}
+
+.contact-footer-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vw, 28px);
+  width: 100%;
+  margin-top: auto;
+  padding-top: clamp(40px, 5vh, 56px);
+  text-align: center;
+}
+
+.contact-footer-logo {
+  display: flex;
+  justify-content: center;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.contact-footer-logo .brand-logo {
+  height: clamp(36px, 2.75rem, 48px);
+  width: auto;
+  max-width: min(360px, 80vw);
+  object-fit: contain;
+  object-position: center;
 }
 
 .nav-ul--active::after {
   width: 100%;
+}
+
+/* ── Tablet (768px – 1279px) ─────────────────── */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .cta-section {
+    min-height: 100vh;
+    padding: clamp(56px, 7vw, 72px) clamp(28px, 4vw, 40px) clamp(28px, 4vw, 40px);
+  }
+
+  .cta-stage {
+    flex: 1;
+    justify-content: center;
+    padding-bottom: clamp(24px, 5vh, 48px);
+  }
+
+  .cta-headline-grid {
+    min-height: clamp(480px, 62vh, 680px);
+  }
+
+  .cta-line-anchor--top {
+    top: clamp(8px, 1.5vh, 20px);
+    right: clamp(16px, 3.5vw, 36px);
+  }
+
+  .cta-line-anchor--middle {
+    left: clamp(16px, 3.5vw, 36px);
+  }
+
+  .cta-line-anchor--bottom {
+    bottom: clamp(8px, 1.5vh, 20px);
+    right: clamp(16px, 3.5vw, 36px);
+  }
+
+  .cta-line {
+    font-size: clamp(3.75rem, 14vw, 160px);
+    line-height: 0.86;
+  }
+
+  .cta-contact-link {
+    font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+  }
+
+  .cta-contact-row {
+    margin-top: calc(clamp(24px, 3.5vw, 40px) + 50px);
+  }
+
+  .cta-footer-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .cta-footer-left,
+  .cta-footer-brand,
+  .cta-footer-right {
+    justify-self: auto;
+    width: 100%;
+  }
+
+  .cta-footer-left {
+    order: 1;
+    align-items: center;
+  }
+
+  .cta-footer-right {
+    order: 2;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: clamp(16px, 3vw, 28px);
+  }
+
+  .cta-footer-brand {
+    order: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cta-footer-logo {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .cta-footer-logo .brand-logo {
+    object-position: center center;
+    margin-inline: auto;
+  }
+
+  .contact-shell {
+    height: auto;
+    min-height: 100vh;
+    padding: clamp(108px, 11vh, 128px) 32px clamp(40px, 5vh, 56px);
+  }
+
+  .contact-headline {
+    font-size: clamp(2.25rem, 5.8vw, 4.5rem);
+  }
+
+  .contact-headline-line:first-child .contact-headline {
+    white-space: nowrap;
+  }
+
+  .contact-divider {
+    margin-top: clamp(28px, 4vh, 40px);
+    margin-bottom: clamp(32px, 5vh, 48px);
+  }
+
+  .contact-main {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 4vw, 48px);
+  }
+
+  .contact-info {
+    gap: clamp(28px, 4vw, 40px);
+    width: 100%;
+  }
+
+  .contact-fields-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 32px);
+    width: 100%;
+  }
+
+  .contact-field-value,
+  .contact-field-value--email {
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
+    word-break: break-word;
+  }
+
+  .contact-cards {
+    grid-column: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    gap: 12px;
+  }
+
+  .contact-card {
+    aspect-ratio: 3 / 5;
+    height: auto;
+    min-height: 0;
+  }
+
+  .contact-card-footer {
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+  }
+
+  .contact-footer-end {
+    padding-top: clamp(32px, 4vw, 48px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .contact-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 24% 24%;
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: 10px;
+    height: 100vh;
+  }
+
+  .contact-hero {
+    grid-column: 1 / -1;
+  }
+
+  .contact-main {
+    display: contents;
+  }
+
+  .contact-info {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+    z-index: 1;
+    height: auto;
+    min-height: 0;
+    gap: 0;
+    padding-top: 0;
+  }
+
+  .contact-fields-row {
+    gap: clamp(28px, 3.5vh, 40px);
+  }
+
+  .contact-field-label {
+    margin-bottom: 14px;
+  }
+
+  .contact-cards {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    height: 100%;
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  .contact-card {
+    height: 100%;
+  }
+
+  .contact-footer-end {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    z-index: 1;
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2px;
+    text-align: left;
+  }
+
+  .contact-headline {
+    font-size: clamp(2.625rem, 6.5vw, 7rem);
+  }
+
+  .contact-headline-line:first-child .contact-headline {
+    white-space: nowrap;
+  }
+
+  .contact-divider {
+    margin-top: clamp(28px, 4vh, 40px);
+    margin-bottom: clamp(32px, 4vh, 48px);
+  }
+
+  .contact-address {
+    justify-content: flex-start;
+  }
+
+  .contact-footer-logo {
+    justify-content: flex-start;
+  }
+
+  .contact-footer-logo .brand-logo {
+    object-position: left center;
+  }
 }
