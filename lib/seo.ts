@@ -119,9 +119,7 @@ export function getContactMetadata(): Metadata {
     `Contact Kashyap Patel for commercial photography, film and cinemagraph projects in ${SITE_LOCATION.city}, ${SITE_LOCATION.country}. Email ${SITE_CONTACT.email} or call ${SITE_CONTACT.phoneDisplay}.`;
 
   return {
-    title: {
-      absolute: 'Contact',
-    },
+    title: 'Contact',
     description,
     alternates: {
       canonical: '/contact',
