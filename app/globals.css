@@ -2271,6 +2271,7 @@ body {
   align-items: center;
   gap: 6px;
   min-height: 1.1em;
+  transform: translateY(-3.5px);
 }
 
 .contact-card-label {
