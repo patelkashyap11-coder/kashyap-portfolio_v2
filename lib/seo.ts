@@ -120,7 +120,7 @@ export function getContactMetadata(): Metadata {
 
   return {
     title: {
-      absolute: title,
+      absolute: 'Contact',
     },
     description,
     alternates: {
