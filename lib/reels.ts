@@ -1,2 +1,2 @@
 /** Flip to false when reels are ready to publish. */
-export const REELS_LOCKED = true;
+export const REELS_LOCKED = false;

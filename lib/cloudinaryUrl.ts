@@ -138,3 +138,25 @@ export function cloudinaryVideoUrl(
   const base = url.slice(0, url.indexOf('/upload/') + '/upload/'.length);
   return `${base}${transforms}/${assetPath}`;
 }
+
+/** First-frame JPG poster for Cloudinary videos (fixes blank/grey tiles on mobile). */
+export function cloudinaryVideoPosterUrl(
+  url: string,
+  preset: CloudinaryVideoPreset = 'masonry',
+): string {
+  if (!isCloudinaryUrl(url)) return url;
+
+  const match = url.match(CLOUDINARY_UPLOAD);
+  if (!match) return url;
+
+  const [, resourceType, uploadPath] = match;
+  if (resourceType !== 'video') return url;
+
+  const { width } = VIDEO_PRESETS[preset];
+  const assetPath = assetPathFromUploadSegment(uploadPath);
+  const posterPath = assetPath.replace(/\.(mp4|mov|webm|mkv)$/i, '.jpg');
+  const transforms = [`w_${width}`, 'c_limit', 'q_auto:good', 'f_jpg', 'so_0'].join(',');
+
+  const base = url.slice(0, url.indexOf('/upload/') + '/upload/'.length);
+  return `${base}${transforms}/${posterPath}`;
+}

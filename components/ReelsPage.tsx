@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo, useLayoutEffect } from 'react';
+import { useState, useCallback, useMemo, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import type { MediaItem } from '@/components/GalleryPage';
 import type { ReelsCollection } from '@/lib/getReels';
-import { cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { cloudinaryVideoUrl, cloudinaryVideoPosterUrl } from '@/lib/cloudinaryUrl';
 import {
   protectedMediaSurfaceProps,
   protectedVideoProps,
@@ -54,11 +54,8 @@ function buildPinterestColumns(
 }
 
 function getColumnCount(width: number, portrait: boolean): number {
-  if (portrait) {
-    if (width < 640) return 2;
-    if (width < 1024) return 3;
-    if (width < 1440) return 4;
-    return 5;
+  if (!portrait) {
+    return 1;
   }
 
   if (width < 640) return 2;
@@ -67,8 +64,16 @@ function getColumnCount(width: number, portrait: boolean): number {
   return 5;
 }
 
+function mediaAspectRatio(item: MediaItem): string | undefined {
+  if (item.width && item.height) return `${item.width} / ${item.height}`;
+  return undefined;
+}
+
 function useColumnCount(portrait: boolean) {
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(() => {
+    if (typeof window === 'undefined') return portrait ? 2 : 1;
+    return getColumnCount(window.innerWidth, portrait);
+  });
 
   useLayoutEffect(() => {
     const update = () => setCount(getColumnCount(window.innerWidth, portrait));
@@ -78,6 +83,143 @@ function useColumnCount(portrait: boolean) {
   }, [portrait]);
 
   return count;
+}
+
+function useHoverPreviewEnabled() {
+  const [enabled, setEnabled] = useState(false);
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const update = () => setEnabled(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return enabled;
+}
+
+function ReelGridItem({
+  item,
+  originalIndex,
+  portrait,
+  onOpen,
+  hoverPreviewEnabled,
+}: {
+  item: MediaItem;
+  originalIndex: number;
+  portrait: boolean;
+  onOpen: (index: number) => void;
+  hoverPreviewEnabled: boolean;
+}) {
+  const itemRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const aspectRatio = mediaAspectRatio(item) ?? (portrait ? '9 / 16' : '16 / 9');
+  const posterSrc = cloudinaryVideoPosterUrl(item.src, 'masonry');
+  const itemStyle = portrait
+    ? { aspectRatio }
+    : { aspectRatio, maxWidth: 'min(520px, 100%)' };
+
+  const playPreview = useCallback(() => {
+    if (!hoverPreviewEnabled) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    setIsPlaying(true);
+    void video.play().catch(() => setIsPlaying(false));
+  }, [hoverPreviewEnabled]);
+
+  const pausePreview = useCallback(() => {
+    if (!hoverPreviewEnabled) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.pause();
+    setIsPlaying(false);
+  }, [hoverPreviewEnabled]);
+
+  useLayoutEffect(() => {
+    if (hoverPreviewEnabled) return;
+
+    const itemEl = itemRef.current;
+    const video = videoRef.current;
+    if (!itemEl || !video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => setIsPlaying(false));
+        } else {
+          video.pause();
+          setIsPlaying(false);
+        }
+      },
+      { threshold: 0.55 },
+    );
+
+    observer.observe(itemEl);
+    return () => observer.disconnect();
+  }, [hoverPreviewEnabled]);
+
+  const openLightbox = useCallback(() => {
+    onOpen(originalIndex);
+  }, [onOpen, originalIndex]);
+
+  const handleTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    if (!touch) return;
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (event: React.TouchEvent<HTMLDivElement>) => {
+      const touch = event.changedTouches[0];
+      const start = touchStartRef.current;
+      touchStartRef.current = null;
+      if (!touch || !start) return;
+
+      const moved =
+        Math.abs(touch.clientX - start.x) > 12 ||
+        Math.abs(touch.clientY - start.y) > 12;
+      if (!moved) openLightbox();
+    },
+    [openLightbox],
+  );
+
+  return (
+    <div
+      ref={itemRef}
+      className={`category-masonry-item group reels-masonry-item${portrait ? '' : ' category-masonry-item--landscape reels-landscape-item'}`}
+      style={itemStyle}
+      onClick={hoverPreviewEnabled ? openLightbox : undefined}
+      onTouchStart={hoverPreviewEnabled ? undefined : handleTouchStart}
+      onTouchEnd={hoverPreviewEnabled ? undefined : handleTouchEnd}
+      onPointerEnter={hoverPreviewEnabled ? playPreview : undefined}
+      onPointerLeave={hoverPreviewEnabled ? pausePreview : undefined}
+      {...protectedMediaSurfaceProps}
+    >
+      <video
+        ref={videoRef}
+        src={cloudinaryVideoUrl(item.src, 'masonry')}
+        poster={posterSrc}
+        muted
+        loop
+        playsInline
+        preload={hoverPreviewEnabled ? 'metadata' : 'auto'}
+        className="category-masonry-asset"
+        onPlaying={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        {...protectedVideoProps}
+      />
+      {hoverPreviewEnabled && !isPlaying && (
+        <div className="category-masonry-play" aria-hidden>
+          <Play size={14} style={{ marginLeft: 2 }} />
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ReelsGrid({
@@ -92,40 +234,53 @@ function ReelsGrid({
   onOpen: (index: number) => void;
 }) {
   const columnCount = useColumnCount(portrait);
+  const hoverPreviewEnabled = useHoverPreviewEnabled();
   const columns = useMemo(
-    () => buildPinterestColumns(items, columnCount, indexOffset),
-    [items, columnCount, indexOffset],
+    () =>
+      portrait
+        ? buildPinterestColumns(items, columnCount, indexOffset)
+        : [],
+    [items, columnCount, indexOffset, portrait],
   );
+
+  if (!portrait) {
+    return (
+      <div className="reels-grid--landscape">
+        <div className="reels-landscape-list">
+          {items.map((item, i) => (
+            <ReelGridItem
+              key={item.publicId ?? `${item.src}-${i}`}
+              item={item}
+              originalIndex={indexOffset + i}
+              portrait={false}
+              onOpen={onOpen}
+              hoverPreviewEnabled={hoverPreviewEnabled}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="category-masonry-scroll">
       <div className="category-masonry">
-        {columns.map((col, colIndex) => (
-          <div key={colIndex} className="category-masonry-col">
-            {col.map(({ item, originalIndex }) => (
-              <div
-                key={originalIndex}
-                className="category-masonry-item group"
-                onClick={() => onOpen(originalIndex)}
-                {...protectedMediaSurfaceProps}
-              >
-                <video
-                  src={cloudinaryVideoUrl(item.src, 'masonry')}
-                  muted
-                  loop
-                  playsInline
-                  className="category-masonry-asset"
-                  onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
-                  onMouseLeave={(e) => (e.currentTarget as HTMLVideoElement).pause()}
-                  {...protectedVideoProps}
+        {columns
+          .filter((col) => col.length > 0)
+          .map((col, colIndex) => (
+            <div key={colIndex} className="category-masonry-col">
+              {col.map(({ item, originalIndex }) => (
+                <ReelGridItem
+                  key={originalIndex}
+                  item={item}
+                  originalIndex={originalIndex}
+                  portrait={portrait}
+                  onOpen={onOpen}
+                  hoverPreviewEnabled={hoverPreviewEnabled}
                 />
-                <div className="category-masonry-play">
-                  <Play size={14} style={{ marginLeft: 2 }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
+              ))}
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -152,10 +307,9 @@ function NavBtn({
 
 export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
   const allReels = useMemo(
-    () => (locked ? [] : [...reels.vertical, ...reels.horizontal]),
+    () => (locked ? [] : [...reels.horizontal, ...reels.vertical]),
     [locked, reels.vertical, reels.horizontal],
   );
-  const heroVideo = allReels[0]?.src;
 
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
@@ -177,7 +331,9 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
   );
 
   const scrollToReels = () => {
-    document.getElementById('reels-vertical')?.scrollIntoView({ behavior: 'smooth' });
+    const targetId =
+      reels.horizontal.length > 0 ? 'reels-horizontal' : 'reels-vertical';
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const hasReels = allReels.length > 0;
@@ -186,19 +342,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
     <div className="gallery-page reels-page">
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
-          {heroVideo ? (
-            <video
-              src={cloudinaryVideoUrl(heroVideo, 'hero')}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="category-hero-video"
-              {...protectedVideoProps}
-            />
-          ) : (
-            <div className="reels-hero-fallback" aria-hidden />
-          )}
+          <div className="reels-hero-fallback" aria-hidden />
           <div className="category-hero-overlay" />
         </div>
 
@@ -273,42 +417,44 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
           <div className="category-empty-icon" />
           <p className="category-empty-title">Reels coming soon</p>
           <p className="category-empty-hint t-label">
-            Upload vertical videos to Cloudinary folder reels/vertical and horizontal to
-            reels/horizontal
+            Upload videos to the Cloudinary reels folder (or reels/vertical and
+            reels/horizontal)
           </p>
         </div>
       )}
 
-      {!locked && reels.vertical.length > 0 && (
-        <section id="reels-vertical" className="category-masonry-section">
+      {!locked && reels.horizontal.length > 0 && (
+        <section id="reels-horizontal" className="category-masonry-section">
           <div className="category-page-inner">
-            <div className="category-section-header category-section-header--solo">
-              <p className="t-label category-section-label">Vertical</p>
-              <p className="t-label category-section-count">{reels.vertical.length}</p>
+            <div className="reels-section-header">
+              <div className="reels-section-heading">
+                <h2 className="reels-section-title t-display">Films / Podcast</h2>
+              </div>
             </div>
 
             <ReelsGrid
-              items={reels.vertical}
+              items={reels.horizontal}
               indexOffset={0}
-              portrait
+              portrait={false}
               onOpen={open}
             />
           </div>
         </section>
       )}
 
-      {!locked && reels.horizontal.length > 0 && (
-        <section id="reels-horizontal" className="category-masonry-section">
+      {!locked && reels.vertical.length > 0 && (
+        <section id="reels-vertical" className="category-masonry-section">
           <div className="category-page-inner">
-            <div className="category-section-header category-section-header--solo">
-              <p className="t-label category-section-label">Horizontal</p>
-              <p className="t-label category-section-count">{reels.horizontal.length}</p>
+            <div className="reels-section-header">
+              <div className="reels-section-heading">
+                <h2 className="reels-section-title t-display">Reels</h2>
+              </div>
             </div>
 
             <ReelsGrid
-              items={reels.horizontal}
-              indexOffset={reels.vertical.length}
-              portrait={false}
+              items={reels.vertical}
+              indexOffset={reels.horizontal.length}
+              portrait
               onOpen={open}
             />
           </div>
