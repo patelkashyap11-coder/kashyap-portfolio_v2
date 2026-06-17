@@ -677,8 +677,8 @@
     font-size: clamp(0.875rem, 4.5vw, 1.25rem) !important;
   }
 
-  .reels-landscape-item {
-    max-width: 100% !important;
+  .reels-landscape-list {
+    gap: 12px !important;
   }
 
   .category-masonry,

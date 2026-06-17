@@ -118,9 +118,7 @@ function ReelGridItem({
   const [isPlaying, setIsPlaying] = useState(false);
   const aspectRatio = mediaAspectRatio(item) ?? (portrait ? '9 / 16' : '16 / 9');
   const posterSrc = cloudinaryVideoPosterUrl(item.src, 'masonry');
-  const itemStyle = portrait
-    ? { aspectRatio }
-    : { aspectRatio, maxWidth: 'min(520px, 100%)' };
+  const itemStyle = { aspectRatio };
 
   const playPreview = useCallback(() => {
     if (!hoverPreviewEnabled) return;
