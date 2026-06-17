@@ -678,6 +678,7 @@
   }
 
   .reels-landscape-list {
+    grid-template-columns: 1fr !important;
     gap: 12px !important;
   }
 

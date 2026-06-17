@@ -1893,6 +1893,12 @@ body {
   width: 100%;
 }
 
+@media (min-width: 1024px) {
+  .reels-landscape-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .reels-landscape-item {
   width: 100%;
   min-width: 0;
