@@ -155,15 +155,15 @@ export const visualStoriesContent: SiteContent = {
     ctaLabel: 'Contact us',
   },
   seo: {
-    homeTitle: 'KASHYAP PATEL | CINEMAGRAPH',
+    homeTitle: 'Kashyap Patel - Cinemagraph',
     homeDescription:
       'Kashyap Patel is a commercial photographer and filmmaker in Ahmedabad, India, creating cinemagraphs and visual stories for fashion, food, jewellery, product and interior brands.',
-    aboutTitle: 'About | KASHYAP PATEL',
-    contactTitle: 'Contact | KASHYAP PATEL',
-    fashionTitle: 'Fashion Photography Portfolio',
-    foodTitle: 'Food & Hospitality Photography Portfolio',
-    jewelleryTitle: 'Jewellery Photography Portfolio',
-    productsTitle: 'Product Photography Portfolio',
-    interiorsTitle: 'Interior Photography Portfolio',
+    aboutTitle: 'About - Kashyap Patel',
+    contactTitle: 'Contact - Kashyap Patel',
+    fashionTitle: 'Fashion - Kashyap Patel',
+    foodTitle: 'Food & Hospitality - Kashyap Patel',
+    jewelleryTitle: 'Jewellery - Kashyap Patel',
+    productsTitle: 'Products - Kashyap Patel',
+    interiorsTitle: 'Interiors - Kashyap Patel',
   },
 };

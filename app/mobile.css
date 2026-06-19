@@ -198,8 +198,13 @@
     padding: 64px 24px 72px !important;
   }
 
+  .clients-inner::before {
+    width: 90% !important;
+    margin-bottom: 40px !important;
+  }
+
   .clients-heading {
-    font-size: clamp(2.25rem, 11vw, 3.5rem) !important;
+    font-size: clamp(2.025rem, 9.9vw, 3.15rem) !important;
     margin-bottom: 40px !important;
     text-align: center !important;
   }

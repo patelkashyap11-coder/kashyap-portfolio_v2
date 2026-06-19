@@ -76,15 +76,15 @@ export const timelessContent: SiteContent = {
     ctaLabel: 'Start a Project',
   },
   seo: {
-    homeTitle: 'Kashyap Patel | Creative Direction, Photography & Production',
+    homeTitle: 'Kashyap Patel - Cinemagraph',
     homeDescription:
       'Premium photography and creative production for fashion, hospitality, jewellery, products and interiors.',
-    aboutTitle: 'About | Kashyap Patel',
-    contactTitle: 'Contact | Kashyap Patel',
-    fashionTitle: 'Fashion Photography | Kashyap Patel',
-    foodTitle: 'Food & Hospitality Photography | Kashyap Patel',
-    jewelleryTitle: 'Jewellery Photography | Kashyap Patel',
-    productsTitle: 'Product Photography | Kashyap Patel',
-    interiorsTitle: 'Interior Photography | Kashyap Patel',
+    aboutTitle: 'About - Kashyap Patel',
+    contactTitle: 'Contact - Kashyap Patel',
+    fashionTitle: 'Fashion - Kashyap Patel',
+    foodTitle: 'Food & Hospitality - Kashyap Patel',
+    jewelleryTitle: 'Jewellery - Kashyap Patel',
+    productsTitle: 'Products - Kashyap Patel',
+    interiorsTitle: 'Interiors - Kashyap Patel',
   },
 };

@@ -8,6 +8,7 @@ import {
   SITE_KEYWORDS,
   SITE_LOCATION,
   SITE_NAME,
+  SITE_AUTHOR_NAME,
   SITE_SERVICES,
   SITE_SHARE_DESCRIPTION,
   SITE_SHARE_TITLE,
@@ -15,6 +16,7 @@ import {
   SITE_TAGLINE,
   SITE_TITLE,
   SITE_URL,
+  pageTitle,
 } from '@/lib/site';
 
 function absoluteUrl(path = ''): string {
@@ -22,8 +24,12 @@ function absoluteUrl(path = ''): string {
 }
 
 export function getHomeMetadata(): Metadata {
+  const title = `${SITE_AUTHOR_NAME} - Cinemagraph`;
+
   return {
-    title: SITE_TITLE,
+    title: {
+      absolute: title,
+    },
     description: SITE_DESCRIPTION,
     keywords: SITE_KEYWORDS,
     alternates: {
@@ -42,12 +48,12 @@ export function getHomeMetadata(): Metadata {
   };
 }
 
-const categorySeoTitles: Record<string, string> = {
-  fashion: siteContent.seo.fashionTitle,
-  'food-hospitality': siteContent.seo.foodTitle,
-  jewellery: siteContent.seo.jewelleryTitle,
-  products: siteContent.seo.productsTitle,
-  interiors: siteContent.seo.interiorsTitle,
+const categoryTabTitles: Record<string, string> = {
+  fashion: 'Fashion',
+  'food-hospitality': 'Food & Hospitality',
+  jewellery: 'Jewellery',
+  products: 'Products',
+  interiors: 'Interiors',
 };
 
 export function getCategoryMetadata(slug: string): Metadata {
@@ -56,12 +62,15 @@ export function getCategoryMetadata(slug: string): Metadata {
     return { title: SITE_TITLE, description: SITE_DESCRIPTION };
   }
 
-  const title = categorySeoTitles[slug] ?? `${category.subtitle} Portfolio`;
+  const tabTitle = categoryTabTitles[slug] ?? category.subtitle;
+  const title = pageTitle(tabTitle);
   const description = category.description;
   const path = `/${slug}`;
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
     keywords: [
       ...SITE_KEYWORDS,
@@ -73,26 +82,28 @@ export function getCategoryMetadata(slug: string): Metadata {
       canonical: path,
     },
     openGraph: {
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description,
       url: absoluteUrl(path),
       type: 'website',
     },
     twitter: {
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description,
     },
   };
 }
 
 export function getMotionMetadata(): Metadata {
-  const title = 'Motion';
+  const title = pageTitle('Motion');
   const description =
     'Vertical and horizontal motion work, short films, and video by Kashyap Patel — commercial photography and filmmaking in Ahmedabad, India.';
   const path = '/motion';
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
     keywords: [...SITE_KEYWORDS, 'motion', 'film', 'video', 'filmmaker Ahmedabad'],
     ...(REELS_LOCKED ? { robots: { index: false, follow: false } } : {}),
@@ -100,13 +111,13 @@ export function getMotionMetadata(): Metadata {
       canonical: path,
     },
     openGraph: {
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description,
       url: absoluteUrl(path),
       type: 'website',
     },
     twitter: {
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description,
     },
   };
@@ -116,13 +127,15 @@ export function getMotionMetadata(): Metadata {
 export const getReelsMetadata = getMotionMetadata;
 
 export function getContactMetadata(): Metadata {
-  const title = siteContent.seo.contactTitle;
+  const title = pageTitle('Contact');
   const description =
     siteContent.contact.body ||
     `Contact Kashyap Patel for commercial photography, film and cinemagraph projects in ${SITE_LOCATION.city}, ${SITE_LOCATION.country}. Email ${SITE_CONTACT.email} or call ${SITE_CONTACT.phoneDisplay}.`;
 
   return {
-    title: 'Contact',
+    title: {
+      absolute: title,
+    },
     description,
     alternates: {
       canonical: '/contact',
@@ -195,7 +208,7 @@ export function getCategoryStructuredData(slug: string) {
   if (!category) return null;
 
   const pageUrl = absoluteUrl(`/${slug}`);
-  const pageName = `${category.subtitle} Portfolio | ${SITE_NAME}`;
+  const pageName = pageTitle(categoryTabTitles[slug] ?? category.subtitle);
 
   return {
     '@context': 'https://schema.org',
@@ -251,7 +264,7 @@ export function getContactStructuredData() {
         '@type': 'ContactPage',
         '@id': `${SITE_URL}/contact#webpage`,
         url: absoluteUrl('/contact'),
-        name: `Contact ${SITE_NAME}`,
+        name: pageTitle('Contact'),
         description: `Get in touch with Kashyap Patel for photography, film and cinemagraph projects.`,
         isPartOf: { '@id': `${SITE_URL}/#website` },
       },

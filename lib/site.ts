@@ -4,6 +4,12 @@ export const SITE_URL = 'https://www.bykashyap.com';
 
 export const SITE_NAME = 'KASHYAP PATEL';
 
+export const SITE_AUTHOR_NAME = 'Kashyap Patel';
+
+export function pageTitle(page: string): string {
+  return `${page} - ${SITE_AUTHOR_NAME}`;
+}
+
 export const SITE_TAGLINE = 'CINEMAGRAPH';
 
 export const SITE_TITLE = siteContent.seo.homeTitle;

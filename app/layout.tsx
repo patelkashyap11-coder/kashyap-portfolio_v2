@@ -12,6 +12,7 @@ import {
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
   SITE_NAME,
+  SITE_AUTHOR_NAME,
   SITE_SHARE_DESCRIPTION,
   SITE_SHARE_TITLE,
   SITE_SHORT_DESCRIPTION,
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: `%s | ${SITE_NAME}`,
+    template: `%s - ${SITE_AUTHOR_NAME}`,
   },
   description: SITE_DESCRIPTION,
   keywords: SITE_KEYWORDS,
@@ -42,12 +43,43 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      {
+        url: '/favicon-light.png',
+        type: 'image/png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/favicon-dark.png',
+        type: 'image/png',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        url: '/favicon-16x16.png',
+        sizes: '16x16',
+        type: 'image/png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/favicon-16x16-dark.png',
+        sizes: '16x16',
+        type: 'image/png',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        url: '/favicon-32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/favicon-32x32-dark.png',
+        sizes: '32x32',
+        type: 'image/png',
+        media: '(prefers-color-scheme: dark)',
+      },
     ],
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/favicon.ico',
+    shortcut: '/favicon-light.png',
   },
   openGraph: {
     type: 'website',
@@ -88,10 +120,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             crossOrigin="anonymous"
           />
         ))}
-        <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+        <link
+          rel="icon"
+          href="/favicon-light.png?v=3"
+          type="image/png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          href="/favicon-dark.png?v=3"
+          type="image/png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
       </head>
       <body>
