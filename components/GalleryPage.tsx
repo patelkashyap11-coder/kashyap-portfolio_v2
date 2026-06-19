@@ -10,6 +10,7 @@ import {
   protectedMediaSurfaceProps,
   protectedVideoProps,
 } from '@/lib/mediaProtection';
+import { GalleryFooter } from '@/components/GalleryFooter';
 
 interface NextCategory {
   title: string;
@@ -144,10 +145,33 @@ export function GalleryPage({
   const heroFallbackImageSrc = heroFallbackImage
     ? cloudinaryPreset(heroFallbackImage, 'hero')
     : undefined;
-  const [loadHeroVideo, setLoadHeroVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 767px)').matches,
+  );
+  const [loadHeroVideo, setLoadHeroVideo] = useState(
+    () =>
+      Boolean(heroVideo) &&
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 767px)').matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
   useEffect(() => {
     if (!heroVideo) return;
+
+    if (isMobile) {
+      setLoadHeroVideo(true);
+      return;
+    }
 
     if (typeof window.requestIdleCallback === 'function') {
       const id = window.requestIdleCallback(() => setLoadHeroVideo(true), { timeout: 1500 });
@@ -156,7 +180,7 @@ export function GalleryPage({
 
     const timer = window.setTimeout(() => setLoadHeroVideo(true), 200);
     return () => window.clearTimeout(timer);
-  }, [heroVideo]);
+  }, [heroVideo, isMobile]);
 
   const columnCount = usePinterestColumnCount();
   const masonryColumns = useMemo(
@@ -176,7 +200,7 @@ export function GalleryPage({
       {/* ── Section 1: Hero ── */}
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
-          {heroFallbackImageSrc ? (
+          {heroFallbackImageSrc && !(heroVideo && isMobile) ? (
             <div
               className="category-hero-image"
               style={{ backgroundImage: `url(${heroFallbackImageSrc})` }}
@@ -190,7 +214,7 @@ export function GalleryPage({
               muted
               loop
               playsInline
-              preload="metadata"
+              preload={isMobile ? 'auto' : 'metadata'}
               className="category-hero-video"
               {...protectedVideoProps}
             />
@@ -378,6 +402,8 @@ export function GalleryPage({
           </motion.div>
         </section>
       )}
+
+      <GalleryFooter />
 
       {/* ── Lightbox ── */}
       <AnimatePresence>

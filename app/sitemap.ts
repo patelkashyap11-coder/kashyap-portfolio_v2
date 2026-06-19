@@ -9,7 +9,7 @@ const ROUTES = [
   '/jewellery',
   '/products',
   '/interiors',
-  ...(REELS_LOCKED ? [] : ['/reels']),
+  ...(REELS_LOCKED ? [] : ['/motion']),
   '/contact',
 ] as const;
 

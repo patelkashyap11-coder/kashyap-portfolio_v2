@@ -105,6 +105,10 @@
     background-position: center !important;
   }
 
+  .category-section-video {
+    opacity: 1 !important;
+  }
+
   .category-content {
     padding: var(--site-nav-height) var(--page-inline) 0 !important;
   }
@@ -664,6 +668,11 @@
     padding: 24px var(--category-gutter) 72px !important;
   }
 
+  .category-masonry-section:has(+ .gallery-footer-end),
+  .category-masonry-section:has(+ .category-next) {
+    padding-bottom: 24px !important;
+  }
+
   .category-masonry-section .category-section-header {
     margin-bottom: 24px !important;
   }
@@ -701,7 +710,11 @@
   }
 
   .category-next {
-    padding: 40px 24px 56px !important;
+    padding: 32px 24px 40px !important;
+  }
+
+  .category-next:has(+ .gallery-footer-end) {
+    padding: 24px 24px 10px !important;
   }
 
   .category-next-title {
@@ -768,5 +781,9 @@
 
   .category-lightbox-nav--right {
     right: max(8px, env(safe-area-inset-right, 0px));
+  }
+
+  .gallery-footer-end {
+    padding: 10px 24px 14px;
   }
 }

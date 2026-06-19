@@ -18,6 +18,7 @@ import {
   protectedMediaSurfaceProps,
   protectedVideoProps,
 } from '@/lib/mediaProtection';
+import { GalleryFooter } from '@/components/GalleryFooter';
 
 interface Props {
   reels: ReelsCollection;
@@ -366,7 +367,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
               transition={{ duration: 1, ease: EASE }}
               className="category-hero-title t-display"
             >
-              REELS
+              MOTION
             </motion.h1>
           </div>
 
@@ -403,7 +404,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
       {locked && (
         <div className="category-empty reels-locked">
           <div className="reels-locked-icon" aria-hidden />
-          <p className="category-empty-title">Reels coming soon</p>
+          <p className="category-empty-title">Motion coming soon</p>
           <p className="category-empty-hint t-label">
             This section is on the way. Check back shortly.
           </p>
@@ -413,7 +414,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
       {!locked && !hasReels && (
         <div className="category-empty">
           <div className="category-empty-icon" />
-          <p className="category-empty-title">Reels coming soon</p>
+          <p className="category-empty-title">Motion coming soon</p>
           <p className="category-empty-hint t-label">
             Upload videos to the Cloudinary reels folder (or reels/vertical and
             reels/horizontal)
@@ -445,7 +446,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
           <div className="category-page-inner">
             <div className="reels-section-header">
               <div className="reels-section-heading">
-                <h2 className="reels-section-title t-display">Reels</h2>
+                <h2 className="reels-section-title t-display">Motion</h2>
               </div>
             </div>
 
@@ -458,6 +459,8 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
           </div>
         </section>
       )}
+
+      <GalleryFooter />
 
       <AnimatePresence>
         {lightboxIdx !== null && allReels[lightboxIdx] && (

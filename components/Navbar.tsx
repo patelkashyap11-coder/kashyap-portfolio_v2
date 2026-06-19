@@ -13,7 +13,7 @@ const links = [
   { href: '/jewellery', label: 'Jewellery', shortLabel: 'Jewellery' },
   { href: '/products', label: 'Products', shortLabel: 'Products' },
   { href: '/interiors', label: 'Interiors', shortLabel: 'Interiors' },
-  { href: '/reels', label: 'Reels', shortLabel: 'Reels', locked: REELS_LOCKED },
+  { href: '/motion', label: 'Motion', shortLabel: 'Motion', locked: REELS_LOCKED },
   { href: '/contact', label: 'Contact', shortLabel: 'Contact' },
 ];
 

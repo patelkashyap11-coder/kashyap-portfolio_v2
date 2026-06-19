@@ -14,6 +14,25 @@ function logoNumberFromClientId(id: string): number | null {
   return match ? Number.parseInt(match[1], 10) : null;
 }
 
+/** White/light logos uploaded for dark backgrounds — darken on light theme panels. */
+function isWhiteLogo(id: string): boolean {
+  const basename = (id.split('/').pop() ?? id).toLowerCase();
+  return /white|_light|logo-light|light-logo/.test(basename);
+}
+
+function logoClassName(clientId: string): string {
+  if (isWhiteLogo(clientId)) {
+    return 'clients-logo-img clients-logo-img--white-mark';
+  }
+
+  const logoNumber = logoNumberFromClientId(clientId);
+  if (logoNumber !== null && INVERT_LOGO_NUMBERS.has(logoNumber)) {
+    return 'clients-logo-img clients-logo-img--invert-dark';
+  }
+
+  return 'clients-logo-img clients-logo-img--keep-original';
+}
+
 export function TrustedBySection({ clients }: Props) {
   const count = clients.length;
 
@@ -39,22 +58,13 @@ export function TrustedBySection({ clients }: Props) {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
         >
-          {clients.map((client) => {
-            const logoNumber = logoNumberFromClientId(client.id);
-            const invertOnDark =
-              logoNumber !== null && INVERT_LOGO_NUMBERS.has(logoNumber);
-
-            return (
+          {clients.map((client) => (
               <div key={client.id} className="clients-logo-cell">
                 {client.logo ? (
                   <img
                     src={client.logo}
                     alt={client.name}
-                    className={
-                      invertOnDark
-                        ? 'clients-logo-img clients-logo-img--invert-dark'
-                        : 'clients-logo-img clients-logo-img--keep-original'
-                    }
+                    className={logoClassName(client.id)}
                     loading="lazy"
                     decoding="async"
                   />
@@ -62,8 +72,7 @@ export function TrustedBySection({ clients }: Props) {
                   <span className="clients-logo-text">{client.name}</span>
                 )}
               </div>
-            );
-          })}
+            ))}
         </motion.div>
       </div>
     </section>

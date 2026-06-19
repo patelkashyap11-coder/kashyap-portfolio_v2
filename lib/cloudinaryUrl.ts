@@ -1,6 +1,7 @@
 export type CloudinaryVideoPreset =
   | 'hero'
   | 'hero-hd'
+  | 'hero-mobile'
   | 'featured'
   | 'masonry'
   | 'lightbox';
@@ -12,6 +13,8 @@ const VIDEO_PRESETS: Record<
   hero: { width: 1920, quality: 'auto:good' },
   /** Full HD web delivery from 4K masters — Cloudinary transcodes, site never serves the raw upload. */
   'hero-hd': { width: 1920, height: 1080, quality: 'auto:best' },
+  /** Smaller homepage/category background delivery for phones. */
+  'hero-mobile': { width: 720, quality: 'auto:good' },
   featured: { width: 1280, quality: 'auto:good' },
   masonry: { width: 800, quality: 'auto:good' },
   lightbox: { width: 1920, quality: 'auto:best' },

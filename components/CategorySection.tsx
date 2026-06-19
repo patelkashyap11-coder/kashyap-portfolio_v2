@@ -1,8 +1,12 @@
 'use client';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { heroPosterUrl } from '@/lib/posterUrl';
+import {
+  cloudinaryVideoPosterUrl,
+  cloudinaryVideoUrl,
+} from '@/lib/cloudinaryUrl';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
 
 interface Props {
@@ -29,7 +33,13 @@ export function CategorySection({
       typeof window !== 'undefined' &&
       window.matchMedia('(max-width: 767px)').matches,
   );
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(
+    () =>
+      priorityLoad ||
+      (typeof window !== 'undefined' &&
+        window.matchMedia('(max-width: 767px)').matches),
+  );
+  const [videoReady, setVideoReady] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -44,6 +54,21 @@ export function CategorySection({
   const subtitleOpacity = useTransform(titleProgress, [0.12, 0.82], [0, 1]);
   const subtitleX = useTransform(titleProgress, [0.12, 0.82], [-32, 0]);
 
+  const videoPreset = isMobile ? 'hero-mobile' : 'hero';
+  const posterPreset = isMobile ? 'hero-mobile' : 'hero';
+
+  const posterSrc = useMemo(() => {
+    if (videoSrc) {
+      return cloudinaryVideoPosterUrl(videoSrc, videoPreset);
+    }
+    return heroPosterUrl(imageSrc);
+  }, [videoSrc, imageSrc, videoPreset]);
+
+  const playbackSrc = useMemo(() => {
+    if (!shouldLoadVideo || !videoSrc) return undefined;
+    return cloudinaryVideoUrl(videoSrc, videoPreset);
+  }, [shouldLoadVideo, videoSrc, videoPreset]);
+
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
     const sync = () => setIsMobile(mq.matches);
@@ -53,12 +78,25 @@ export function CategorySection({
   }, []);
 
   useEffect(() => {
+    setVideoReady(false);
+  }, [playbackSrc]);
+
+  useEffect(() => {
     if (!videoSrc) return;
+    if (priorityLoad) {
+      setShouldLoadVideo(true);
+    }
 
     const node = ref.current;
     if (!node) return;
 
-    const eagerLoad = priorityLoad && !isMobile;
+    const rootMargin = isMobile
+      ? priorityLoad
+        ? '120% 0px'
+        : '80% 0px'
+      : priorityLoad
+        ? '100% 0px'
+        : '30% 0px';
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -67,18 +105,12 @@ export function CategorySection({
           observer.disconnect();
         }
       },
-      {
-        rootMargin: eagerLoad ? '100% 0px' : '20% 0px',
-        threshold: 0,
-      },
+      { rootMargin, threshold: 0 },
     );
 
     observer.observe(node);
     return () => observer.disconnect();
   }, [videoSrc, priorityLoad, isMobile]);
-
-  const posterSrc = heroPosterUrl(imageSrc);
-  const eagerLoad = priorityLoad && !isMobile;
 
   return (
     <section
@@ -92,7 +124,7 @@ export function CategorySection({
       >
         {videoSrc ? (
           <>
-            {posterSrc ? (
+            {posterSrc && !isMobile ? (
               <div
                 className="category-section-media category-section-image"
                 style={{ backgroundImage: `url(${posterSrc})` }}
@@ -101,14 +133,22 @@ export function CategorySection({
               />
             ) : null}
             <video
-              src={shouldLoadVideo ? videoSrc : undefined}
+              src={playbackSrc}
               poster={posterSrc}
               autoPlay
               muted
               loop
               playsInline
-              preload={shouldLoadVideo ? (eagerLoad ? 'auto' : 'metadata') : 'none'}
-              className="category-section-media"
+              preload={
+                shouldLoadVideo
+                  ? isMobile || priorityLoad
+                    ? 'auto'
+                    : 'metadata'
+                  : 'none'
+              }
+              className={`category-section-media category-section-video${videoReady || isMobile ? ' category-section-video--ready' : ''}`}
+              onLoadedData={() => setVideoReady(true)}
+              onCanPlay={() => setVideoReady(true)}
               {...protectedVideoProps}
             />
           </>

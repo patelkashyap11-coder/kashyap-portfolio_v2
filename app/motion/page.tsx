@@ -1,13 +1,13 @@
 import { ReelsPage } from '@/components/ReelsPage';
 import { getReels } from '@/lib/getReels';
 import { REELS_LOCKED } from '@/lib/reels';
-import { getReelsMetadata } from '@/lib/seo';
+import { getMotionMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 export async function generateMetadata() {
-  return getReelsMetadata();
+  return getMotionMetadata();
 }
 
 export default async function Page() {

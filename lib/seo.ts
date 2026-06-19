@@ -85,16 +85,16 @@ export function getCategoryMetadata(slug: string): Metadata {
   };
 }
 
-export function getReelsMetadata(): Metadata {
-  const title = 'Reels & Film';
+export function getMotionMetadata(): Metadata {
+  const title = 'Motion';
   const description =
-    'Vertical and horizontal reels, short films, and motion work by Kashyap Patel — commercial photography and filmmaking in Ahmedabad, India.';
-  const path = '/reels';
+    'Vertical and horizontal motion work, short films, and video by Kashyap Patel — commercial photography and filmmaking in Ahmedabad, India.';
+  const path = '/motion';
 
   return {
     title,
     description,
-    keywords: [...SITE_KEYWORDS, 'reels', 'film', 'video', 'motion', 'filmmaker Ahmedabad'],
+    keywords: [...SITE_KEYWORDS, 'motion', 'film', 'video', 'filmmaker Ahmedabad'],
     ...(REELS_LOCKED ? { robots: { index: false, follow: false } } : {}),
     alternates: {
       canonical: path,
@@ -111,6 +111,9 @@ export function getReelsMetadata(): Metadata {
     },
   };
 }
+
+/** @deprecated Use getMotionMetadata */
+export const getReelsMetadata = getMotionMetadata;
 
 export function getContactMetadata(): Metadata {
   const title = siteContent.seo.contactTitle;

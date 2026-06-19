@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [{ source: '/reels', destination: '/motion', permanent: true }];
+  },
 };
 
 export default nextConfig;
