@@ -105,7 +105,16 @@
     background-position: center !important;
   }
 
+  .category-section-poster {
+    z-index: 1 !important;
+  }
+
   .category-section-video {
+    z-index: 2 !important;
+    opacity: 0 !important;
+  }
+
+  .category-section-video.category-section-video--ready {
     opacity: 1 !important;
   }
 

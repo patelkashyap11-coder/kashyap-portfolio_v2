@@ -15,8 +15,8 @@ interface Props {
   videoSrc?: string;
   imageSrc?: string;
   index: number;
-  /** Prefetch video earlier — used for the first category panel (fashion). */
-  priorityLoad?: boolean;
+  /** Parent enables video once the user scrolls to this section (or one ahead). */
+  videoLoadEnabled?: boolean;
 }
 
 export function CategorySection({
@@ -25,21 +25,18 @@ export function CategorySection({
   videoSrc,
   imageSrc,
   index,
-  priorityLoad = false,
+  videoLoadEnabled = false,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isMobile, setIsMobile] = useState(
     () =>
       typeof window !== 'undefined' &&
       window.matchMedia('(max-width: 767px)').matches,
   );
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(
-    () =>
-      priorityLoad ||
-      (typeof window !== 'undefined' &&
-        window.matchMedia('(max-width: 767px)').matches),
-  );
   const [videoReady, setVideoReady] = useState(false);
+  const shouldLoadVideo = videoLoadEnabled;
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -55,7 +52,6 @@ export function CategorySection({
   const subtitleX = useTransform(titleProgress, [0.12, 0.82], [-32, 0]);
 
   const videoPreset = isMobile ? 'hero-mobile' : 'hero';
-  const posterPreset = isMobile ? 'hero-mobile' : 'hero';
 
   const posterSrc = useMemo(() => {
     if (videoSrc) {
@@ -82,35 +78,31 @@ export function CategorySection({
   }, [playbackSrc]);
 
   useEffect(() => {
-    if (!videoSrc) return;
-    if (priorityLoad) {
-      setShouldLoadVideo(true);
-    }
+    if (!posterSrc) return;
+    const img = new window.Image();
+    img.src = posterSrc;
+  }, [posterSrc]);
 
-    const node = ref.current;
-    if (!node) return;
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !playbackSrc) return;
 
-    const rootMargin = isMobile
-      ? priorityLoad
-        ? '120% 0px'
-        : '80% 0px'
-      : priorityLoad
-        ? '100% 0px'
-        : '30% 0px';
+    const markReady = () => setVideoReady(true);
+    const tryPlay = () => {
+      void video.play().catch(() => {});
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setShouldLoadVideo(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin, threshold: 0 },
-    );
+    video.addEventListener('loadeddata', markReady);
+    video.addEventListener('canplay', markReady);
+    video.addEventListener('playing', markReady);
+    tryPlay();
 
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [videoSrc, priorityLoad, isMobile]);
+    return () => {
+      video.removeEventListener('loadeddata', markReady);
+      video.removeEventListener('canplay', markReady);
+      video.removeEventListener('playing', markReady);
+    };
+  }, [playbackSrc]);
 
   return (
     <section
@@ -124,33 +116,28 @@ export function CategorySection({
       >
         {videoSrc ? (
           <>
-            {posterSrc && !isMobile ? (
+            {posterSrc ? (
               <div
-                className="category-section-media category-section-image"
+                className="category-section-media category-section-image category-section-poster"
                 style={{ backgroundImage: `url(${posterSrc})` }}
                 aria-hidden
                 {...protectedMediaSurfaceProps}
               />
             ) : null}
-            <video
-              src={playbackSrc}
-              poster={posterSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload={
-                shouldLoadVideo
-                  ? isMobile || priorityLoad
-                    ? 'auto'
-                    : 'metadata'
-                  : 'none'
-              }
-              className={`category-section-media category-section-video${videoReady || isMobile ? ' category-section-video--ready' : ''}`}
-              onLoadedData={() => setVideoReady(true)}
-              onCanPlay={() => setVideoReady(true)}
-              {...protectedVideoProps}
-            />
+            {shouldLoadVideo && playbackSrc ? (
+              <video
+                ref={videoRef}
+                key={playbackSrc}
+                src={playbackSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className={`category-section-media category-section-video${videoReady ? ' category-section-video--ready' : ''}`}
+                {...protectedVideoProps}
+              />
+            ) : null}
           </>
         ) : (
           <div

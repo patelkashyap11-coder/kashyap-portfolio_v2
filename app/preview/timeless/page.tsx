@@ -1,5 +1,5 @@
 import { HeroSection } from '@/components/HeroSection';
-import { CategorySection } from '@/components/CategorySection';
+import { CategoryStack } from '@/components/CategoryStack';
 import { WhatWeDoSection } from '@/components/WhatWeDoSection';
 import { TrustedBySection } from '@/components/TrustedBySection';
 import { CTASection } from '@/components/CTASection';
@@ -35,22 +35,7 @@ export default async function TimelessPreviewPage() {
 
       <div className="hero-category-spacer" aria-hidden />
 
-      <div
-        className="category-stack-wrapper"
-        style={{
-          height: `${homepageCategories.length * 100}vh`,
-          ['--category-stack-count' as string]: homepageCategories.length,
-        }}
-      >
-        {homepageCategories.map((cat, i) => (
-          <CategorySection
-            key={cat.href}
-            {...cat}
-            index={i}
-            priorityLoad={cat.slug === 'fashion'}
-          />
-        ))}
-      </div>
+      <CategoryStack categories={homepageCategories} />
 
       <div className="homepage-after-categories">
         <WhatWeDoSection />
