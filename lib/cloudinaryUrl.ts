@@ -10,11 +10,11 @@ const VIDEO_PRESETS: Record<
   CloudinaryVideoPreset,
   { width: number; height?: number; quality: string }
 > = {
-  hero: { width: 1920, quality: 'auto:good' },
+  hero: { width: 1920, quality: 'auto:best' },
   /** Full HD web delivery from 4K masters — Cloudinary transcodes, site never serves the raw upload. */
   'hero-hd': { width: 1920, height: 1080, quality: 'auto:best' },
-  /** Smaller homepage/category background delivery for phones. */
-  'hero-mobile': { width: 720, quality: 'auto:good' },
+  /** Full-width category backgrounds on phones — 1080px for retina sharpness. */
+  'hero-mobile': { width: 1080, quality: 'auto:best' },
   featured: { width: 1280, quality: 'auto:good' },
   masonry: { width: 800, quality: 'auto:good' },
   lightbox: { width: 1920, quality: 'auto:best' },
@@ -158,7 +158,7 @@ export function cloudinaryVideoPosterUrl(
   const { width } = VIDEO_PRESETS[preset];
   const assetPath = assetPathFromUploadSegment(uploadPath);
   const posterPath = assetPath.replace(/\.(mp4|mov|webm|mkv)$/i, '.jpg');
-  const transforms = [`w_${width}`, 'c_limit', 'q_auto:good', 'f_jpg', 'so_0'].join(',');
+  const transforms = [`w_${width}`, 'c_limit', 'q_auto:best', 'f_jpg', 'so_0'].join(',');
 
   const base = url.slice(0, url.indexOf('/upload/') + '/upload/'.length);
   return `${base}${transforms}/${posterPath}`;
