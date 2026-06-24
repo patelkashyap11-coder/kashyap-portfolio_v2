@@ -4,6 +4,7 @@ import { getGallery } from './getGallery';
 export type ReelsCollection = {
   vertical: MediaItem[];
   horizontal: MediaItem[];
+  youtube?: MediaItem[];
 };
 
 function isVideo(item: MediaItem): boolean {

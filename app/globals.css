@@ -1449,6 +1449,40 @@ body {
   background: linear-gradient(160deg, #0a0a0a 0%, #1a1a18 45%, #0a0a0a 100%);
 }
 
+.category-masonry-asset--youtube {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.reels-landscape-list--stack {
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 3vw, 32px);
+}
+
+.reels-landscape-list--stack .reels-landscape-item {
+  aspect-ratio: 16 / 9;
+}
+
+.category-lightbox-media--youtube {
+  width: min(96vw, 1400px);
+  aspect-ratio: 16 / 9;
+  max-height: 88vh;
+  height: auto;
+  flex: none;
+}
+
+.category-lightbox-youtube {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #000;
+}
+
 .reels-section-header {
   display: flex;
   align-items: flex-end;

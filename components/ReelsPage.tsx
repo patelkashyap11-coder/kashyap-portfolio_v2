@@ -15,6 +15,11 @@ import type { MediaItem } from '@/components/GalleryPage';
 import type { ReelsCollection } from '@/lib/getReels';
 import { cloudinaryVideoUrl, cloudinaryVideoPosterUrl } from '@/lib/cloudinaryUrl';
 import {
+  isYouTubeUrl,
+  youtubeEmbedUrl,
+  youtubeThumbnailUrl,
+} from '@/lib/youtube';
+import {
   protectedMediaSurfaceProps,
   protectedVideoProps,
 } from '@/lib/mediaProtection';
@@ -24,6 +29,8 @@ interface Props {
   reels: ReelsCollection;
   homeHref?: string;
   locked?: boolean;
+  /** YouTube watch / youtu.be link — hero shows the video thumbnail. */
+  heroYouTubeUrl?: string;
 }
 
 const EASE = [0.76, 0, 0.24, 1] as [number, number, number, number];
@@ -118,7 +125,10 @@ function ReelGridItem({
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const aspectRatio = mediaAspectRatio(item) ?? (portrait ? '9 / 16' : '16 / 9');
-  const posterSrc = cloudinaryVideoPosterUrl(item.src, 'masonry');
+  const isYouTube = isYouTubeUrl(item.src);
+  const posterSrc = isYouTube
+    ? youtubeThumbnailUrl(item.src)
+    : cloudinaryVideoPosterUrl(item.src, 'masonry');
   const itemStyle = { aspectRatio };
 
   const playPreview = useCallback(() => {
@@ -140,7 +150,7 @@ function ReelGridItem({
   }, [hoverPreviewEnabled]);
 
   useLayoutEffect(() => {
-    if (hoverPreviewEnabled) return;
+    if (hoverPreviewEnabled || isYouTube) return;
 
     const itemEl = itemRef.current;
     const video = videoRef.current;
@@ -160,7 +170,7 @@ function ReelGridItem({
 
     observer.observe(itemEl);
     return () => observer.disconnect();
-  }, [hoverPreviewEnabled]);
+  }, [hoverPreviewEnabled, isYouTube]);
 
   const openLightbox = useCallback(() => {
     onOpen(originalIndex);
@@ -192,27 +202,35 @@ function ReelGridItem({
       ref={itemRef}
       className={`category-masonry-item group reels-masonry-item${portrait ? '' : ' category-masonry-item--landscape reels-landscape-item'}`}
       style={itemStyle}
-      onClick={hoverPreviewEnabled ? openLightbox : undefined}
-      onTouchStart={hoverPreviewEnabled ? undefined : handleTouchStart}
-      onTouchEnd={hoverPreviewEnabled ? undefined : handleTouchEnd}
-      onPointerEnter={hoverPreviewEnabled ? playPreview : undefined}
-      onPointerLeave={hoverPreviewEnabled ? pausePreview : undefined}
+      onClick={hoverPreviewEnabled || isYouTube ? openLightbox : undefined}
+      onTouchStart={hoverPreviewEnabled || isYouTube ? undefined : handleTouchStart}
+      onTouchEnd={hoverPreviewEnabled || isYouTube ? undefined : handleTouchEnd}
+      onPointerEnter={hoverPreviewEnabled && !isYouTube ? playPreview : undefined}
+      onPointerLeave={hoverPreviewEnabled && !isYouTube ? pausePreview : undefined}
       {...protectedMediaSurfaceProps}
     >
-      <video
-        ref={videoRef}
-        src={cloudinaryVideoUrl(item.src, 'masonry')}
-        poster={posterSrc}
-        muted
-        loop
-        playsInline
-        preload={hoverPreviewEnabled ? 'metadata' : 'auto'}
-        className="category-masonry-asset"
-        onPlaying={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        {...protectedVideoProps}
-      />
-      {hoverPreviewEnabled && !isPlaying && (
+      {isYouTube ? (
+        <div
+          className="category-masonry-asset category-masonry-asset--youtube"
+          style={{ backgroundImage: `url(${posterSrc})` }}
+          aria-hidden
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          src={cloudinaryVideoUrl(item.src, 'masonry')}
+          poster={posterSrc}
+          muted
+          loop
+          playsInline
+          preload={hoverPreviewEnabled ? 'metadata' : 'auto'}
+          className="category-masonry-asset"
+          onPlaying={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          {...protectedVideoProps}
+        />
+      )}
+      {(hoverPreviewEnabled || isYouTube) && !isPlaying && (
         <div className="category-masonry-play" aria-hidden>
           <Play size={14} style={{ marginLeft: 2 }} />
         </div>
@@ -226,11 +244,13 @@ function ReelsGrid({
   indexOffset,
   portrait,
   onOpen,
+  landscapeLayout = 'grid',
 }: {
   items: MediaItem[];
   indexOffset: number;
   portrait: boolean;
   onOpen: (index: number) => void;
+  landscapeLayout?: 'grid' | 'stack';
 }) {
   const columnCount = useColumnCount(portrait);
   const hoverPreviewEnabled = useHoverPreviewEnabled();
@@ -245,7 +265,13 @@ function ReelsGrid({
   if (!portrait) {
     return (
       <div className="reels-grid--landscape">
-        <div className="reels-landscape-list">
+        <div
+          className={
+            landscapeLayout === 'stack'
+              ? 'reels-landscape-list reels-landscape-list--stack'
+              : 'reels-landscape-list'
+          }
+        >
           {items.map((item, i) => (
             <ReelGridItem
               key={item.publicId ?? `${item.src}-${i}`}
@@ -304,10 +330,22 @@ function NavBtn({
   );
 }
 
-export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
+export function ReelsPage({
+  reels,
+  homeHref = '/',
+  locked = false,
+  heroYouTubeUrl,
+}: Props) {
+  const heroThumbnailSrc = heroYouTubeUrl
+    ? youtubeThumbnailUrl(heroYouTubeUrl)
+    : undefined;
+  const youtubeReels = reels.youtube ?? [];
   const allReels = useMemo(
-    () => (locked ? [] : [...reels.horizontal, ...reels.vertical]),
-    [locked, reels.vertical, reels.horizontal],
+    () =>
+      locked
+        ? []
+        : [...reels.horizontal, ...reels.vertical, ...youtubeReels],
+    [locked, reels.horizontal, reels.vertical, youtubeReels],
   );
 
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -337,12 +375,21 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
   };
 
   const hasReels = allReels.length > 0;
+  const hasHeroMedia = Boolean(heroThumbnailSrc);
 
   return (
     <div className="gallery-page reels-page">
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
-          <div className="reels-hero-fallback" aria-hidden />
+          {heroThumbnailSrc ? (
+            <div
+              className="category-hero-image"
+              style={{ backgroundImage: `url(${heroThumbnailSrc})` }}
+              {...protectedMediaSurfaceProps}
+            />
+          ) : (
+            <div className="reels-hero-fallback" aria-hidden />
+          )}
           <div className="category-hero-overlay" />
         </div>
 
@@ -415,7 +462,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
         </div>
       )}
 
-      {!locked && !hasReels && (
+      {!locked && !hasReels && !hasHeroMedia && (
         <div className="category-empty">
           <div className="category-empty-icon" />
           <p className="category-empty-title">Motion coming soon</p>
@@ -464,6 +511,26 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
         </section>
       )}
 
+      {!locked && youtubeReels.length > 0 && (
+        <section id="reels-youtube" className="category-masonry-section">
+          <div className="category-page-inner">
+            <div className="reels-section-header">
+              <div className="reels-section-heading">
+                <h2 className="reels-section-title t-display">Youtube</h2>
+              </div>
+            </div>
+
+            <ReelsGrid
+              items={youtubeReels}
+              indexOffset={reels.horizontal.length + reels.vertical.length}
+              portrait={false}
+              landscapeLayout="stack"
+              onOpen={open}
+            />
+          </div>
+        </section>
+      )}
+
       <GalleryFooter />
 
       <AnimatePresence>
@@ -503,17 +570,27 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.28 }}
-              className="category-lightbox-media"
+              className={`category-lightbox-media${isYouTubeUrl(allReels[lightboxIdx].src) ? ' category-lightbox-media--youtube' : ''}`}
               onClick={(e) => e.stopPropagation()}
               {...protectedMediaSurfaceProps}
             >
-              <video
-                src={cloudinaryVideoUrl(allReels[lightboxIdx].src, 'lightbox')}
-                controls
-                autoPlay
-                className="category-lightbox-asset"
-                {...protectedVideoProps}
-              />
+              {isYouTubeUrl(allReels[lightboxIdx].src) ? (
+                <iframe
+                  src={youtubeEmbedUrl(allReels[lightboxIdx].src, true)}
+                  title="YouTube video"
+                  className="category-lightbox-youtube"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  src={cloudinaryVideoUrl(allReels[lightboxIdx].src, 'lightbox')}
+                  controls
+                  autoPlay
+                  className="category-lightbox-asset"
+                  {...protectedVideoProps}
+                />
+              )}
             </motion.div>
 
             <NavBtn

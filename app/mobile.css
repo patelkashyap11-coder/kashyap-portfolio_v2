@@ -744,6 +744,14 @@
     gap: 12px !important;
   }
 
+  .reels-landscape-list--stack {
+    gap: 16px !important;
+  }
+
+  .reels-landscape-list--stack .reels-landscape-item {
+    aspect-ratio: 16 / 9 !important;
+  }
+
   .category-masonry,
   .category-masonry-col {
     gap: 12px !important;
