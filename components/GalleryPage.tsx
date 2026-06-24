@@ -103,6 +103,7 @@ export function GalleryPage({
   homeHref = '/',
 }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [heroTitleRevealed, setHeroTitleRevealed] = useState(false);
 
   const flatFeatured = useMemo(
     () => featuredMedia.filter((item): item is MediaItem => item !== null),
@@ -237,11 +238,14 @@ export function GalleryPage({
             {subtitle}
           </motion.p>
 
-          <div className="category-hero-title-wrap">
+          <div
+            className={`category-hero-title-wrap${heroTitleRevealed ? ' category-hero-title-wrap--revealed' : ''}`}
+          >
             <motion.h1
               initial={{ y: '110%' }}
               animate={{ y: 0 }}
               transition={{ duration: 1, ease: EASE }}
+              onAnimationComplete={() => setHeroTitleRevealed(true)}
               className={`category-hero-title t-display${heroTitleLong ? ' category-hero-title--long' : ''}`}
             >
               {heroTitle}

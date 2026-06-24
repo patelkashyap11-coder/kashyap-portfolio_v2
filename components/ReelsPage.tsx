@@ -311,6 +311,7 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
   );
 
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [heroTitleRevealed, setHeroTitleRevealed] = useState(false);
 
   const open = useCallback((i: number) => setLightboxIdx(i), []);
   const close = useCallback(() => setLightboxIdx(null), []);
@@ -360,11 +361,14 @@ export function ReelsPage({ reels, homeHref = '/', locked = false }: Props) {
             Film & Motion
           </motion.p>
 
-          <div className="category-hero-title-wrap">
+          <div
+            className={`category-hero-title-wrap${heroTitleRevealed ? ' category-hero-title-wrap--revealed' : ''}`}
+          >
             <motion.h1
               initial={{ y: '110%' }}
               animate={{ y: 0 }}
               transition={{ duration: 1, ease: EASE }}
+              onAnimationComplete={() => setHeroTitleRevealed(true)}
               className="category-hero-title t-display"
             >
               MOTION
