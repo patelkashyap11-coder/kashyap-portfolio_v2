@@ -112,12 +112,21 @@
   }
 
   body:has(.homepage) .category-section[data-category='fashion'] .category-section-media,
+  body:has(.homepage) .category-section[data-category='fashion'] video.category-section-media,
+  body:has(.homepage) .category-section[data-category='fashion'] .category-section-poster {
+    width: 120% !important;
+    min-width: 120% !important;
+    height: 120% !important;
+    min-height: 120% !important;
+  }
+
+  body:has(.homepage) .category-section[data-category='fashion'] .category-section-media,
   body:has(.homepage) .category-section[data-category='fashion'] video.category-section-media {
-    object-position: 80% 32% !important;
+    object-position: 38% 52% !important;
   }
 
   body:has(.homepage) .category-section[data-category='fashion'] .category-section-poster {
-    background-position: 80% 32% !important;
+    background-position: 38% 52% !important;
   }
 
   .category-section-image {

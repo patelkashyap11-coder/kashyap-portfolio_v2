@@ -731,13 +731,19 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* Fashion master — brand logo sits upper-right; anchor framing there */
+/* Fashion — zoom in and crop upper-right brand logo (homepage only) */
+.homepage .category-section[data-category='fashion'] .category-section-media,
+.homepage .category-section[data-category='fashion'] .category-section-poster {
+  width: 120%;
+  height: 120%;
+}
+
 .homepage .category-section[data-category='fashion'] .category-section-media {
-  object-position: 80% 32%;
+  object-position: 38% 52%;
 }
 
 .homepage .category-section[data-category='fashion'] .category-section-poster {
-  background-position: 80% 32%;
+  background-position: 38% 52%;
 }
 
 .homepage-after-categories {
