@@ -28,6 +28,7 @@ export function Navbar() {
   const [overHomeCta, setOverHomeCta] = useState(false);
   const [overGalleryHero, setOverGalleryHero] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
   const lastScrollY           = useRef(0);
   const pathname = usePathname();
   const previewBase = getPreviewBase(pathname);
@@ -113,8 +114,10 @@ export function Navbar() {
         setVisible(true);
       } else if (y > lastScrollY.current + 4) {
         setVisible(false);
+        setScrollDirection('down');
       } else if (y < lastScrollY.current - 4) {
         setVisible(true);
+        setScrollDirection('up');
       }
 
       lastScrollY.current = y;
@@ -149,6 +152,35 @@ export function Navbar() {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, [open]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (!isHomepage) {
+      root.style.removeProperty('--homepage-category-title-offset');
+      return;
+    }
+
+    const offsetDown = isMobile
+      ? 'var(--site-nav-height)'
+      : 'calc(var(--site-nav-height) - 15px)';
+    const offsetUp = isMobile
+      ? 'max(14px, env(safe-area-inset-top, 0px))'
+      : '20px';
+
+    const titleAtEdge = scrollDirection !== 'up';
+
+    root.dataset.homeNav = titleAtEdge ? 'hidden' : 'visible';
+    root.style.setProperty(
+      '--homepage-category-title-offset',
+      titleAtEdge ? offsetUp : offsetDown,
+    );
+
+    return () => {
+      delete root.dataset.homeNav;
+      root.style.removeProperty('--homepage-category-title-offset');
+    };
+  }, [isHomepage, scrollDirection, isMobile]);
 
   const onDarkHero = isGalleryPage && (isMobile ? !pinned : overGalleryHero);
   const onHomeCategoryStack = isHomepage && !open && overHomeCategoryStack;

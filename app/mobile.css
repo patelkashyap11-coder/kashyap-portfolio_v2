@@ -141,12 +141,20 @@
   }
 
   .category-content {
-    padding: var(--site-nav-height) var(--page-inline) 0 !important;
+    padding-top: var(--homepage-category-title-offset, var(--site-nav-height)) !important;
+    padding-left: var(--page-inline) !important;
+    padding-right: var(--page-inline) !important;
+    transition: padding-top 0.6s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .category-content-inner {
+    gap: clamp(20px, 3vh, 28px) !important;
   }
 
   .category-section .category-title {
     font-size: clamp(3rem, 14vw, 5.5rem) !important;
-    line-height: 0.92 !important;
+    line-height: 0.96 !important;
+    padding-bottom: 0.08em !important;
     opacity: 1 !important;
     transform: none !important;
     text-shadow:
