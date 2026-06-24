@@ -720,6 +720,26 @@ body {
   opacity: 1;
 }
 
+/* Homepage category backgrounds — pull back slightly so cover crop feels less zoomed */
+.homepage .category-section .category-section-media,
+.homepage .category-section .category-section-poster {
+  width: 106%;
+  height: 106%;
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Fashion master — brand logo sits upper-right; anchor framing there */
+.homepage .category-section[data-category='fashion'] .category-section-media {
+  object-position: 80% 32%;
+}
+
+.homepage .category-section[data-category='fashion'] .category-section-poster {
+  background-position: 80% 32%;
+}
+
 .homepage-after-categories {
   position: relative;
   z-index: 10;

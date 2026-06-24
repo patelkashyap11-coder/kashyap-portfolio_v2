@@ -12,6 +12,7 @@ import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProt
 interface Props {
   title: string;
   href: string;
+  slug: string;
   videoSrc?: string;
   imageSrc?: string;
   index: number;
@@ -22,6 +23,7 @@ interface Props {
 export function CategorySection({
   title,
   href,
+  slug,
   videoSrc,
   imageSrc,
   index,
@@ -45,7 +47,7 @@ export function CategorySection({
     target: ref,
     offset: ['start end', 'start 0.2'],
   });
-  const scaleMotion = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1, 1.06]);
+  const scaleMotion = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 1]);
   const titleOpacity = useTransform(titleProgress, [0, 0.75], [0, 1]);
   const titleX = useTransform(titleProgress, [0, 0.75], [-32, 0]);
   const subtitleOpacity = useTransform(titleProgress, [0.12, 0.82], [0, 1]);
@@ -108,6 +110,7 @@ export function CategorySection({
     <section
       ref={ref}
       className="category-section overflow-hidden group"
+      data-category={slug}
       style={{ zIndex: index + 1 }}
     >
       <motion.div
