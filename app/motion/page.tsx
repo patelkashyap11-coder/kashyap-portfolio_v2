@@ -1,7 +1,12 @@
 import { ReelsPage } from '@/components/ReelsPage';
 import type { MediaItem } from '@/components/GalleryPage';
 import { getReels } from '@/lib/getReels';
-import { MOTION_HERO_YOUTUBE_URL, MOTION_YOUTUBE_VIDEOS } from '@/lib/motion';
+import { fetchInstagramPreview, isInstagramUrl } from '@/lib/instagram';
+import {
+  MOTION_HERO_YOUTUBE_URL,
+  MOTION_INSTAGRAM_REELS,
+  MOTION_YOUTUBE_VIDEOS,
+} from '@/lib/motion';
 import { REELS_LOCKED } from '@/lib/reels';
 import { getMotionMetadata } from '@/lib/seo';
 import { isYouTubeUrl } from '@/lib/youtube';
@@ -18,6 +23,18 @@ function youtubeToMediaItem(url: string): MediaItem {
   };
 }
 
+async function instagramToMediaItem(url: string): Promise<MediaItem> {
+  const preview = await fetchInstagramPreview(url);
+
+  return {
+    src: url,
+    type: 'video',
+    width: preview?.thumbnail_width ?? 1080,
+    height: preview?.thumbnail_height ?? 1920,
+    thumbnail: preview?.thumbnail_url,
+  };
+}
+
 export async function generateMetadata() {
   return getMotionMetadata();
 }
@@ -27,12 +44,18 @@ export default async function Page() {
     ? { vertical: [], horizontal: [] }
     : await getReels();
 
-  const youtubeItems = MOTION_YOUTUBE_VIDEOS.filter(isYouTubeUrl).map(youtubeToMediaItem);
+  const [youtubeItems, instagramItems] = await Promise.all([
+    Promise.resolve(MOTION_YOUTUBE_VIDEOS.filter(isYouTubeUrl).map(youtubeToMediaItem)),
+    Promise.all(
+      MOTION_INSTAGRAM_REELS.filter(isInstagramUrl).map(instagramToMediaItem),
+    ),
+  ]);
 
   return (
     <ReelsPage
       reels={{
         ...reels,
+        vertical: [...instagramItems, ...reels.vertical],
         youtube: youtubeItems,
       }}
       heroYouTubeUrl={MOTION_HERO_YOUTUBE_URL || undefined}

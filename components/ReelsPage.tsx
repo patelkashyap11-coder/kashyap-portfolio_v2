@@ -15,6 +15,10 @@ import type { MediaItem } from '@/components/GalleryPage';
 import type { ReelsCollection } from '@/lib/getReels';
 import { cloudinaryVideoUrl, cloudinaryVideoPosterUrl } from '@/lib/cloudinaryUrl';
 import {
+  getExternalVideoProvider,
+} from '@/lib/externalVideo';
+import { instagramEmbedUrl } from '@/lib/instagram';
+import {
   isYouTubeUrl,
   youtubeEmbedUrl,
   youtubeThumbnailUrl,
@@ -125,10 +129,15 @@ function ReelGridItem({
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const aspectRatio = mediaAspectRatio(item) ?? (portrait ? '9 / 16' : '16 / 9');
-  const isYouTube = isYouTubeUrl(item.src);
+  const externalProvider = getExternalVideoProvider(item.src);
+  const isYouTube = externalProvider === 'youtube';
+  const isInstagram = externalProvider === 'instagram';
+  const isExternal = isYouTube || isInstagram;
   const posterSrc = isYouTube
     ? youtubeThumbnailUrl(item.src)
-    : cloudinaryVideoPosterUrl(item.src, 'masonry');
+    : isInstagram && item.thumbnail
+      ? item.thumbnail
+      : cloudinaryVideoPosterUrl(item.src, 'masonry');
   const itemStyle = { aspectRatio };
 
   const playPreview = useCallback(() => {
@@ -150,7 +159,7 @@ function ReelGridItem({
   }, [hoverPreviewEnabled]);
 
   useLayoutEffect(() => {
-    if (hoverPreviewEnabled || isYouTube) return;
+    if (hoverPreviewEnabled || isExternal) return;
 
     const itemEl = itemRef.current;
     const video = videoRef.current;
@@ -170,7 +179,7 @@ function ReelGridItem({
 
     observer.observe(itemEl);
     return () => observer.disconnect();
-  }, [hoverPreviewEnabled, isYouTube]);
+  }, [hoverPreviewEnabled, isExternal]);
 
   const openLightbox = useCallback(() => {
     onOpen(originalIndex);
@@ -202,17 +211,23 @@ function ReelGridItem({
       ref={itemRef}
       className={`category-masonry-item group reels-masonry-item${portrait ? '' : ' category-masonry-item--landscape reels-landscape-item'}`}
       style={itemStyle}
-      onClick={hoverPreviewEnabled || isYouTube ? openLightbox : undefined}
-      onTouchStart={hoverPreviewEnabled || isYouTube ? undefined : handleTouchStart}
-      onTouchEnd={hoverPreviewEnabled || isYouTube ? undefined : handleTouchEnd}
-      onPointerEnter={hoverPreviewEnabled && !isYouTube ? playPreview : undefined}
-      onPointerLeave={hoverPreviewEnabled && !isYouTube ? pausePreview : undefined}
+      onClick={hoverPreviewEnabled || isExternal ? openLightbox : undefined}
+      onTouchStart={hoverPreviewEnabled || isExternal ? undefined : handleTouchStart}
+      onTouchEnd={hoverPreviewEnabled || isExternal ? undefined : handleTouchEnd}
+      onPointerEnter={hoverPreviewEnabled && !isExternal ? playPreview : undefined}
+      onPointerLeave={hoverPreviewEnabled && !isExternal ? pausePreview : undefined}
       {...protectedMediaSurfaceProps}
     >
       {isYouTube ? (
         <div
           className="category-masonry-asset category-masonry-asset--youtube"
           style={{ backgroundImage: `url(${posterSrc})` }}
+          aria-hidden
+        />
+      ) : isInstagram ? (
+        <div
+          className={`category-masonry-asset category-masonry-asset--instagram${item.thumbnail ? '' : ' category-masonry-asset--instagram-fallback'}`}
+          style={item.thumbnail ? { backgroundImage: `url(${posterSrc})` } : undefined}
           aria-hidden
         />
       ) : (
@@ -230,7 +245,7 @@ function ReelGridItem({
           {...protectedVideoProps}
         />
       )}
-      {(hoverPreviewEnabled || isYouTube) && !isPlaying && (
+      {(hoverPreviewEnabled || isExternal) && !isPlaying && (
         <div className="category-masonry-play" aria-hidden>
           <Play size={14} style={{ marginLeft: 2 }} />
         </div>
@@ -534,7 +549,11 @@ export function ReelsPage({
       <GalleryFooter />
 
       <AnimatePresence>
-        {lightboxIdx !== null && allReels[lightboxIdx] && (
+        {lightboxIdx !== null && allReels[lightboxIdx] && (() => {
+          const lightboxItem = allReels[lightboxIdx];
+          const lightboxProvider = getExternalVideoProvider(lightboxItem.src);
+
+          return (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -570,21 +589,34 @@ export function ReelsPage({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.28 }}
-              className={`category-lightbox-media${isYouTubeUrl(allReels[lightboxIdx].src) ? ' category-lightbox-media--youtube' : ''}`}
+              className={`category-lightbox-media${
+                lightboxProvider === 'youtube' ? ' category-lightbox-media--youtube' : ''
+              }${
+                lightboxProvider === 'instagram' ? ' category-lightbox-media--instagram' : ''
+              }`}
               onClick={(e) => e.stopPropagation()}
               {...protectedMediaSurfaceProps}
             >
-              {isYouTubeUrl(allReels[lightboxIdx].src) ? (
+              {lightboxProvider === 'youtube' ? (
                 <iframe
-                  src={youtubeEmbedUrl(allReels[lightboxIdx].src, true)}
+                  src={youtubeEmbedUrl(lightboxItem.src, true)}
                   title="YouTube video"
                   className="category-lightbox-youtube"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 />
+              ) : lightboxProvider === 'instagram' ? (
+                <iframe
+                  src={instagramEmbedUrl(lightboxItem.src)}
+                  title="Instagram reel"
+                  className="category-lightbox-instagram"
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  allowFullScreen
+                  scrolling="no"
+                />
               ) : (
                 <video
-                  src={cloudinaryVideoUrl(allReels[lightboxIdx].src, 'lightbox')}
+                  src={cloudinaryVideoUrl(lightboxItem.src, 'lightbox')}
                   controls
                   autoPlay
                   className="category-lightbox-asset"
@@ -601,7 +633,8 @@ export function ReelsPage({
               }}
             />
           </motion.div>
-        )}
+          );
+        })()}
       </AnimatePresence>
     </div>
   );

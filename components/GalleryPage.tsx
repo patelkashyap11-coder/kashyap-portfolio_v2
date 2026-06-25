@@ -25,6 +25,8 @@ export interface MediaItem {
   width?: number;
   height?: number;
   publicId?: string;
+  /** Optional poster for external embeds (Instagram, etc.). */
+  thumbnail?: string;
 }
 
 interface Props {
