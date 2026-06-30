@@ -1,7 +1,5 @@
-import { cloudinaryPreset, isCloudinaryUrl } from './cloudinaryUrl';
-
-/** Hero/poster delivery URL — same asset, web-sized when on Cloudinary. */
+/** Hero/poster source URL — delivery transforms happen in CloudinaryImage / loader. */
 export function heroPosterUrl(src?: string): string | undefined {
   if (!src) return undefined;
-  return isCloudinaryUrl(src) ? cloudinaryPreset(src, 'hero') : src;
+  return src;
 }

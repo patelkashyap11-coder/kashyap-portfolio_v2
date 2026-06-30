@@ -1,6 +1,6 @@
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import { cloudinaryPreset, cloudinaryVideoUrl } from './cloudinaryUrl';
+import { cloudinaryVideoUrl } from './cloudinaryUrl';
 import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
 import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
 import { categories } from './categoryData';
@@ -110,7 +110,7 @@ export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => 
       }
 
       if (item.resource_type === 'image' && !map[slug].imageSrc) {
-        map[slug].imageSrc = cloudinaryPreset(item.secure_url, 'hero');
+        map[slug].imageSrc = item.secure_url;
       }
     }
 

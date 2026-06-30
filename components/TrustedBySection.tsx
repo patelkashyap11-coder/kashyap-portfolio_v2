@@ -1,6 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
+import { CloudinaryImage } from '@/components/CloudinaryImage';
 import type { Client } from '@/lib/getClients';
+import { CLOUDINARY_IMAGE_SIZES } from '@/lib/cloudinaryUrl';
 
 interface Props {
   clients: Client[];
@@ -61,12 +63,13 @@ export function TrustedBySection({ clients }: Props) {
           {clients.map((client) => (
               <div key={client.id} className="clients-logo-cell">
                 {client.logo ? (
-                  <img
+                  <CloudinaryImage
                     src={client.logo}
                     alt={client.name}
+                    width={400}
+                    height={160}
+                    sizes={CLOUDINARY_IMAGE_SIZES.logo}
                     className={logoClassName(client.id)}
-                    loading="lazy"
-                    decoding="async"
                   />
                 ) : (
                   <span className="clients-logo-text">{client.name}</span>

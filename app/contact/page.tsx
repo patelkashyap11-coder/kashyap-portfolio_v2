@@ -8,24 +8,22 @@ import { ArrowUpRight } from 'lucide-react';
 import { BrandLogo } from '@/components/BrandLogo';
 import { useSiteContent } from '@/lib/content/ContentProvider';
 import { getPreviewBase } from '@/lib/content/preview';
-import { cloudinaryUrl } from '@/lib/cloudinaryUrl';
+import { cloudinaryImageLoader } from '@/lib/cloudinaryLoader';
+import { CLOUDINARY_IMAGE_SIZES } from '@/lib/cloudinaryUrl';
 import { CONTACT_PLAY_CARDS, SITE_CONTACT, SITE_LOCATION } from '@/lib/site';
-
-const playCardImage = (url: string) =>
-  cloudinaryUrl(url, { width: 800, quality: 'auto:good' });
 
 const socialLinks = [
   {
     label: 'Instagram',
     href: SITE_CONTACT.instagram,
-    image: playCardImage(CONTACT_PLAY_CARDS.instagram),
+    image: CONTACT_PLAY_CARDS.instagram,
     lead: 'Behind the frames.',
     body: 'Latest campaigns, BTS moments and visual experiments.',
   },
   {
     label: 'WhatsApp',
     href: SITE_CONTACT.whatsapp,
-    image: playCardImage(CONTACT_PLAY_CARDS.whatsapp),
+    image: CONTACT_PLAY_CARDS.whatsapp,
     lead: 'Have a project in mind?',
     body: "Let's discuss ideas, timelines and possibilities.",
   },
@@ -141,12 +139,13 @@ export default function ContactPage() {
                   className="contact-card-link"
                 >
                   <Image
+                    loader={cloudinaryImageLoader}
                     src={image}
                     alt=""
                     fill
-                    sizes="(max-width: 768px) 50vw, 20vw"
+                    sizes={CLOUDINARY_IMAGE_SIZES.contactCard}
                     className="contact-card-image"
-                    priority={i === 0}
+                    loading="lazy"
                   />
                   <span className="contact-card-overlay" aria-hidden />
                   <span className="contact-card-copy">

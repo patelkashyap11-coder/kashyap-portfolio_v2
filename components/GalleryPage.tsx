@@ -3,10 +3,10 @@ import { useState, useCallback, useMemo, useLayoutEffect, useEffect } from 'reac
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { CloudinaryImage } from '@/components/CloudinaryImage';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
-import { cloudinaryPreset, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { CLOUDINARY_IMAGE_SIZES, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
 import {
-  protectedImageProps,
   protectedMediaSurfaceProps,
   protectedVideoProps,
 } from '@/lib/mediaProtection';
@@ -145,9 +145,6 @@ export function GalleryPage({
   const galleryItems = galleryMedia;
   const heroFallbackImage =
     heroImage || featuredMedia.find((item) => item)?.src || galleryMedia[0]?.src;
-  const heroFallbackImageSrc = heroFallbackImage
-    ? cloudinaryPreset(heroFallbackImage, 'hero')
-    : undefined;
   const [isMobile, setIsMobile] = useState(
     () =>
       typeof window !== 'undefined' &&
@@ -203,11 +200,15 @@ export function GalleryPage({
       {/* ── Section 1: Hero ── */}
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
-          {heroFallbackImageSrc && !(heroVideo && isMobile) ? (
-            <div
+          {heroFallbackImage && !(heroVideo && isMobile) ? (
+            <CloudinaryImage
+              src={heroFallbackImage}
+              alt=""
+              fill
+              priority
+              sizes={CLOUDINARY_IMAGE_SIZES.hero}
               className="category-hero-image"
-              style={{ backgroundImage: `url(${heroFallbackImageSrc})` }}
-              {...protectedMediaSurfaceProps}
+              aria-hidden
             />
           ) : null}
           {heroVideo && loadHeroVideo ? (
@@ -451,11 +452,13 @@ export function GalleryPage({
                   {...protectedVideoProps}
                 />
               ) : (
-                <img
-                  src={cloudinaryPreset(media[lightboxIdx].src, 'lightbox')}
+                <CloudinaryImage
+                  src={media[lightboxIdx].src}
                   alt={media[lightboxIdx].alt || title}
+                  width={media[lightboxIdx].width ?? 1200}
+                  height={media[lightboxIdx].height ?? 800}
+                  sizes={CLOUDINARY_IMAGE_SIZES.lightbox}
                   className="category-lightbox-asset"
-                  {...protectedImageProps}
                 />
               )}
             </motion.div>
@@ -497,12 +500,13 @@ function FeaturedMedia({
           </div>
         </>
       ) : (
-        <img
-          src={cloudinaryPreset(item.src, 'featured')}
+        <CloudinaryImage
+          src={item.src}
           alt={item.alt || title}
-          loading="lazy"
+          width={item.width ?? 1200}
+          height={item.height ?? 800}
+          sizes={CLOUDINARY_IMAGE_SIZES.featured}
           className="category-featured-asset group-hover:scale-[1.02]"
-          {...protectedImageProps}
         />
       )}
     </button>
@@ -544,16 +548,13 @@ function MasonryItem({
           </div>
         </>
       ) : (
-        <img
-          src={cloudinaryPreset(item.src, 'masonry')}
+        <CloudinaryImage
+          src={item.src}
           alt={item.alt || ''}
-          loading="lazy"
-          decoding="async"
-          width={item.width}
-          height={item.height}
-          sizes="(max-width: 639px) calc((100vw - 42px) / 2), (max-width: 1199px) calc((100vw - 80px) / 3), calc((100vw - 160px) / 5)"
+          width={item.width ?? 800}
+          height={item.height ?? 1000}
+          sizes={CLOUDINARY_IMAGE_SIZES.masonry}
           className="category-masonry-asset"
-          {...protectedImageProps}
         />
       )}
     </div>

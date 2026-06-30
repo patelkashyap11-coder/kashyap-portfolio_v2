@@ -2,12 +2,10 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { heroPosterUrl } from '@/lib/posterUrl';
-import {
-  cloudinaryVideoPosterUrl,
-  cloudinaryVideoUrl,
-} from '@/lib/cloudinaryUrl';
+import { CloudinaryImage } from '@/components/CloudinaryImage';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
+import { CLOUDINARY_IMAGE_SIZES, cloudinaryVideoPosterUrl, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { heroPosterUrl } from '@/lib/posterUrl';
 
 interface Props {
   title: string;
@@ -80,12 +78,6 @@ export function CategorySection({
   }, [playbackSrc]);
 
   useEffect(() => {
-    if (!posterSrc) return;
-    const img = new window.Image();
-    img.src = posterSrc;
-  }, [posterSrc]);
-
-  useEffect(() => {
     const video = videoRef.current;
     if (!video || !playbackSrc) return;
 
@@ -120,11 +112,13 @@ export function CategorySection({
         {videoSrc ? (
           <>
             {posterSrc ? (
-              <div
+              <CloudinaryImage
+                src={posterSrc}
+                alt=""
+                fill
+                sizes={CLOUDINARY_IMAGE_SIZES.categoryPoster}
                 className="category-section-media category-section-image category-section-poster"
-                style={{ backgroundImage: `url(${posterSrc})` }}
                 aria-hidden
-                {...protectedMediaSurfaceProps}
               />
             ) : null}
             {shouldLoadVideo && playbackSrc ? (
@@ -142,13 +136,19 @@ export function CategorySection({
               />
             ) : null}
           </>
+        ) : posterSrc ? (
+          <CloudinaryImage
+            src={posterSrc}
+            alt=""
+            fill
+            sizes={CLOUDINARY_IMAGE_SIZES.categoryPoster}
+            className="category-section-media category-section-image"
+            {...protectedMediaSurfaceProps}
+          />
         ) : (
           <div
             className="category-section-media category-section-image"
-            style={{
-              backgroundImage: posterSrc ? `url(${posterSrc})` : undefined,
-              backgroundColor: `hsl(${index * 22},5%,8%)`,
-            }}
+            style={{ backgroundColor: `hsl(${index * 22},5%,8%)` }}
             {...protectedMediaSurfaceProps}
           />
         )}

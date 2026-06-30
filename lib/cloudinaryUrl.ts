@@ -22,17 +22,46 @@ const VIDEO_PRESETS: Record<
 
 export type CloudinaryPreset = 'featured' | 'masonry' | 'lightbox' | 'hero' | 'logo';
 
+/** Responsive delivery caps — images never exceed these widths. */
+export const CLOUDINARY_RESPONSIVE_WIDTH = {
+  mobile: 400,
+  tablet: 800,
+  desktop: 1200,
+} as const;
+
+export const CLOUDINARY_IMAGE_SIZES = {
+  hero: '100vw',
+  featured:
+    '(max-width: 639px) 100vw, (max-width: 1199px) 50vw, 1200px',
+  masonry:
+    '(max-width: 639px) calc((100vw - 42px) / 2), (max-width: 1199px) calc((100vw - 80px) / 3), calc((100vw - 160px) / 5)',
+  lightbox: '96vw',
+  logo: '(max-width: 639px) 25vw, 120px',
+  contactCard: '(max-width: 768px) 50vw, 20vw',
+  categoryPoster: '100vw',
+} as const;
+
+export function capCloudinaryImageWidth(requested: number): number {
+  if (requested <= CLOUDINARY_RESPONSIVE_WIDTH.mobile) {
+    return CLOUDINARY_RESPONSIVE_WIDTH.mobile;
+  }
+  if (requested <= CLOUDINARY_RESPONSIVE_WIDTH.tablet) {
+    return CLOUDINARY_RESPONSIVE_WIDTH.tablet;
+  }
+  return CLOUDINARY_RESPONSIVE_WIDTH.desktop;
+}
+
 const WATERMARK_TEXT = '© Kashyap Patel';
 
 const PRESETS: Record<
   CloudinaryPreset,
   { width: number; watermark?: boolean; watermarkSize?: number }
 > = {
-  featured: { width: 1600, watermark: true, watermarkSize: 14 },
-  masonry: { width: 800, watermark: true, watermarkSize: 12 },
-  lightbox: { width: 2400, watermark: true, watermarkSize: 18 },
-  hero: { width: 1920, watermark: true, watermarkSize: 16 },
-  logo: { width: 400, watermark: false },
+  featured: { width: CLOUDINARY_RESPONSIVE_WIDTH.desktop, watermark: true, watermarkSize: 14 },
+  masonry: { width: CLOUDINARY_RESPONSIVE_WIDTH.tablet, watermark: true, watermarkSize: 12 },
+  lightbox: { width: CLOUDINARY_RESPONSIVE_WIDTH.desktop, watermark: true, watermarkSize: 18 },
+  hero: { width: CLOUDINARY_RESPONSIVE_WIDTH.desktop, watermark: true, watermarkSize: 16 },
+  logo: { width: CLOUDINARY_RESPONSIVE_WIDTH.mobile, watermark: false },
 };
 
 export interface CloudinaryTransformOptions {
@@ -79,7 +108,7 @@ export function cloudinaryUrl(
   if (options.width) transforms.push(`w_${options.width}`);
   if (options.height) transforms.push(`h_${options.height}`);
   transforms.push(`c_${options.crop ?? 'limit'}`);
-  transforms.push(`q_${options.quality ?? 'auto:good'}`);
+  transforms.push(`q_${options.quality ?? 'auto'}`);
 
   if (resourceType === 'image') {
     transforms.push(`f_${options.format ?? 'auto'}`);
@@ -98,7 +127,13 @@ export function cloudinaryUrl(
 
 export function cloudinaryPreset(url: string, preset: CloudinaryPreset): string {
   const { width, watermark = false, watermarkSize } = PRESETS[preset];
-  return cloudinaryUrl(url, { width, watermark, watermarkSize });
+  return cloudinaryUrl(url, {
+    width: capCloudinaryImageWidth(width),
+    quality: 'auto',
+    format: 'auto',
+    watermark,
+    watermarkSize,
+  });
 }
 
 /** Logo delivery — keep SVGs as vectors and skip watermark overlays. */
@@ -158,7 +193,13 @@ export function cloudinaryVideoPosterUrl(
   const { width } = VIDEO_PRESETS[preset];
   const assetPath = assetPathFromUploadSegment(uploadPath);
   const posterPath = assetPath.replace(/\.(mp4|mov|webm|mkv)$/i, '.jpg');
-  const transforms = [`w_${width}`, 'c_limit', 'q_auto:best', 'f_jpg', 'so_0'].join(',');
+  const transforms = [
+    `w_${capCloudinaryImageWidth(width)}`,
+    'c_limit',
+    'q_auto',
+    'f_auto',
+    'so_0',
+  ].join(',');
 
   const base = url.slice(0, url.indexOf('/upload/') + '/upload/'.length);
   return `${base}${transforms}/${posterPath}`;

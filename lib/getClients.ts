@@ -2,7 +2,6 @@ import fs from 'fs/promises';
 import path from 'path';
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import { cloudinaryLogoUrl } from './cloudinaryUrl';
 import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
 
 export interface Client {
@@ -90,7 +89,7 @@ function mapCloudinaryClients(resources: CloudinaryClientResource[]): Client[] {
     clients.push({
       id: item.public_id,
       name,
-      logo: cloudinaryLogoUrl(item.secure_url),
+      logo: item.secure_url,
     });
   }
 
