@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { CloudinaryImage } from '@/components/CloudinaryImage';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
 import { CLOUDINARY_IMAGE_SIZES, cloudinaryVideoPosterUrl, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
-import { heroPosterUrl } from '@/lib/posterUrl';
+import { resolveHeroPosterSrc } from '@/lib/posterUrl';
 
 interface Props {
   title: string;
@@ -57,7 +57,7 @@ export function CategorySection({
     if (videoSrc) {
       return cloudinaryVideoPosterUrl(videoSrc, videoPreset);
     }
-    return heroPosterUrl(imageSrc);
+    return resolveHeroPosterSrc(imageSrc, videoSrc);
   }, [videoSrc, imageSrc, videoPreset]);
 
   const playbackSrc = useMemo(() => {

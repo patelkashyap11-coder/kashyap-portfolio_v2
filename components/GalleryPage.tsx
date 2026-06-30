@@ -6,6 +6,7 @@ import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRigh
 import { CloudinaryImage } from '@/components/CloudinaryImage';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
 import { CLOUDINARY_IMAGE_SIZES, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { resolveHeroPosterSrc } from '@/lib/posterUrl';
 import {
   protectedMediaSurfaceProps,
   protectedVideoProps,
@@ -143,8 +144,14 @@ export function GalleryPage({
 
   const featuredCount = flatFeatured.length;
   const galleryItems = galleryMedia;
-  const heroFallbackImage =
-    heroImage || featuredMedia.find((item) => item)?.src || galleryMedia[0]?.src;
+  const heroFallbackImage = useMemo(() => {
+    const candidate =
+      heroImage ||
+      featuredMedia.find((item) => item)?.src ||
+      galleryMedia[0]?.src;
+
+    return resolveHeroPosterSrc(candidate, heroVideo);
+  }, [heroImage, heroVideo, featuredMedia, galleryMedia]);
   const [isMobile, setIsMobile] = useState(
     () =>
       typeof window !== 'undefined' &&

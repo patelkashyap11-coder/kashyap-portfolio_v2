@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { cloudinaryVideoUrl } from './cloudinaryUrl';
+import { resolveHeroPosterSrc } from './posterUrl';
 import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
 import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
 import { categories } from './categoryData';
@@ -130,8 +131,10 @@ export async function resolveCategoryMedia(
   const map = await getHomepageMediaMap();
   const cloud = map[slug];
 
+  const rawVideoSrc = cloud?.videoSrc ?? fallback.videoSrc;
+
   return {
-    videoSrc: cloudinaryVideoUrl(cloud?.videoSrc ?? fallback.videoSrc, 'hero'),
-    imageSrc: cloud?.imageSrc ?? fallback.imageSrc,
+    videoSrc: cloudinaryVideoUrl(rawVideoSrc, 'hero'),
+    imageSrc: resolveHeroPosterSrc(cloud?.imageSrc ?? fallback.imageSrc, rawVideoSrc),
   };
 }
