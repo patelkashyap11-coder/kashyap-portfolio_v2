@@ -8,6 +8,7 @@ export interface CategoryStackItem {
   href: string;
   slug: string;
   videoSrc: string;
+  mobileVideoSrc?: string;
   imageSrc?: string;
 }
 
@@ -17,17 +18,19 @@ interface Props {
 
 export function CategoryStack({ categories }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
 
-  const updateActiveIndex = useCallback(() => {
+  const updateFocusedIndex = useCallback(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper || categories.length === 0) return;
 
     const { top, height } = wrapper.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
 
-    // Stack still below the viewport — don't load any category videos yet.
-    if (top >= viewportHeight) return;
+    if (top >= viewportHeight) {
+      setFocusedIndex(-1);
+      return;
+    }
 
     const sectionHeight = height / categories.length;
     if (sectionHeight <= 0) return;
@@ -38,20 +41,20 @@ export function CategoryStack({ categories }: Props) {
       Math.floor(scrolledIntoStack / sectionHeight),
     );
 
-    setActiveIndex((prev) => Math.max(prev, currentIndex));
+    setFocusedIndex(currentIndex);
   }, [categories.length]);
 
   useEffect(() => {
-    updateActiveIndex();
+    updateFocusedIndex();
 
-    window.addEventListener('scroll', updateActiveIndex, { passive: true });
-    window.addEventListener('resize', updateActiveIndex, { passive: true });
+    window.addEventListener('scroll', updateFocusedIndex, { passive: true });
+    window.addEventListener('resize', updateFocusedIndex, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', updateActiveIndex);
-      window.removeEventListener('resize', updateActiveIndex);
+      window.removeEventListener('scroll', updateFocusedIndex);
+      window.removeEventListener('resize', updateFocusedIndex);
     };
-  }, [updateActiveIndex]);
+  }, [updateFocusedIndex]);
 
   return (
     <div
@@ -67,7 +70,9 @@ export function CategoryStack({ categories }: Props) {
           key={cat.href}
           {...cat}
           index={i}
-          videoLoadEnabled={activeIndex >= 0 && i <= activeIndex + 1}
+          videoLoadEnabled={
+            focusedIndex >= 0 && Math.abs(i - focusedIndex) <= 1
+          }
         />
       ))}
     </div>

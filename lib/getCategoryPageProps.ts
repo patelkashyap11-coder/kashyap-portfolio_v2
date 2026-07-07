@@ -24,6 +24,7 @@ export async function getCategoryPageProps(
   const resolvedCategory = {
     ...category,
     videoSrc: resolvedMedia.videoSrc,
+    mobileVideoSrc: resolvedMedia.mobileVideoSrc,
     imageSrc: resolvedMedia.imageSrc,
   };
 

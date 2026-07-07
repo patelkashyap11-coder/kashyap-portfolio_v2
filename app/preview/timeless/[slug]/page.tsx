@@ -43,6 +43,7 @@ export default async function TimelessPreviewCategoryPage({
       featuredMedia={featuredMedia}
       galleryMedia={galleryMedia}
       heroVideo={category.videoSrc}
+      heroMobileVideo={category.mobileVideoSrc}
       heroImage={category.imageSrc}
       featuredProjects={category.featuredProjects}
       nextCategory={nextCategory}

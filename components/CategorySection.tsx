@@ -11,6 +11,7 @@ interface Props {
   href: string;
   slug: string;
   videoSrc?: string;
+  mobileVideoSrc?: string;
   imageSrc?: string;
   index: number;
   /** Parent enables video once the user scrolls to this section (or one ahead). */
@@ -22,6 +23,7 @@ export function CategorySection({
   href,
   slug,
   videoSrc,
+  mobileVideoSrc,
   imageSrc,
   index,
   videoLoadEnabled = false,
@@ -52,8 +54,8 @@ export function CategorySection({
 
   const playbackSrc = useMemo(() => {
     if (!shouldLoadVideo || !videoSrc) return undefined;
-    return videoSrc;
-  }, [shouldLoadVideo, videoSrc]);
+    return isMobile ? (mobileVideoSrc ?? videoSrc) : videoSrc;
+  }, [shouldLoadVideo, videoSrc, mobileVideoSrc, isMobile]);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -120,7 +122,7 @@ export function CategorySection({
                 muted
                 loop
                 playsInline
-                preload="auto"
+                preload="metadata"
                 className={`category-section-media category-section-video${videoReady ? ' category-section-video--ready' : ''}`}
                 {...protectedVideoProps}
               />

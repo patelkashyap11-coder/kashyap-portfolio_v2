@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useMemo, useLayoutEffect, useEffect } from 'react';
+import { useState, useCallback, useMemo, useLayoutEffect, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
@@ -39,6 +39,7 @@ interface Props {
   featuredMedia: (MediaItem | null)[];
   galleryMedia: MediaItem[];
   heroVideo?: string;
+  heroMobileVideo?: string;
   heroImage?: string;
   featuredProjects?: FeaturedProjectMeta[];
   nextCategory?: NextCategory;
@@ -102,6 +103,7 @@ export function GalleryPage({
   featuredMedia,
   galleryMedia,
   heroVideo,
+  heroMobileVideo,
   heroImage,
   featuredProjects = [],
   nextCategory,
@@ -109,6 +111,7 @@ export function GalleryPage({
 }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [heroTitleRevealed, setHeroTitleRevealed] = useState(false);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   const flatFeatured = useMemo(
     () => featuredMedia.filter((item): item is MediaItem => item !== null),
@@ -159,12 +162,13 @@ export function GalleryPage({
       typeof window !== 'undefined' &&
       window.matchMedia('(max-width: 767px)').matches,
   );
-  const [loadHeroVideo, setLoadHeroVideo] = useState(
-    () =>
-      Boolean(heroVideo) &&
-      typeof window !== 'undefined' &&
-      window.matchMedia('(max-width: 767px)').matches,
-  );
+  const [loadHeroVideo, setLoadHeroVideo] = useState(false);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
+
+  const heroPlaybackSrc = useMemo(() => {
+    if (!heroVideo || !loadHeroVideo) return undefined;
+    return isMobile ? (heroMobileVideo ?? heroVideo) : heroVideo;
+  }, [heroVideo, heroMobileVideo, isMobile, loadHeroVideo]);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -177,19 +181,39 @@ export function GalleryPage({
   useEffect(() => {
     if (!heroVideo) return;
 
-    if (isMobile) {
-      setLoadHeroVideo(true);
-      return;
-    }
-
     if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(() => setLoadHeroVideo(true), { timeout: 1500 });
+      const id = window.requestIdleCallback(() => setLoadHeroVideo(true), { timeout: 1200 });
       return () => window.cancelIdleCallback(id);
     }
 
-    const timer = window.setTimeout(() => setLoadHeroVideo(true), 200);
+    const timer = window.setTimeout(() => setLoadHeroVideo(true), 150);
     return () => window.clearTimeout(timer);
-  }, [heroVideo, isMobile]);
+  }, [heroVideo]);
+
+  useEffect(() => {
+    setHeroVideoReady(false);
+  }, [heroPlaybackSrc]);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video || !heroPlaybackSrc) return;
+
+    const markReady = () => setHeroVideoReady(true);
+    const tryPlay = () => {
+      void video.play().catch(() => {});
+    };
+
+    video.addEventListener('loadeddata', markReady);
+    video.addEventListener('canplay', markReady);
+    video.addEventListener('playing', markReady);
+    tryPlay();
+
+    return () => {
+      video.removeEventListener('loadeddata', markReady);
+      video.removeEventListener('canplay', markReady);
+      video.removeEventListener('playing', markReady);
+    };
+  }, [heroPlaybackSrc]);
 
   const columnCount = usePinterestColumnCount();
   const masonryColumns = useMemo(
@@ -209,26 +233,27 @@ export function GalleryPage({
       {/* ── Section 1: Hero ── */}
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
-          {heroFallbackImage && !(heroVideo && isMobile) ? (
+          {heroFallbackImage ? (
             <MediaImage
               src={heroFallbackImage}
               alt=""
               fill
               priority
               sizes={MEDIA_IMAGE_SIZES.hero}
-              className="category-hero-image"
+              className={`category-hero-image${heroVideoReady ? ' category-hero-image--hidden' : ''}`}
               aria-hidden
             />
           ) : null}
-          {heroVideo && loadHeroVideo ? (
+          {heroPlaybackSrc ? (
             <video
-              src={heroVideo}
+              ref={heroVideoRef}
+              src={heroPlaybackSrc}
               autoPlay
               muted
               loop
               playsInline
-              preload={isMobile ? 'auto' : 'metadata'}
-              className="category-hero-video"
+              preload="metadata"
+              className={`category-hero-video${heroVideoReady ? ' category-hero-video--ready' : ''}`}
               {...protectedVideoProps}
             />
           ) : null}

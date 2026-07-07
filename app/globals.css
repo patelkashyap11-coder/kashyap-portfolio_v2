@@ -1740,10 +1740,21 @@ body {
   z-index: 0;
   background-size: cover;
   background-position: center;
+  transition: opacity 0.35s ease;
+}
+
+.category-hero-image--hidden {
+  opacity: 0;
 }
 
 .category-hero-video {
   z-index: 1;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.category-hero-video--ready {
+  opacity: 1;
 }
 
 .category-hero-overlay {

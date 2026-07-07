@@ -10,6 +10,7 @@ import {
   deliverImageKitVideoUrl,
   resolveSignedHeroPoster,
 } from '@/lib/signImageKitMedia';
+import { resolveHomepageVideoPaths } from '@/lib/resolveHomepageVideo';
 import { getHomeMetadata } from '@/lib/seo';
 
 export const metadata = getHomeMetadata();
@@ -23,12 +24,19 @@ export default async function HomePage() {
 
   const homepageCategories = categories.map((cat) => {
     const rawVideo = homepageMedia[cat.slug]?.videoSrc ?? cat.videoSrc;
+    const localVideos = resolveHomepageVideoPaths(cat.slug);
+    const usesLocalVideo = rawVideo.startsWith('/homepage/');
 
     return {
       title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
       href: `/${cat.slug}`,
       slug: cat.slug,
-      videoSrc: deliverImageKitVideoUrl(rawVideo),
+      videoSrc: usesLocalVideo
+        ? localVideos.desktop
+        : deliverImageKitVideoUrl(rawVideo),
+      mobileVideoSrc: usesLocalVideo
+        ? localVideos.mobile
+        : deliverImageKitVideoUrl(rawVideo),
       imageSrc: resolveSignedHeroPoster(
         homepageMedia[cat.slug]?.imageSrc ?? cat.imageSrc,
       ),

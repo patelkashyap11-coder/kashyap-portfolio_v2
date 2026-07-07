@@ -24,6 +24,7 @@ export default async function Page() {
         featuredMedia={featuredMedia}
         galleryMedia={galleryMedia}
         heroVideo={category.videoSrc}
+        heroMobileVideo={category.mobileVideoSrc}
         heroImage={category.imageSrc}
         featuredProjects={category.featuredProjects}
         nextCategory={nextCategory}

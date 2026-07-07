@@ -17,6 +17,8 @@ export interface CategoryMeta {
   description: string;
   /** Fallback when no matching file exists in ImageKit `homepage/` folder. */
   videoSrc: string;
+  /** Lighter local variant when `public/homepage/{slug}-mobile.mp4` exists. */
+  mobileVideoSrc?: string;
   /** Fallback when no matching poster exists in ImageKit `homepage/` folder. */
   imageSrc: string;
   featuredProjects: FeaturedProjectMeta[];

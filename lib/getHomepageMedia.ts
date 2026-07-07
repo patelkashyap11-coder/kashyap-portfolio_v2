@@ -9,6 +9,7 @@ import {
 } from './signImageKitMedia';
 
 import { resolveImageKitFolder } from './imagekitFolders';
+import { resolveHomepageVideoPaths } from './resolveHomepageVideo';
 
 const HOMEPAGE_FOLDERS = [resolveImageKitFolder('homepage')] as const;
 
@@ -131,14 +132,21 @@ export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => 
 export async function resolveCategoryMedia(
   slug: string,
   fallback: { videoSrc: string; imageSrc: string },
-): Promise<{ videoSrc: string; imageSrc: string }> {
+): Promise<{ videoSrc: string; mobileVideoSrc: string; imageSrc: string }> {
   const map = await getHomepageMediaMap();
   const cloud = map[slug];
+  const localVideos = resolveHomepageVideoPaths(slug);
 
   const rawVideoSrc = cloud?.videoSrc ?? fallback.videoSrc;
+  const usesLocalVideo = rawVideoSrc.startsWith('/homepage/');
 
   return {
-    videoSrc: deliverImageKitVideoUrl(rawVideoSrc),
+    videoSrc: usesLocalVideo
+      ? localVideos.desktop
+      : deliverImageKitVideoUrl(rawVideoSrc),
+    mobileVideoSrc: usesLocalVideo
+      ? localVideos.mobile
+      : deliverImageKitVideoUrl(rawVideoSrc),
     imageSrc:
       resolveSignedHeroPoster(cloud?.imageSrc ?? fallback.imageSrc) ??
       fallback.imageSrc,
