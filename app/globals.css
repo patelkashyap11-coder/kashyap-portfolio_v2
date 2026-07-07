@@ -1564,11 +1564,15 @@ body {
 .motion-gate-form {
   margin: clamp(32px, 5vh, 48px) auto 0;
   width: min(100%, 440px);
+  display: grid;
+  gap: clamp(24px, 3vh, 32px);
+  justify-items: center;
 }
 
 .motion-gate-field {
   display: grid;
   gap: 14px;
+  width: 100%;
   text-align: left;
 }
 
@@ -1580,30 +1584,18 @@ body {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
 }
 
-.motion-gate-input-row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-  padding-bottom: 12px;
-  transition: border-color 0.25s ease;
-}
-
-.motion-gate-input-row:focus-within {
-  border-color: rgba(255, 255, 255, 0.55);
-}
-
 .motion-gate-input {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
   border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
   background: transparent;
   color: #ffffff;
   font-family: var(--font-inter);
   font-weight: 300;
   font-size: clamp(0.95rem, 1.6vw, 1.05rem);
   line-height: 1.4;
-  padding: 4px 0;
+  padding: 10px 0 14px;
+  transition: border-color 0.25s ease;
 }
 
 .motion-gate-input::placeholder {
@@ -1612,29 +1604,38 @@ body {
 
 .motion-gate-input:focus {
   outline: none;
+  border-color: rgba(255, 255, 255, 0.55);
 }
 
 .motion-gate-submit {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  border: none;
-  background: none;
-  color: rgba(255, 255, 255, 0.72);
-  font-family: var(--font-tight);
+  justify-content: center;
+  min-width: 168px;
+  padding: 14px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  background: transparent;
+  color: #ffffff;
+  font-family: var(--font-inter);
   font-weight: 500;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color 0.25s ease, text-shadow 0.25s ease;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .motion-gate-submit:hover:not(:disabled) {
+  background: rgba(199, 226, 0, 0.08);
+  border-color: var(--accent);
   color: var(--accent);
-  text-shadow: var(--accent-glow);
+  box-shadow: var(--accent-glow);
 }
 
 .motion-gate-submit:disabled {
@@ -1643,32 +1644,13 @@ body {
 }
 
 .motion-gate-error {
-  margin: 16px 0 0;
+  margin: -8px 0 0;
+  width: 100%;
   color: rgba(255, 196, 196, 0.95);
   font-size: 0.88rem;
   line-height: 1.5;
   text-align: center;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
-}
-
-@media (max-width: 639px) {
-  .motion-gate-input-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-
-  .motion-gate-input {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-    padding-bottom: 12px;
-  }
-
-  .motion-gate-submit {
-    justify-content: center;
-    padding: 12px 0;
-  }
 }
 
 .reels-locked {

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 const EASE = [0.76, 0, 0.24, 1] as [number, number, number, number];
 
@@ -100,23 +100,21 @@ export function MotionPasswordGate({ homeHref = '/' }: Props) {
           >
             <label className="motion-gate-field">
               <span className="motion-gate-field-label t-label">Password</span>
-              <div className="motion-gate-input-row">
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  autoComplete="current-password"
-                  className="motion-gate-input"
-                  placeholder="Enter password"
-                  required
-                />
-                <button type="submit" className="motion-gate-submit" disabled={submitting}>
-                  <span>{submitting ? 'Checking' : 'Enter'}</span>
-                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
-                </button>
-              </div>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                className="motion-gate-input"
+                placeholder="Enter password"
+                required
+              />
             </label>
+
+            <button type="submit" className="motion-gate-submit" disabled={submitting}>
+              {submitting ? 'Checking…' : 'Unlock'}
+            </button>
 
             {error ? <p className="motion-gate-error">{error}</p> : null}
           </motion.form>
