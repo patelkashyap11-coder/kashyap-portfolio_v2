@@ -115,8 +115,19 @@ function buildTransformString(options: ImageKitTransformOptions): string {
   return parts.join(',');
 }
 
+/** Paths under Next.js `public/` — not ImageKit media-library paths. */
+export function isLocalPublicAssetPath(urlOrPath: string): boolean {
+  return (
+    urlOrPath.startsWith('/homepage/') ||
+    urlOrPath.startsWith('/brand/') ||
+    urlOrPath.startsWith('/fonts/')
+  );
+}
+
 function resolveAbsoluteUrl(urlOrPath: string): string {
   if (urlOrPath.startsWith('/') && !urlOrPath.startsWith('//')) {
+    if (isLocalPublicAssetPath(urlOrPath)) return urlOrPath;
+
     const endpoint = getImageKitUrlEndpoint();
     return endpoint ? `${endpoint}${urlOrPath}` : urlOrPath;
   }

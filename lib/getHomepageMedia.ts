@@ -110,10 +110,9 @@ export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => 
 
       if (!map[slug]) map[slug] = {};
 
-      if (item.resource_type === 'video' && !map[slug].videoSrc) {
-        map[slug].videoSrc = item.secure_url;
-        continue;
-      }
+      // Hero videos are served from `public/homepage/` (see categoryData fallbacks).
+      // ImageKit video delivery is skipped to avoid monthly video-processing quota limits.
+      if (item.resource_type === 'video') continue;
 
       if (item.resource_type === 'image' && !map[slug].imageSrc) {
         map[slug].imageSrc = item.secure_url;

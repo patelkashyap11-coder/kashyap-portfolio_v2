@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "sync:clients": "node scripts/sync-client-logos.mjs",
+    "sync:homepage-videos": "node scripts/sync-homepage-videos.mjs",
     "imagekit:check": "node scripts/check-imagekit.mjs",
     "seo:preview": "node scripts/seo-preview.mjs",
     "build": "next build",

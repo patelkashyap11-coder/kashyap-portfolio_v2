@@ -1,5 +1,10 @@
 import type { ImageLoaderProps } from 'next/image';
-import { capImageWidth, imagekitUrl, isImageKitUrl } from '@/lib/imagekitUrl';
+import {
+  capImageWidth,
+  imagekitUrl,
+  isImageKitUrl,
+  isLocalPublicAssetPath,
+} from '@/lib/imagekitUrl';
 
 /** next/image loader — caps delivery width and applies f-auto,q-auto. */
 export function imagekitImageLoader({
@@ -7,7 +12,12 @@ export function imagekitImageLoader({
   width,
   quality,
 }: ImageLoaderProps): string {
-  if (!isImageKitUrl(src) && !src.startsWith('/')) return src;
+  if (
+    !isImageKitUrl(src) &&
+    (!src.startsWith('/') || isLocalPublicAssetPath(src))
+  ) {
+    return src;
+  }
 
   return imagekitUrl(src, {
     width: capImageWidth(width),

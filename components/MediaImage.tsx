@@ -2,7 +2,7 @@
 
 import Image, { type ImageProps } from 'next/image';
 import { imagekitImageLoader } from '@/lib/imagekitLoader';
-import { isImageKitUrl } from '@/lib/imagekitUrl';
+import { isImageKitUrl, isLocalPublicAssetPath } from '@/lib/imagekitUrl';
 import { protectedImageProps } from '@/lib/mediaProtection';
 
 type Props = Omit<ImageProps, 'loader'> & {
@@ -17,7 +17,8 @@ export function MediaImage({
   unoptimized,
   ...props
 }: Props) {
-  const isImageKit = isImageKitUrl(src) || src.startsWith('/');
+  const isImageKit =
+    isImageKitUrl(src) || (src.startsWith('/') && !isLocalPublicAssetPath(src));
   const isSvg = /\.svg(\?|$)/i.test(src);
 
   return (
