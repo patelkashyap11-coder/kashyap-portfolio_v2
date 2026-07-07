@@ -152,7 +152,7 @@ export function imagekitUrl(
   urlOrPath: string,
   options: ImageKitTransformOptions = {},
 ): string {
-  const absoluteUrl = resolveAbsoluteUrl(urlOrPath);
+  const absoluteUrl = stripImageKitTransforms(urlOrPath);
   if (!IMAGEKIT_HOST.test(absoluteUrl)) return urlOrPath;
 
   const transform = buildTransformString(options);
