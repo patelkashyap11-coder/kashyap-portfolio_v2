@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const outputPath = path.join(rootDir, 'data', 'client-logos.json');
 
-const CLIENT_FOLDERS = ['CLIENT ', 'clients', 'client'];
+const CLIENT_FOLDERS = ['client'];
 
 async function loadEnv() {
   const envPath = path.join(rootDir, '.env.local');

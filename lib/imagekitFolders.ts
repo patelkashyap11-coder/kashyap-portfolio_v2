@@ -9,7 +9,7 @@ const IMAGEKIT_FOLDER_MAP: Record<string, string> = {
   jewellery: 'Jewellery',
   products: 'Product',
   interiors: 'Interior',
-  clients: 'CLIENT ',
+  clients: 'client',
   reels: 'Reels',
   reel: 'Reels',
   'reels/vertical': 'Reels/vertical',

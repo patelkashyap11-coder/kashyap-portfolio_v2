@@ -13,7 +13,7 @@ const IMAGEKIT_FOLDER_MAP = {
   jewellery: 'Jewellery',
   products: 'Product',
   interiors: 'Interior',
-  clients: 'CLIENT ',
+  clients: 'client',
   reels: 'Reels',
   reel: 'Reels',
   'reels/vertical': 'Reels/vertical',
