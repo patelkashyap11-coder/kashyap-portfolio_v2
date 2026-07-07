@@ -1,10 +1,12 @@
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import { imagekitVideoUrl } from './imagekitUrl';
-import { resolveHeroPosterSrc } from './posterUrl';
 import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
 import { listImageKitFolderResources } from './listImageKitFolderResources';
 import { categories } from './categoryData';
+import {
+  deliverImageKitVideoUrl,
+  resolveSignedHeroPoster,
+} from './signImageKitMedia';
 
 import { resolveImageKitFolder } from './imagekitFolders';
 
@@ -86,7 +88,7 @@ async function listHomepageResources(): Promise<ImageKitResource[]> {
 
 const getCachedHomepageResources = unstable_cache(
   listHomepageResources,
-  ['imagekit-homepage-media-v1'],
+  ['imagekit-homepage-media-v2'],
   { revalidate: PAGE_REVALIDATE_SECONDS, tags: ['homepage-media'] },
 );
 
@@ -137,9 +139,9 @@ export async function resolveCategoryMedia(
   const rawVideoSrc = cloud?.videoSrc ?? fallback.videoSrc;
 
   return {
-    videoSrc: imagekitVideoUrl(rawVideoSrc, 'hero'),
+    videoSrc: deliverImageKitVideoUrl(rawVideoSrc),
     imageSrc:
-      resolveHeroPosterSrc(cloud?.imageSrc ?? fallback.imageSrc, rawVideoSrc) ??
+      resolveSignedHeroPoster(cloud?.imageSrc ?? fallback.imageSrc) ??
       fallback.imageSrc,
   };
 }

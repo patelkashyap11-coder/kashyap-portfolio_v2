@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
 import { MediaImage } from '@/components/MediaImage';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
-import { MEDIA_IMAGE_SIZES, imagekitVideoUrl } from '@/lib/imagekitUrl';
+import { MEDIA_IMAGE_SIZES } from '@/lib/imagekitUrl';
 import { resolveHeroPosterSrc } from '@/lib/posterUrl';
 import {
   protectedMediaSurfaceProps,
@@ -26,8 +26,10 @@ export interface MediaItem {
   width?: number;
   height?: number;
   publicId?: string;
-  /** Optional poster for external embeds (Instagram, etc.). */
+  /** Optional poster for external embeds (Instagram, etc.) or signed ImageKit video frames. */
   thumbnail?: string;
+  /** Signed high-quality playback URL for lightbox (ImageKit videos). */
+  lightboxSrc?: string;
 }
 
 interface Props {
@@ -452,7 +454,7 @@ export function GalleryPage({
             >
               {media[lightboxIdx].type === 'video' ? (
                 <video
-                  src={imagekitVideoUrl(media[lightboxIdx].src, 'lightbox')}
+                  src={media[lightboxIdx].lightboxSrc ?? media[lightboxIdx].src}
                   controls
                   autoPlay
                   className="category-lightbox-asset"
@@ -493,7 +495,7 @@ function FeaturedMedia({
       {item.type === 'video' ? (
         <>
           <video
-            src={imagekitVideoUrl(item.src, 'featured')}
+            src={item.src}
             muted
             loop
             playsInline
@@ -541,7 +543,7 @@ function MasonryItem({
       {item.type === 'video' ? (
         <>
           <video
-            src={imagekitVideoUrl(item.src, 'masonry')}
+            src={item.src}
             muted
             loop
             playsInline

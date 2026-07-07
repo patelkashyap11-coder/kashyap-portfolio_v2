@@ -20,6 +20,9 @@ const VIDEO_PRESETS: Record<
   lightbox: { width: 1920, quality: 90 },
 };
 
+/** @internal Shared with server-side signing helpers. */
+export const VIDEO_PRESET_OPTIONS = VIDEO_PRESETS;
+
 export type ImageKitPreset = 'featured' | 'masonry' | 'lightbox' | 'hero' | 'logo';
 
 export const MEDIA_IMAGE_SIZES = {
@@ -201,6 +204,8 @@ export function imagekitVideoUrl(
   urlOrPath: string,
   preset: ImageKitVideoPreset = 'hero',
 ): string {
+  if (urlOrPath.includes('ik-s=')) return urlOrPath;
+
   const absoluteUrl = stripImageKitTransforms(urlOrPath);
   if (!IMAGEKIT_HOST.test(absoluteUrl)) return urlOrPath;
 

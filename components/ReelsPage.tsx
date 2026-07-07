@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import type { MediaItem } from '@/components/GalleryPage';
 import type { ReelsCollection } from '@/lib/getReels';
-import { imagekitVideoUrl, imagekitVideoPosterUrl } from '@/lib/imagekitUrl';
 import {
   getExternalVideoProvider,
 } from '@/lib/externalVideo';
@@ -137,7 +136,7 @@ function ReelGridItem({
     ? youtubeThumbnailUrl(item.src)
     : isInstagram && item.thumbnail
       ? item.thumbnail
-      : imagekitVideoPosterUrl(item.src, 'masonry');
+      : item.thumbnail;
   const itemStyle = { aspectRatio };
 
   const playPreview = useCallback(() => {
@@ -233,7 +232,7 @@ function ReelGridItem({
       ) : (
         <video
           ref={videoRef}
-          src={imagekitVideoUrl(item.src, 'masonry')}
+          src={item.src}
           poster={posterSrc}
           muted
           loop
@@ -616,7 +615,7 @@ export function ReelsPage({
                 />
               ) : (
                 <video
-                  src={imagekitVideoUrl(lightboxItem.src, 'lightbox')}
+                  src={lightboxItem.lightboxSrc ?? lightboxItem.src}
                   controls
                   autoPlay
                   className="category-lightbox-asset"

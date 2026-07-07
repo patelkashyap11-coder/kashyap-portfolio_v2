@@ -6,7 +6,10 @@ import { CTASection } from '@/components/CTASection';
 import { getPreviewCategories } from '@/lib/categoryData';
 import { getClients } from '@/lib/getClients';
 import { getHomepageMediaMap } from '@/lib/getHomepageMedia';
-import { imagekitVideoUrl } from '@/lib/imagekitUrl';
+import {
+  deliverImageKitVideoUrl,
+  resolveSignedHeroPoster,
+} from '@/lib/signImageKitMedia';
 import { PREVIEW_TIMELESS_PATH } from '@/lib/content/preview';
 
 export const dynamic = 'force-dynamic';
@@ -18,16 +21,19 @@ export default async function TimelessPreviewPage() {
   ]);
 
   const categories = getPreviewCategories();
-  const homepageCategories = categories.map((cat) => ({
-    title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
-    href: `${PREVIEW_TIMELESS_PATH}/${cat.slug}`,
-    slug: cat.slug,
-    videoSrc: imagekitVideoUrl(
-      homepageMedia[cat.slug]?.videoSrc ?? cat.videoSrc,
-      cat.slug === 'fashion' ? 'hero-hd' : 'hero',
-    ),
-    imageSrc: homepageMedia[cat.slug]?.imageSrc ?? cat.imageSrc,
-  }));
+  const homepageCategories = categories.map((cat) => {
+    const rawVideo = homepageMedia[cat.slug]?.videoSrc ?? cat.videoSrc;
+
+    return {
+      title: cat.slug === 'interiors' ? 'INTERIORS & SPACES' : cat.title,
+      href: `${PREVIEW_TIMELESS_PATH}/${cat.slug}`,
+      slug: cat.slug,
+      videoSrc: deliverImageKitVideoUrl(rawVideo),
+      imageSrc: resolveSignedHeroPoster(
+        homepageMedia[cat.slug]?.imageSrc ?? cat.imageSrc,
+      ),
+    };
+  });
 
   return (
     <div className="homepage">

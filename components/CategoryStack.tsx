@@ -8,7 +8,7 @@ export interface CategoryStackItem {
   href: string;
   slug: string;
   videoSrc: string;
-  imageSrc: string;
+  imageSrc?: string;
 }
 
 interface Props {

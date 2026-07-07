@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { MediaImage } from '@/components/MediaImage';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
-import { MEDIA_IMAGE_SIZES, imagekitVideoPosterUrl, imagekitVideoUrl } from '@/lib/imagekitUrl';
-import { resolveHeroPosterSrc } from '@/lib/posterUrl';
+import { MEDIA_IMAGE_SIZES } from '@/lib/imagekitUrl';
 
 interface Props {
   title: string;
@@ -51,19 +50,10 @@ export function CategorySection({
   const subtitleOpacity = useTransform(titleProgress, [0.12, 0.82], [0, 1]);
   const subtitleX = useTransform(titleProgress, [0.12, 0.82], [-32, 0]);
 
-  const videoPreset = isMobile ? 'hero-mobile' : 'hero';
-
-  const posterSrc = useMemo(() => {
-    if (videoSrc) {
-      return imagekitVideoPosterUrl(videoSrc, videoPreset);
-    }
-    return resolveHeroPosterSrc(imageSrc, videoSrc);
-  }, [videoSrc, imageSrc, videoPreset]);
-
   const playbackSrc = useMemo(() => {
     if (!shouldLoadVideo || !videoSrc) return undefined;
-    return imagekitVideoUrl(videoSrc, videoPreset);
-  }, [shouldLoadVideo, videoSrc, videoPreset]);
+    return videoSrc;
+  }, [shouldLoadVideo, videoSrc]);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -111,9 +101,9 @@ export function CategorySection({
       >
         {videoSrc ? (
           <>
-            {posterSrc ? (
+            {imageSrc ? (
               <MediaImage
-                src={posterSrc}
+                src={imageSrc}
                 alt=""
                 fill
                 sizes={MEDIA_IMAGE_SIZES.categoryPoster}
@@ -136,9 +126,9 @@ export function CategorySection({
               />
             ) : null}
           </>
-        ) : posterSrc ? (
+        ) : imageSrc ? (
           <MediaImage
-            src={posterSrc}
+            src={imageSrc}
             alt=""
             fill
             sizes={MEDIA_IMAGE_SIZES.categoryPoster}

@@ -1,0 +1,56 @@
+Section,Page / Area,Element,Font Family,CSS Variable / Class,Weight,Source,Notes
+Font Families,Site-wide,Inter,--font-inter,400-900,Google Fonts (globals.css),Default body font
+Font Families,Site-wide,Inter Tight,--font-tight,300-900,Google Fonts (globals.css),Headlines labels logo
+Font Families,Site-wide,Cormorant Garamond,--font-serif,400-700 + italic,Google Fonts (globals.css),Serif accent words
+Font Families,OG / Share preview only,November Bangla Traditional,,300,Local public/fonts/,Let's in WhatsApp preview
+Font Families,OG / Share preview only,Helvetica Neue,,300 Light / 500 Italic,Local public/fonts/,Talk in WhatsApp preview
+Font Families,OG / Share preview only,Inter (+ Helvetica Arial fallback),,400,opengraph-image.tsx,OG subtitle only
+Typography Classes,Global,.t-display,Inter Tight,--font-tight,900,components + globals.css,Large uppercase headlines
+Typography Classes,Global,.t-label,Inter Tight,--font-tight,500,components + globals.css,Small uppercase labels
+Typography Classes,Global,.t-serif,Cormorant Garamond,--font-serif,300 italic,globals.css,Italic serif accent utility
+Typography Classes,Global,.logo-text,Inter Tight,--font-tight,800,Navbar Footer,globals.css,Brand name logo
+Typography Classes,Global,body (default),Inter,--font-inter,400,globals.css,All unprefixed text
+Navbar,All pages,KASHYAP PATEL logo,Inter Tight,.logo-text,800,components/Navbar.tsx,Desktop uses Inter on tablet+ via .site-nav-logo
+Navbar,All pages,Nav links (Fashion Contact etc.),Inter Tight,.t-label / .nav-ul,500,components/Navbar.tsx,Uppercase nav links
+Navbar,All pages,Logo (tablet breakpoint),Inter,.site-nav-logo.logo-text,800,globals.css @media,Overrides logo-text on smaller desktop
+Homepage,Hero,CREATING / VISUAL STORIES / THAT,Inter,.hero-headline-sans,800,components/HeroSection.tsx,Main hero headline
+Homepage,Hero,LAST (accent word),Cormorant Garamond,.hero-headline-accent,600 italic,components/HeroSection.tsx,Green accent in hero
+Homepage,Hero,Intro paragraph,Inter,.hero-intro-text,500,components/HeroSection.tsx,We create visual stories...
+Homepage,Category strips,FASHION FOOD JEWELLERY etc.,Inter,.category-title,800,components/CategorySection.tsx,Sticky video section titles
+Homepage,Category strips,View Work link,Inter,.category-view-link,500,components/CategorySection.tsx,Uppercase pill button
+Homepage,What I Do,WHAT I DO eyebrow,Inter,.what-we-do-eyebrow,400,components/WhatWeDoSection.tsx,Section label
+Homepage,What I Do,Service titles (Conception etc.),Inter,.what-we-do-trigger-title,700,components/WhatWeDoSection.tsx,Accordion headers
+Homepage,What I Do,Capability titles,Inter,.what-we-do-detail-title,700,components/WhatWeDoSection.tsx,Expanded panel headings
+Homepage,What I Do,Capability descriptions,Inter,.what-we-do-detail-text,400,components/WhatWeDoSection.tsx,Service body copy
+Homepage,Trusted By,TRUSTED BY heading,Inter Tight,.t-display / .clients-heading,900,components/TrustedBySection.tsx,Large display heading
+Homepage,Trusted By,Logo fallback text,Inter Tight,.clients-logo-text,700,components/TrustedBySection.tsx,When no logo image
+Homepage,CTA,BRINGING / STORIES,Inter,.cta-line,800,components/CTASection.tsx,Black section headlines
+Homepage,CTA,TO LIFE (accent),Cormorant Garamond,.cta-line-accent,600 italic,components/CTASection.tsx,Green accent in CTA
+Homepage,CTA,Contact us link,Inter,.cta-contact-link,400,components/CTASection.tsx,CTA button text
+Homepage,CTA,Footer copyright / tagline / links,Inter,.cta-footer-copy / .cta-footer-tagline,400,components/CTASection.tsx,© 2026 KASHYAP PATEL CINEMAGRAPH
+Category pages,Hero,Back link,Inter Tight,.t-label,500,components/GalleryPage.tsx,Uppercase label
+Category pages,Hero,Subtitle (Fashion Photography),Inter Tight,.t-label,500,components/GalleryPage.tsx,Above page title
+Category pages,Hero,Page title (FASHION),Inter Tight,.t-display / .category-hero-title,900,components/GalleryPage.tsx,Main category headline
+Category pages,Hero,Description paragraph,Inter,.category-hero-description,300,components/GalleryPage.tsx,Category one-liner
+Category pages,Hero,Scroll to explore,Inter Tight,.t-label,500,components/GalleryPage.tsx,Scroll hint
+Category pages,Featured Work,Section label,Inter Tight,.t-label,500,components/GalleryPage.tsx,Featured Work eyebrow
+Category pages,Featured Work,Project number (01 02 03),Inter Tight,.t-label,500,components/GalleryPage.tsx,Index numbers
+Category pages,Featured Work,Project name,Inter,.category-featured-name,800,components/GalleryPage.tsx,Featured project title
+Category pages,Featured Work,Client + year,Inter,.category-featured-meta,400,components/GalleryPage.tsx,Meta line under project name
+Category pages,Featured Work,Project description,Inter,.category-featured-description,300,components/GalleryPage.tsx,Featured copy block
+Category pages,Visual Gallery,Section label,Inter Tight,.t-label,500,components/GalleryPage.tsx,Visual Gallery eyebrow
+Category pages,Next,Next label,Inter Tight,.t-label,500,components/GalleryPage.tsx,Next section label
+Category pages,Next,Next category title,Inter Tight,.category-next-title,500,components/GalleryPage.tsx,Link to next category
+Category pages,Lightbox,Image counter,Inter Tight,.t-label,500,components/GalleryPage.tsx,1 / 24 counter
+Contact,Hero,Small idea or big project?,Inter Tight,.t-display / .contact-headline,900,app/contact/page.tsx,Contact headline line 1
+Contact,Hero,Let's talk!,Inter Tight,.t-display / .contact-headline,900,app/contact/page.tsx,Contact headline line 2
+Contact,Info,Email Address / Phone Number labels,Inter Tight,.contact-field-label,500,app/contact/page.tsx,Field labels
+Contact,Info,Email + phone values,Inter Tight,.contact-field-value,700,app/contact/page.tsx,letstalk@bykashyap.com +91...
+Contact,Cards,Instagram / WhatsApp labels,Inter Tight,.contact-card-label,700,app/contact/page.tsx,Social card footer
+Contact,Footer,Ahmedabad Gujarat India,Inter,.contact-address,400,app/contact/page.tsx,Location line
+Footer,Site footer,KASHYAP PATEL,Inter Tight,.logo-text,800,components/Footer.tsx,Footer logo link
+Footer,Site footer,CINEMAGRAPH tagline,Inter,.site-footer-tagline,400,components/Footer.tsx,Footer tagline
+Icons / Brand,KP favicon mark,KP letters,Inter,brandMark.tsx inline,800,lib/brandMark.tsx,App icon / favicon only
+OG Image,WhatsApp / social share,Let's,November Bangla Traditional,OG_FONT_LETS,300,lib/ogFonts.ts,Share preview headline part 1
+OG Image,WhatsApp / social share,Talk,Helvetica Neue Medium Italic,OG_FONT_TALK,500 italic,lib/ogFonts.ts,Share preview headline part 2
+OG Image,WhatsApp / social share,to create visual stories,Inter,inline style,500,app/opengraph-image.tsx,Share preview subtitle

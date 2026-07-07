@@ -2,6 +2,10 @@ import { unstable_cache } from 'next/cache';
 import type { MediaItem } from '@/components/GalleryPage';
 import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
 import { listImageKitFolderResources } from './listImageKitFolderResources';
+import {
+  deliverImageKitVideoUrl,
+  resolveSignedHeroPoster,
+} from './signImageKitMedia';
 
 function mapResource(
   item: {
@@ -13,13 +17,16 @@ function mapResource(
   },
   folder: string,
 ): MediaItem {
+  const isVideo = item.resource_type === 'video';
+
   return {
-    src: item.secure_url,
-    type: item.resource_type === 'video' ? 'video' : 'image',
+    src: isVideo ? deliverImageKitVideoUrl(item.secure_url) : item.secure_url,
+    type: isVideo ? 'video' : 'image',
     alt: folder,
     width: item.width,
     height: item.height,
     publicId: item.public_id,
+    lightboxSrc: isVideo ? deliverImageKitVideoUrl(item.secure_url) : undefined,
   };
 }
 
@@ -50,7 +57,7 @@ async function fetchFeaturedGallery(folder: string): Promise<MediaItem[]> {
 export async function getGallery(folder: string): Promise<MediaItem[]> {
   return unstable_cache(
     async () => fetchGallery(folder),
-    ['imagekit-gallery', folder],
+    ['imagekit-gallery-v3', folder],
     {
       revalidate: PAGE_REVALIDATE_SECONDS,
       tags: ['gallery', `gallery-${folder}`],
@@ -65,7 +72,7 @@ export async function getGallery(folder: string): Promise<MediaItem[]> {
 export async function getFeaturedGallery(folder: string): Promise<MediaItem[]> {
   return unstable_cache(
     async () => fetchFeaturedGallery(folder),
-    ['imagekit-featured', folder],
+    ['imagekit-featured-v3', folder],
     {
       revalidate: PAGE_REVALIDATE_SECONDS,
       tags: ['gallery', `gallery-featured-${folder}`],
