@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import type { MediaItem } from '@/components/GalleryPage';
 import type { ReelsCollection } from '@/lib/getReels';
-import { cloudinaryVideoUrl, cloudinaryVideoPosterUrl } from '@/lib/cloudinaryUrl';
+import { imagekitVideoUrl, imagekitVideoPosterUrl } from '@/lib/imagekitUrl';
 import {
   getExternalVideoProvider,
 } from '@/lib/externalVideo';
@@ -137,7 +137,7 @@ function ReelGridItem({
     ? youtubeThumbnailUrl(item.src)
     : isInstagram && item.thumbnail
       ? item.thumbnail
-      : cloudinaryVideoPosterUrl(item.src, 'masonry');
+      : imagekitVideoPosterUrl(item.src, 'masonry');
   const itemStyle = { aspectRatio };
 
   const playPreview = useCallback(() => {
@@ -233,7 +233,7 @@ function ReelGridItem({
       ) : (
         <video
           ref={videoRef}
-          src={cloudinaryVideoUrl(item.src, 'masonry')}
+          src={imagekitVideoUrl(item.src, 'masonry')}
           poster={posterSrc}
           muted
           loop
@@ -482,7 +482,7 @@ export function ReelsPage({
           <div className="category-empty-icon" />
           <p className="category-empty-title">Motion coming soon</p>
           <p className="category-empty-hint t-label">
-            Upload videos to the Cloudinary reels folder (or reels/vertical and
+            Upload videos to the ImageKit reels folder (or reels/vertical and
             reels/horizontal)
           </p>
         </div>
@@ -616,7 +616,7 @@ export function ReelsPage({
                 />
               ) : (
                 <video
-                  src={cloudinaryVideoUrl(lightboxItem.src, 'lightbox')}
+                  src={imagekitVideoUrl(lightboxItem.src, 'lightbox')}
                   controls
                   autoPlay
                   className="category-lightbox-asset"

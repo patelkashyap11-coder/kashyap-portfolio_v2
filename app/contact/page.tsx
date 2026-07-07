@@ -8,8 +8,8 @@ import { ArrowUpRight } from 'lucide-react';
 import { BrandLogo } from '@/components/BrandLogo';
 import { useSiteContent } from '@/lib/content/ContentProvider';
 import { getPreviewBase } from '@/lib/content/preview';
-import { cloudinaryImageLoader } from '@/lib/cloudinaryLoader';
-import { CLOUDINARY_IMAGE_SIZES } from '@/lib/cloudinaryUrl';
+import { imagekitImageLoader } from '@/lib/imagekitLoader';
+import { MEDIA_IMAGE_SIZES } from '@/lib/imagekitUrl';
 import { CONTACT_PLAY_CARDS, SITE_CONTACT, SITE_LOCATION } from '@/lib/site';
 
 const socialLinks = [
@@ -139,11 +139,11 @@ export default function ContactPage() {
                   className="contact-card-link"
                 >
                   <Image
-                    loader={cloudinaryImageLoader}
+                    loader={imagekitImageLoader}
                     src={image}
                     alt=""
                     fill
-                    sizes={CLOUDINARY_IMAGE_SIZES.contactCard}
+                    sizes={MEDIA_IMAGE_SIZES.contactCard}
                     className="contact-card-image"
                     loading="lazy"
                   />

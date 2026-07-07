@@ -5,7 +5,7 @@ function itemLabel(item: MediaItem): string {
   return `${item.publicId ?? ''} ${item.src}`.toLowerCase();
 }
 
-/** Matches Cloudinary names like "project 1", "project_2", "product 3", "project1" */
+/** Matches upload names like "project 1", "project_2", "product 3", "project1" */
 function getProjectSlot(item: MediaItem): 1 | 2 | 3 | null {
   const label = itemLabel(item);
   const slotPattern = (slot: number) =>
@@ -39,7 +39,7 @@ function assignSlot(
 
 /**
  * Priority per slot (project 1 → index 0, project 2 → index 1, project 3 → index 2):
- * 1. Files renamed in Cloudinary as "project 1/2/3" or "product 1/2/3"
+ * 1. Files renamed in ImageKit as "project 1/2/3" or "product 1/2/3"
  * 2. Photos in `category/featured/` subfolder (01-, 02-, 03- order)
  * 3. Optional `image` filename in categoryData.ts
  *

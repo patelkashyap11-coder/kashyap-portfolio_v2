@@ -49,12 +49,10 @@ export const SITE_CONTACT = {
   whatsapp: 'https://wa.me/919712727007',
 } as const;
 
-/** Cloudinary playcard folder — contact page social cards. */
+/** ImageKit playcard folder — contact page social cards. */
 export const CONTACT_PLAY_CARDS = {
-  instagram:
-    'https://res.cloudinary.com/dvcymatjg/image/upload/v1781541366/in_vgusif.png',
-  whatsapp:
-    'https://res.cloudinary.com/dvcymatjg/image/upload/v1781541367/wat_hiye9y.png',
+  instagram: '/Playcard/instagram_vgusif.png',
+  whatsapp: '/Playcard/whatsapp_hiye9y.png',
 } as const;
 
 export const SITE_LOCATION = {

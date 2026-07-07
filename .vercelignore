@@ -1,0 +1,26 @@
+.next
+node_modules
+.DS_Store
+*.xlsx
+*.csv
+ai-content-audit*
+font-stack-overview.csv
+font-usage-sheet.csv
+Complete_Page_By_Page_Content_Sheet.xlsx
+Website_Copy_Sheet_For_Cursor.xlsx
+
+# ~2000 local font specimens — only ship faces used by the live site.
+public/fonts/**
+!public/fonts/Aboreto-Regular.ttf
+!public/fonts/BodoniModa_18pt-Regular.ttf
+!public/fonts/BodoniModa_18pt-Italic.ttf
+!public/fonts/BodoniModa_18pt-Medium.ttf
+!public/fonts/BodoniModa_18pt-MediumItalic.ttf
+!public/fonts/BodoniModa_18pt-SemiBold.ttf
+!public/fonts/BodoniModa_18pt-SemiBoldItalic.ttf
+!public/fonts/ProzaLibre-Regular.ttf
+!public/fonts/ProzaLibre-Medium.ttf
+!public/fonts/ProzaLibre-SemiBold.ttf
+!public/fonts/ProzaLibre-Bold.ttf
+!public/fonts/HelveticaNeue-Light.ttf
+!public/fonts/HelveticaNeue-MediumItalic.ttf

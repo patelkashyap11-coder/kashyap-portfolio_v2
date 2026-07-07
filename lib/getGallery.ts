@@ -1,12 +1,12 @@
 import { unstable_cache } from 'next/cache';
-import cloudinary from './cloudinary';
 import type { MediaItem } from '@/components/GalleryPage';
 import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
+import { listImageKitFolderResources } from './listImageKitFolderResources';
 
 function mapResource(
   item: {
     secure_url: string;
-    resource_type: string;
+    resource_type?: string;
     public_id: string;
     width?: number;
     height?: number;
@@ -24,46 +24,33 @@ function mapResource(
 }
 
 async function fetchGallery(folder: string): Promise<MediaItem[]> {
-  const result = await cloudinary.search
-    .expression(`folder:${folder}`)
-    .sort_by('public_id', 'asc')
-    .max_results(500)
-    .execute();
+  const resources = await listImageKitFolderResources({
+    folders: [folder],
+    maxResults: 500,
+    sortBy: 'public_id',
+    sortDirection: 'asc',
+  });
 
-  return result.resources.map(
-    (item: {
-      secure_url: string;
-      resource_type: string;
-      public_id: string;
-      width?: number;
-      height?: number;
-    }) => mapResource(item, folder),
-  );
+  return resources.map((item) => mapResource(item, folder));
 }
 
 async function fetchFeaturedGallery(folder: string): Promise<MediaItem[]> {
-  const result = await cloudinary.search
-    .expression(`folder:${folder}/featured`)
-    .sort_by('public_id', 'asc')
-    .max_results(3)
-    .execute();
+  const resources = await listImageKitFolderResources({
+    folders: [`${folder}/featured`],
+    maxResults: 3,
+    sortBy: 'public_id',
+    sortDirection: 'asc',
+    exactFolder: true,
+  });
 
-  return result.resources.map(
-    (item: {
-      secure_url: string;
-      resource_type: string;
-      public_id: string;
-      width?: number;
-      height?: number;
-    }) => mapResource(item, folder),
-  );
+  return resources.map((item) => mapResource(item, folder));
 }
 
 /** All images in a category folder (including subfolders). */
 export async function getGallery(folder: string): Promise<MediaItem[]> {
   return unstable_cache(
     async () => fetchGallery(folder),
-    ['cloudinary-gallery', folder],
+    ['imagekit-gallery', folder],
     {
       revalidate: PAGE_REVALIDATE_SECONDS,
       tags: ['gallery', `gallery-${folder}`],
@@ -72,13 +59,13 @@ export async function getGallery(folder: string): Promise<MediaItem[]> {
 }
 
 /**
- * Featured project photos — upload to a `featured` subfolder in Cloudinary.
+ * Featured project photos — upload to a `featured` subfolder in ImageKit.
  * Name files 01-, 02-, 03- to control order (e.g. 01-editorial.jpg).
  */
 export async function getFeaturedGallery(folder: string): Promise<MediaItem[]> {
   return unstable_cache(
     async () => fetchFeaturedGallery(folder),
-    ['cloudinary-featured', folder],
+    ['imagekit-featured', folder],
     {
       revalidate: PAGE_REVALIDATE_SECONDS,
       tags: ['gallery', `gallery-featured-${folder}`],

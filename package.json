@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "sync:clients": "node scripts/sync-client-logos.mjs",
+    "imagekit:check": "node scripts/check-imagekit.mjs",
     "seo:preview": "node scripts/seo-preview.mjs",
     "build": "next build",
     "start": "next start",
@@ -14,9 +15,9 @@
     "@studio-freight/lenis": "^1.0.42",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "cloudinary": "^2.7.0",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",
+    "imagekit": "^6.0.0",
     "lenis": "^1.3.23",
     "lucide-react": "^0.517.0",
     "next": "16.2.7",

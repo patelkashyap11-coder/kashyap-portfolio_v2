@@ -3,9 +3,9 @@ import { useState, useCallback, useMemo, useLayoutEffect, useEffect } from 'reac
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Play, ChevronDown, ArrowUpRight } from 'lucide-react';
-import { CloudinaryImage } from '@/components/CloudinaryImage';
+import { MediaImage } from '@/components/MediaImage';
 import type { FeaturedProjectMeta } from '@/lib/categoryData';
-import { CLOUDINARY_IMAGE_SIZES, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { MEDIA_IMAGE_SIZES, imagekitVideoUrl } from '@/lib/imagekitUrl';
 import { resolveHeroPosterSrc } from '@/lib/posterUrl';
 import {
   protectedMediaSurfaceProps,
@@ -208,12 +208,12 @@ export function GalleryPage({
       <section className="category-hero">
         <div className="category-hero-media" aria-hidden {...protectedMediaSurfaceProps}>
           {heroFallbackImage && !(heroVideo && isMobile) ? (
-            <CloudinaryImage
+            <MediaImage
               src={heroFallbackImage}
               alt=""
               fill
               priority
-              sizes={CLOUDINARY_IMAGE_SIZES.hero}
+              sizes={MEDIA_IMAGE_SIZES.hero}
               className="category-hero-image"
               aria-hidden
             />
@@ -360,7 +360,7 @@ export function GalleryPage({
           <div className="category-empty-icon" />
           <p className="category-empty-title">Gallery coming soon</p>
           <p className="category-empty-hint t-label">
-            Content loading from Cloudinary
+            Content loading from ImageKit
           </p>
         </div>
       )}
@@ -452,19 +452,19 @@ export function GalleryPage({
             >
               {media[lightboxIdx].type === 'video' ? (
                 <video
-                  src={cloudinaryVideoUrl(media[lightboxIdx].src, 'lightbox')}
+                  src={imagekitVideoUrl(media[lightboxIdx].src, 'lightbox')}
                   controls
                   autoPlay
                   className="category-lightbox-asset"
                   {...protectedVideoProps}
                 />
               ) : (
-                <CloudinaryImage
+                <MediaImage
                   src={media[lightboxIdx].src}
                   alt={media[lightboxIdx].alt || title}
                   width={media[lightboxIdx].width ?? 1200}
                   height={media[lightboxIdx].height ?? 800}
-                  sizes={CLOUDINARY_IMAGE_SIZES.lightbox}
+                  sizes={MEDIA_IMAGE_SIZES.lightbox}
                   className="category-lightbox-asset"
                 />
               )}
@@ -493,7 +493,7 @@ function FeaturedMedia({
       {item.type === 'video' ? (
         <>
           <video
-            src={cloudinaryVideoUrl(item.src, 'featured')}
+            src={imagekitVideoUrl(item.src, 'featured')}
             muted
             loop
             playsInline
@@ -507,12 +507,12 @@ function FeaturedMedia({
           </div>
         </>
       ) : (
-        <CloudinaryImage
+        <MediaImage
           src={item.src}
           alt={item.alt || title}
           width={item.width ?? 1200}
           height={item.height ?? 800}
-          sizes={CLOUDINARY_IMAGE_SIZES.featured}
+          sizes={MEDIA_IMAGE_SIZES.featured}
           className="category-featured-asset group-hover:scale-[1.02]"
         />
       )}
@@ -541,7 +541,7 @@ function MasonryItem({
       {item.type === 'video' ? (
         <>
           <video
-            src={cloudinaryVideoUrl(item.src, 'masonry')}
+            src={imagekitVideoUrl(item.src, 'masonry')}
             muted
             loop
             playsInline
@@ -555,12 +555,12 @@ function MasonryItem({
           </div>
         </>
       ) : (
-        <CloudinaryImage
+        <MediaImage
           src={item.src}
           alt={item.alt || ''}
           width={item.width ?? 800}
           height={item.height ?? 1000}
-          sizes={CLOUDINARY_IMAGE_SIZES.masonry}
+          sizes={MEDIA_IMAGE_SIZES.masonry}
           className="category-masonry-asset"
         />
       )}

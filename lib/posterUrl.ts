@@ -1,18 +1,18 @@
-import { cloudinaryVideoPosterUrl } from './cloudinaryUrl';
+import { imagekitVideoPosterUrl } from './imagekitUrl';
 
 const LEGACY_HOMEPAGE_POSTER = /^\/homepage\/.+\.(jpe?g|png|webp)$/i;
 
-/** Legacy `/homepage/*.jpg` fallbacks are not shipped — use a Cloudinary video frame instead. */
+/** Legacy `/homepage/*.jpg` fallbacks are not shipped — use an ImageKit video frame instead. */
 export function resolveHeroPosterSrc(
   imageSrc: string | undefined,
   videoSrc?: string,
 ): string | undefined {
   if (!imageSrc) {
-    return videoSrc ? cloudinaryVideoPosterUrl(videoSrc, 'hero') : undefined;
+    return videoSrc ? imagekitVideoPosterUrl(videoSrc, 'hero') : undefined;
   }
 
   if (LEGACY_HOMEPAGE_POSTER.test(imageSrc) && videoSrc) {
-    return cloudinaryVideoPosterUrl(videoSrc, 'hero');
+    return imagekitVideoPosterUrl(videoSrc, 'hero');
   }
 
   return imageSrc;

@@ -16,7 +16,7 @@ function isPortrait(item: MediaItem): boolean {
   return true;
 }
 
-/** Videos from Cloudinary `reels/vertical` and `reels/horizontal`, with aspect-ratio fallback. */
+/** Videos from ImageKit `reels/vertical` and `reels/horizontal`, with aspect-ratio fallback. */
 export async function getReels(): Promise<ReelsCollection> {
   const [verticalFolder, horizontalFolder, reelsFolder, reelFolder] =
     await Promise.all([

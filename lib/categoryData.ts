@@ -6,7 +6,7 @@ export interface FeaturedProjectMeta {
   client: string;
   year: string;
   description: string;
-  /** Optional code fallback — prefer renaming in Cloudinary to "project 1", "project 2", "project 3" */
+  /** Optional code fallback — prefer renaming in ImageKit to "project 1", "project 2", "project 3" */
   image?: string;
 }
 
@@ -15,9 +15,9 @@ export interface CategoryMeta {
   title: string;
   subtitle: string;
   description: string;
-  /** Fallback when no matching file exists in Cloudinary `homepage/` folder. */
+  /** Fallback when no matching file exists in ImageKit `homepage/` folder. */
   videoSrc: string;
-  /** Fallback when no matching poster exists in Cloudinary `homepage/` folder. */
+  /** Fallback when no matching poster exists in ImageKit `homepage/` folder. */
   imageSrc: string;
   featuredProjects: FeaturedProjectMeta[];
 }
@@ -29,8 +29,7 @@ const baseCategories: CategoryMeta[] = [
     subtitle: 'Editorial Fashion',
     description:
       'Editorial campaigns, lookbooks and visual storytelling crafted with clarity, elegance, and intention.',
-    videoSrc:
-      'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803366/fashion_fjqklk.mp4',
+    videoSrc: '/homepage/fashion.mp4',
     imageSrc: '/homepage/fashion.jpg',
     featuredProjects: [
       {
@@ -62,8 +61,7 @@ const baseCategories: CategoryMeta[] = [
     subtitle: 'Food & Hospitality',
     description:
       'Refined imagery celebrating cuisine, gathering, and atmosphere, from restaurant editorials to hospitality campaigns.',
-    videoSrc:
-      'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803361/food_ba669d.mp4',
+    videoSrc: '/homepage/food.mp4',
     imageSrc: '/homepage/food.jpg',
     featuredProjects: [
       {
@@ -95,8 +93,7 @@ const baseCategories: CategoryMeta[] = [
     subtitle: 'Fine Jewellery',
     description:
       'Celebrating craftsmanship, light, and timeless design through imagery inspired by heritage, portraiture, and luxury editorial.',
-    videoSrc:
-      'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803368/jewellery_prcnbx.mp4',
+    videoSrc: '/homepage/jewellery.mp4',
     imageSrc: '/homepage/jewellery.jpg',
     featuredProjects: [
       {
@@ -128,8 +125,7 @@ const baseCategories: CategoryMeta[] = [
     subtitle: 'Product & Brand',
     description:
       'Elevating products through refined compositions, natural light, and intentional storytelling across campaigns and editorials.',
-    videoSrc:
-      'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803363/products_pwdlyy.mp4',
+    videoSrc: '/homepage/products.mp4',
     imageSrc: '/homepage/products.jpg',
     featuredProjects: [
       {
@@ -161,8 +157,7 @@ const baseCategories: CategoryMeta[] = [
     subtitle: 'Interiors & Spaces',
     description:
       'Imagery highlighting spatial harmony, materiality, and the quiet elegance of contemporary living.',
-    videoSrc:
-      'https://res.cloudinary.com/dvcymatjg/video/upload/v1780803362/interiors_flgrmx.mp4',
+    videoSrc: '/homepage/interiors.mp4',
     imageSrc: '/homepage/interiors.jpg',
     featuredProjects: [
       {

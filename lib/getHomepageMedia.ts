@@ -1,12 +1,14 @@
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import { cloudinaryVideoUrl } from './cloudinaryUrl';
+import { imagekitVideoUrl } from './imagekitUrl';
 import { resolveHeroPosterSrc } from './posterUrl';
 import { PAGE_REVALIDATE_SECONDS } from './cacheConfig';
-import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
+import { listImageKitFolderResources } from './listImageKitFolderResources';
 import { categories } from './categoryData';
 
-const HOMEPAGE_FOLDERS = ['homepage'] as const;
+import { resolveImageKitFolder } from './imagekitFolders';
+
+const HOMEPAGE_FOLDERS = [resolveImageKitFolder('homepage')] as const;
 
 const CATEGORY_SLUGS = new Set(categories.map((category) => category.slug));
 
@@ -23,10 +25,10 @@ export type HomepageMedia = {
 
 export type HomepageMediaMap = Record<string, HomepageMedia>;
 
-type CloudinaryResource = {
+type ImageKitResource = {
   public_id: string;
   secure_url: string;
-  resource_type: string;
+  resource_type?: string;
   created_at?: string;
 };
 
@@ -70,25 +72,26 @@ function slugFromPublicId(publicId: string): string | null {
   return slugForMediaKey(publicId);
 }
 
-async function listHomepageResources(): Promise<CloudinaryResource[]> {
-  const resources = await listCloudinaryFolderResources({
+async function listHomepageResources(): Promise<ImageKitResource[]> {
+  const resources = await listImageKitFolderResources({
     folders: HOMEPAGE_FOLDERS,
     maxResults: 30,
     sortBy: 'created_at',
     sortDirection: 'desc',
+    exactFolder: true,
   });
 
-  return resources as CloudinaryResource[];
+  return resources as ImageKitResource[];
 }
 
 const getCachedHomepageResources = unstable_cache(
   listHomepageResources,
-  ['cloudinary-homepage-media-v6'],
+  ['imagekit-homepage-media-v1'],
   { revalidate: PAGE_REVALIDATE_SECONDS, tags: ['homepage-media'] },
 );
 
 /**
- * Homepage category backgrounds from Cloudinary folder `homepage/`.
+ * Homepage category backgrounds from ImageKit folder `homepage/`.
  * Name uploads after the category slug, e.g. `fashion.mp4`, `food-hospitality.mp4`, `interiors.mp4`.
  * Falls back to `videoSrc` / `imageSrc` in categoryData when a file is missing.
  */
@@ -134,7 +137,9 @@ export async function resolveCategoryMedia(
   const rawVideoSrc = cloud?.videoSrc ?? fallback.videoSrc;
 
   return {
-    videoSrc: cloudinaryVideoUrl(rawVideoSrc, 'hero'),
-    imageSrc: resolveHeroPosterSrc(cloud?.imageSrc ?? fallback.imageSrc, rawVideoSrc),
+    videoSrc: imagekitVideoUrl(rawVideoSrc, 'hero'),
+    imageSrc:
+      resolveHeroPosterSrc(cloud?.imageSrc ?? fallback.imageSrc, rawVideoSrc) ??
+      fallback.imageSrc,
   };
 }

@@ -2,9 +2,9 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { CloudinaryImage } from '@/components/CloudinaryImage';
+import { MediaImage } from '@/components/MediaImage';
 import { protectedMediaSurfaceProps, protectedVideoProps } from '@/lib/mediaProtection';
-import { CLOUDINARY_IMAGE_SIZES, cloudinaryVideoPosterUrl, cloudinaryVideoUrl } from '@/lib/cloudinaryUrl';
+import { MEDIA_IMAGE_SIZES, imagekitVideoPosterUrl, imagekitVideoUrl } from '@/lib/imagekitUrl';
 import { resolveHeroPosterSrc } from '@/lib/posterUrl';
 
 interface Props {
@@ -55,14 +55,14 @@ export function CategorySection({
 
   const posterSrc = useMemo(() => {
     if (videoSrc) {
-      return cloudinaryVideoPosterUrl(videoSrc, videoPreset);
+      return imagekitVideoPosterUrl(videoSrc, videoPreset);
     }
     return resolveHeroPosterSrc(imageSrc, videoSrc);
   }, [videoSrc, imageSrc, videoPreset]);
 
   const playbackSrc = useMemo(() => {
     if (!shouldLoadVideo || !videoSrc) return undefined;
-    return cloudinaryVideoUrl(videoSrc, videoPreset);
+    return imagekitVideoUrl(videoSrc, videoPreset);
   }, [shouldLoadVideo, videoSrc, videoPreset]);
 
   useEffect(() => {
@@ -112,11 +112,11 @@ export function CategorySection({
         {videoSrc ? (
           <>
             {posterSrc ? (
-              <CloudinaryImage
+              <MediaImage
                 src={posterSrc}
                 alt=""
                 fill
-                sizes={CLOUDINARY_IMAGE_SIZES.categoryPoster}
+                sizes={MEDIA_IMAGE_SIZES.categoryPoster}
                 className="category-section-media category-section-image category-section-poster"
                 aria-hidden
               />
@@ -137,11 +137,11 @@ export function CategorySection({
             ) : null}
           </>
         ) : posterSrc ? (
-          <CloudinaryImage
+          <MediaImage
             src={posterSrc}
             alt=""
             fill
-            sizes={CLOUDINARY_IMAGE_SIZES.categoryPoster}
+            sizes={MEDIA_IMAGE_SIZES.categoryPoster}
             className="category-section-media category-section-image"
             {...protectedMediaSurfaceProps}
           />

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import { listCloudinaryFolderResources } from './listCloudinaryFolderResources';
+import { listImageKitFolderResources } from './listImageKitFolderResources';
 
 export interface Client {
   id: string;
@@ -10,19 +10,21 @@ export interface Client {
   logo: string | null;
 }
 
-const CLIENTS_FOLDER = 'clients';
+import { resolveImageKitFolder } from './imagekitFolders';
+
+const CLIENTS_FOLDER = resolveImageKitFolder('clients');
 const CLIENTS_DIR = path.join(process.cwd(), 'public', 'clients');
 const IMAGE_EXT = /\.(png|jpe?g|svg|webp)$/i;
 
-/** Strip Cloudinary upload hash suffixes, e.g. `01_Craftroots_gzl7kl` → `01_Craftroots`. */
-function stripCloudinaryHash(filename: string): string {
+/** Strip upload hash suffixes, e.g. `01_Craftroots_gzl7kl` → `01_Craftroots`. */
+function stripUploadHash(filename: string): string {
   return filename
     .replace(IMAGE_EXT, '')
     .replace(/_[a-z0-9]{5,}$/i, '');
 }
 
 function nameFromFilename(filename: string): string {
-  const base = stripCloudinaryHash(filename);
+  const base = stripUploadHash(filename);
   const stripped = base
     .replace(/^\d+\s*/, '')
     .replace(/^\d+[-_]/, '')
@@ -49,32 +51,33 @@ function publicLogoPath(filename: string): string {
   return `/clients/${encodeURIComponent(filename)}`;
 }
 
-type CloudinaryClientResource = {
+type ImageKitClientResource = {
   public_id: string;
   secure_url: string;
   resource_type?: string;
 };
 
-async function listCloudinaryClientResources(): Promise<CloudinaryClientResource[]> {
-  const resources = await listCloudinaryFolderResources({
+async function listImageKitClientResources(): Promise<ImageKitClientResource[]> {
+  const resources = await listImageKitFolderResources({
     folders: [CLIENTS_FOLDER],
     maxResults: 50,
     sortBy: 'public_id',
     sortDirection: 'asc',
+    exactFolder: true,
   });
 
   return resources.filter(
     (item) => !item.resource_type || item.resource_type === 'image',
-  ) as CloudinaryClientResource[];
+  ) as ImageKitClientResource[];
 }
 
-const getCachedCloudinaryClientResources = unstable_cache(
-  listCloudinaryClientResources,
-  ['cloudinary-clients-v10'],
+const getCachedImageKitClientResources = unstable_cache(
+  listImageKitClientResources,
+  ['imagekit-clients-v1'],
   { revalidate: 3600, tags: ['client-logos'] },
 );
 
-function mapCloudinaryClients(resources: CloudinaryClientResource[]): Client[] {
+function mapImageKitClients(resources: ImageKitClientResource[]): Client[] {
   const clients: Client[] = [];
   const seenNames = new Set<string>();
 
@@ -94,13 +97,13 @@ function mapCloudinaryClients(resources: CloudinaryClientResource[]): Client[] {
   }
 
   return clients.sort((a, b) =>
-    sortKey(stripCloudinaryHash(basenameFromPublicId(a.id))).localeCompare(
-      sortKey(stripCloudinaryHash(basenameFromPublicId(b.id))),
+    sortKey(stripUploadHash(basenameFromPublicId(a.id))).localeCompare(
+      sortKey(stripUploadHash(basenameFromPublicId(b.id))),
     ),
   );
 }
 
-/** Fallback when Cloudinary `clients/` is empty or unavailable. */
+/** Fallback when ImageKit `clients/` is empty or unavailable. */
 async function getLocalClients(): Promise<Client[]> {
   try {
     const files = await fs.readdir(CLIENTS_DIR);
@@ -119,21 +122,21 @@ async function getLocalClients(): Promise<Client[]> {
 }
 
 /**
- * Client logos from Cloudinary folder `clients/`.
+ * Client logos from ImageKit folder `clients/`.
  * Name uploads like `01 Craftroots.png`, `02 Gramshree.png` — same as local convention.
- * Falls back to `public/clients/` if the Cloudinary folder is empty.
+ * Falls back to `public/clients/` if the ImageKit folder is empty.
  */
 export const getClients = cache(async (): Promise<Client[]> => {
   try {
-    const resources = await getCachedCloudinaryClientResources();
-    const clients = mapCloudinaryClients(resources);
+    const resources = await getCachedImageKitClientResources();
+    const clients = mapImageKitClients(resources);
 
     if (clients.length > 0) {
       return clients;
     }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('[getClients] Cloudinary clients/ failed, trying public/clients/.');
+      console.warn('[getClients] ImageKit clients/ failed, trying public/clients/.');
       console.warn(error);
     }
   }
@@ -142,7 +145,7 @@ export const getClients = cache(async (): Promise<Client[]> => {
 
   if (local.length === 0 && process.env.NODE_ENV === 'development') {
     console.warn(
-      '[getClients] No logos found. Upload to Cloudinary folder `clients/` or add files to public/clients/.',
+      '[getClients] No logos found. Upload to ImageKit folder `clients/` or add files to public/clients/.',
     );
   }
 

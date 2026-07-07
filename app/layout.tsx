@@ -133,7 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           media="(prefers-color-scheme: dark)"
         />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="anonymous" />
       </head>
       <body>
         <SiteStructuredData />

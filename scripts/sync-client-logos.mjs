@@ -1,13 +1,13 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { v2 as cloudinary } from 'cloudinary';
+import ImageKit from 'imagekit';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const outputPath = path.join(rootDir, 'data', 'client-logos.json');
 
-const CLIENT_FOLDERS = ['clients', 'client'];
+const CLIENT_FOLDERS = ['CLIENT ', 'clients', 'client'];
 
 async function loadEnv() {
   const envPath = path.join(rootDir, '.env.local');
@@ -42,49 +42,35 @@ function nameFromPublicId(publicId) {
 }
 
 function logoUrl(secureUrl) {
-  if (!secureUrl.includes('res.cloudinary.com') || !secureUrl.includes('/upload/')) {
-    return secureUrl;
-  }
+  if (!secureUrl.includes('ik.imagekit.io')) return secureUrl;
 
-  const [base, assetPath] = secureUrl.split('/upload/');
-  const versionMatch = assetPath.match(/(v\d+\/.+)$/);
-  const asset = versionMatch ? versionMatch[1] : assetPath;
+  const [base] = secureUrl.split('?');
+  const match = base.match(/^(https?:\/\/ik\.imagekit\.io\/[^/]+)(\/.*)$/);
+  if (!match) return secureUrl;
+
+  const [, origin, assetPath] = match;
   const isSvg = /\.svg(\?|$)/i.test(secureUrl);
   const transforms = isSvg
-    ? 'w_400,c_limit,q_auto:good,f_svg'
-    : 'w_400,c_limit,q_auto:good,f_auto';
+    ? 'w-400,c-at_max,q-auto,f-svg'
+    : 'w-400,c-at_max,q-auto,f-auto';
 
-  return `${base}/upload/${transforms}/${asset}`;
+  return `${origin}/tr:${transforms}${assetPath}`;
 }
 
-async function listClientResources() {
+async function listClientResources(imagekit) {
   for (const folder of CLIENT_FOLDERS) {
     try {
-      const result = await cloudinary.api.resources_by_asset_folder(folder, {
-        max_results: 100,
+      const result = await imagekit.listFiles({
+        searchQuery: `path = "/${folder}/"`,
+        sort: 'ASC_NAME',
+        limit: 100,
       });
 
-      if (result.resources?.length) {
-        return result.resources;
+      if (result.length) {
+        return result.filter((item) => item.type === 'file');
       }
     } catch (error) {
-      console.warn(`[sync-client-logos] asset folder "${folder}" failed:`, error.error?.message || error.message);
-    }
-  }
-
-  for (const folder of CLIENT_FOLDERS) {
-    try {
-      const result = await cloudinary.search
-        .expression(`asset_folder:${folder}`)
-        .sort_by('public_id', 'asc')
-        .max_results(100)
-        .execute();
-
-      if (result.resources?.length) {
-        return result.resources;
-      }
-    } catch (error) {
-      console.warn(`[sync-client-logos] search "${folder}" failed:`, error.error?.message || error.message);
+      console.warn(`[sync-client-logos] folder "${folder}" failed:`, error.message || error);
     }
   }
 
@@ -94,23 +80,25 @@ async function listClientResources() {
 async function main() {
   await loadEnv();
 
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
+  const urlEndpoint =
+    process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? process.env.IMAGEKIT_URL_ENDPOINT;
+  const publicKey = process.env.IMAGEKIT_PUBLIC_KEY;
+  const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
 
-  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-    throw new Error('Missing CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, or CLOUDINARY_API_SECRET');
+  if (!urlEndpoint || !publicKey || !privateKey) {
+    throw new Error(
+      'Missing NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT, IMAGEKIT_PUBLIC_KEY, or IMAGEKIT_PRIVATE_KEY',
+    );
   }
 
-  const resources = await listClientResources();
+  const imagekit = new ImageKit({ urlEndpoint, publicKey, privateKey });
+  const resources = await listClientResources(imagekit);
   const clients = resources
-    .filter((item) => !item.resource_type || item.resource_type === 'image')
+    .filter((item) => item.fileType === 'image')
     .map((item) => ({
-      id: item.public_id,
-      name: nameFromPublicId(item.public_id),
-      logo: logoUrl(item.secure_url),
+      id: item.filePath.replace(/^\//, ''),
+      name: nameFromPublicId(item.filePath),
+      logo: logoUrl(item.url),
     }))
     .sort((a, b) => a.id.localeCompare(b.id));
 
@@ -124,6 +112,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error('[sync-client-logos] Failed:', error.error?.message || error.message || error);
+  console.error('[sync-client-logos] Failed:', error.message || error);
   process.exit(1);
 });

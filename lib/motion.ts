@@ -12,7 +12,7 @@ export const MOTION_YOUTUBE_VIDEOS: string[] = [
   'https://www.youtube.com/watch?v=epdj08bRIrI',
 ];
 
-/** Instagram reel/post links — mixed into the Motion reels grid with Cloudinary uploads. */
+/** Instagram reel/post links — mixed into the Motion reels grid with ImageKit uploads. */
 export const MOTION_INSTAGRAM_REELS: string[] = [
   'https://www.instagram.com/reel/DPi0jQdEQ5w/?igsh=ZjB6M2N3d2dqdjll',
   'https://www.instagram.com/reel/DL7cq4oBCTf/?igsh=MTF6NWJyZmdrZzUwOQ==',
