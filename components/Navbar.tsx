@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPreviewBase, isPreviewHome, withPreviewBase } from '@/lib/content/preview';
 import { BrandLogo } from '@/components/BrandLogo';
-import { REELS_LOCKED } from '@/lib/reels';
 
 const links = [
   { href: '/fashion', label: 'Fashion', shortLabel: 'Fashion' },
@@ -13,7 +12,7 @@ const links = [
   { href: '/jewellery', label: 'Jewellery', shortLabel: 'Jewellery' },
   { href: '/products', label: 'Products', shortLabel: 'Products' },
   { href: '/interiors', label: 'Interiors', shortLabel: 'Interiors' },
-  { href: '/motion', label: 'Motion', shortLabel: 'Motion', locked: REELS_LOCKED },
+  { href: '/motion', label: 'Motion', shortLabel: 'Motion', private: true },
   { href: '/contact', label: 'Contact', shortLabel: 'Contact' },
 ];
 
@@ -257,30 +256,17 @@ export function Navbar() {
           </Link>
 
           <div className="site-nav-links hidden md:flex items-center min-w-0 flex-1 justify-end">
-            {navLinks.map((l) =>
-              l.locked ? (
-                <span
-                  key={l.href}
-                  className="nav-ul nav-ul--locked t-label whitespace-nowrap"
-                  style={{ color: navFg, opacity: 0.35 }}
-                  title="Coming soon"
-                  aria-disabled="true"
-                >
-                  <span className="site-nav-label-short">{l.shortLabel}</span>
-                  <span className="site-nav-label-full">{l.label}</span>
-                </span>
-              ) : (
+            {navLinks.map((l) => (
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`nav-ul t-label transition-opacity hover:opacity-100 whitespace-nowrap${pathname === l.href ? ' nav-ul--active' : ''}`}
+                  className={`nav-ul t-label transition-opacity hover:opacity-100 whitespace-nowrap${pathname === l.href ? ' nav-ul--active' : ''}${l.private ? ' nav-ul--private' : ''}`}
                   style={{ color: navFg, opacity: pathname === l.href ? 1 : 0.55 }}
                 >
                   <span className="site-nav-label-short">{l.shortLabel}</span>
                   <span className="site-nav-label-full">{l.label}</span>
                 </Link>
-              ),
-            )}
+              ))}
           </div>
 
           <button
@@ -306,26 +292,16 @@ export function Navbar() {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="site-nav-mobile-menu md:hidden flex flex-col"
               >
-                {navLinks.map((l) =>
-                  l.locked ? (
-                    <span
-                      key={l.href}
-                      className="site-nav-mobile-link site-nav-mobile-link--locked"
-                      aria-disabled="true"
-                    >
-                      {l.label}
-                    </span>
-                  ) : (
+                {navLinks.map((l) => (
                     <Link
                       key={l.href}
                       href={l.href}
                       onClick={() => setOpen(false)}
-                      className={`site-nav-mobile-link${pathname === l.href ? ' site-nav-mobile-link--active' : ''}`}
+                      className={`site-nav-mobile-link${pathname === l.href ? ' site-nav-mobile-link--active' : ''}${l.private ? ' site-nav-mobile-link--private' : ''}`}
                     >
                       {l.label}
                     </Link>
-                  ),
-                )}
+                  ))}
               </motion.nav>
             )}
           </AnimatePresence>

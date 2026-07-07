@@ -1,4 +1,5 @@
 import { ReelsPage } from '@/components/ReelsPage';
+import { MotionPasswordGate } from '@/components/MotionPasswordGate';
 import type { MediaItem } from '@/components/GalleryPage';
 import { getReels } from '@/lib/getReels';
 import { fetchInstagramPreview, isInstagramUrl } from '@/lib/instagram';
@@ -7,6 +8,7 @@ import {
   MOTION_INSTAGRAM_REELS,
   MOTION_YOUTUBE_VIDEOS,
 } from '@/lib/motion';
+import { getMotionAccessFromCookies } from '@/lib/motionAccess';
 import { REELS_LOCKED } from '@/lib/reels';
 import { getMotionMetadata } from '@/lib/seo';
 import { isYouTubeUrl } from '@/lib/youtube';
@@ -40,6 +42,12 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
+  const hasAccess = await getMotionAccessFromCookies();
+
+  if (!hasAccess) {
+    return <MotionPasswordGate />;
+  }
+
   const reels = REELS_LOCKED
     ? { vertical: [], horizontal: [] }
     : await getReels();

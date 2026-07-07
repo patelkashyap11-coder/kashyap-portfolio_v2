@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getCategoryBySlug } from '@/lib/categoryData';
 import { siteContent } from '@/lib/content';
+import { isMotionPasswordProtected } from '@/lib/motionAccess';
 import { REELS_LOCKED } from '@/lib/reels';
 import {
   SITE_CONTACT,
@@ -106,7 +107,9 @@ export function getMotionMetadata(): Metadata {
     },
     description,
     keywords: [...SITE_KEYWORDS, 'motion', 'film', 'video', 'filmmaker Ahmedabad'],
-    ...(REELS_LOCKED ? { robots: { index: false, follow: false } } : {}),
+    ...(REELS_LOCKED || isMotionPasswordProtected()
+      ? { robots: { index: false, follow: false } }
+      : {}),
     alternates: {
       canonical: path,
     },

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { isMotionPasswordProtected } from '@/lib/motionAccess';
 import { REELS_LOCKED } from '@/lib/reels';
 import { SITE_URL } from '@/lib/site';
 
@@ -9,7 +10,7 @@ const ROUTES = [
   '/jewellery',
   '/products',
   '/interiors',
-  ...(REELS_LOCKED ? [] : ['/motion']),
+  ...(REELS_LOCKED || isMotionPasswordProtected() ? [] : ['/motion']),
   '/contact',
 ] as const;
 
