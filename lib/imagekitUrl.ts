@@ -121,6 +121,21 @@ function resolveAbsoluteUrl(urlOrPath: string): string {
   return urlOrPath;
 }
 
+/** Remove existing `/tr:…` segments so transforms are never nested. */
+export function stripImageKitTransforms(urlOrPath: string): string {
+  const absoluteUrl = resolveAbsoluteUrl(urlOrPath);
+  if (!IMAGEKIT_HOST.test(absoluteUrl)) return urlOrPath;
+
+  const [base, query = ''] = absoluteUrl.split('?');
+  const match = base.match(/^(https?:\/\/ik\.imagekit\.io\/[^/]+)(\/.*)$/);
+  if (!match) return absoluteUrl;
+
+  const [, origin, assetPath] = match;
+  const cleanPath = assetPath.replace(/\/tr:[^/]+/g, '') || '/';
+  const cleanBase = `${origin}${cleanPath}`;
+  return query ? `${cleanBase}?${query}` : cleanBase;
+}
+
 function withPathTransforms(absoluteUrl: string, transform: string): string {
   const [base, query = ''] = absoluteUrl.split('?');
   const match = base.match(/^(https?:\/\/ik\.imagekit\.io\/[^/]+)(\/.*)$/);
@@ -173,18 +188,23 @@ export function imagekitLogoUrl(urlOrPath: string): string {
   return imagekitPreset(urlOrPath, 'logo');
 }
 
-/** Deliver a compressed web-sized MP4 from an ImageKit video master. */
+function buildVideoTransformString(preset: ImageKitVideoPreset): string {
+  const { width, height, quality } = VIDEO_PRESETS[preset];
+  const parts = [`w-${width}`];
+  if (height) parts.push(`h-${height}`);
+  if (quality) parts.push(`q-${quality}`);
+  return parts.join(',');
+}
+
+/** Deliver a resized web MP4 from an ImageKit video master. */
 export function imagekitVideoUrl(
   urlOrPath: string,
   preset: ImageKitVideoPreset = 'hero',
 ): string {
-  const { width, height, quality } = VIDEO_PRESETS[preset];
-  return imagekitUrl(urlOrPath, {
-    width,
-    height,
-    quality,
-    crop: 'at_max',
-  });
+  const absoluteUrl = stripImageKitTransforms(urlOrPath);
+  if (!IMAGEKIT_HOST.test(absoluteUrl)) return urlOrPath;
+
+  return withPathTransforms(absoluteUrl, buildVideoTransformString(preset));
 }
 
 /** First-frame JPG poster for ImageKit videos (fixes blank/grey tiles on mobile). */
@@ -192,7 +212,7 @@ export function imagekitVideoPosterUrl(
   urlOrPath: string,
   preset: ImageKitVideoPreset = 'masonry',
 ): string {
-  const absoluteUrl = resolveAbsoluteUrl(urlOrPath);
+  const absoluteUrl = stripImageKitTransforms(urlOrPath);
   if (!IMAGEKIT_HOST.test(absoluteUrl)) return urlOrPath;
 
   const { width } = VIDEO_PRESETS[preset];

@@ -1633,8 +1633,13 @@ body {
 }
 
 .category-hero-image {
+  z-index: 0;
   background-size: cover;
   background-position: center;
+}
+
+.category-hero-video {
+  z-index: 1;
 }
 
 .category-hero-overlay {
