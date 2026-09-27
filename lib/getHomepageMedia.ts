@@ -96,7 +96,8 @@ const getCachedHomepageResources = unstable_cache(
 /**
  * Homepage category backgrounds from ImageKit folder `homepage/`.
  * Name uploads after the category slug, e.g. `fashion.mp4`, `food-hospitality.mp4`, `interiors.mp4`.
- * Falls back to `videoSrc` / `imageSrc` in categoryData when a file is missing.
+ * Falls back to `videoSrc` in categoryData when a file is missing.
+ * Legacy `/homepage/*.jpg` posters are ignored; a real ImageKit still is used when one exists.
  */
 export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => {
   try {
@@ -132,7 +133,7 @@ export const getHomepageMediaMap = cache(async (): Promise<HomepageMediaMap> => 
 export async function resolveCategoryMedia(
   slug: string,
   fallback: { videoSrc: string; imageSrc: string },
-): Promise<{ videoSrc: string; mobileVideoSrc: string; imageSrc: string }> {
+): Promise<{ videoSrc: string; mobileVideoSrc: string; imageSrc?: string }> {
   const map = await getHomepageMediaMap();
   const cloud = map[slug];
   const localVideos = resolveHomepageVideoPaths(slug);
@@ -147,8 +148,6 @@ export async function resolveCategoryMedia(
     mobileVideoSrc: usesLocalVideo
       ? localVideos.mobile
       : deliverImageKitVideoUrl(rawVideoSrc),
-    imageSrc:
-      resolveSignedHeroPoster(cloud?.imageSrc ?? fallback.imageSrc) ??
-      fallback.imageSrc,
+    imageSrc: resolveSignedHeroPoster(cloud?.imageSrc ?? fallback.imageSrc),
   };
 }

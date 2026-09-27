@@ -1,18 +1,13 @@
-import { imagekitVideoPosterUrl } from './imagekitUrl';
-
 const LEGACY_HOMEPAGE_POSTER = /^\/homepage\/.+\.(jpe?g|png|webp)$/i;
+const VIDEO_FILE = /\.(mp4|mov|webm|mkv)(\?|$)/i;
 
-/** Legacy `/homepage/*.jpg` fallbacks are not shipped — use an ImageKit video frame instead. */
-export function resolveHeroPosterSrc(
-  imageSrc: string | undefined,
-  videoSrc?: string,
-): string | undefined {
-  if (!imageSrc) {
-    return videoSrc ? imagekitVideoPosterUrl(videoSrc, 'hero') : undefined;
-  }
-
-  if (LEGACY_HOMEPAGE_POSTER.test(imageSrc) && videoSrc) {
-    return imagekitVideoPosterUrl(videoSrc, 'hero');
+/**
+ * Poster for a category hero. Missing `/homepage/*.jpg` files and video URLs
+ * are not images — return nothing so the hero video can play on its own.
+ */
+export function resolveHeroPosterSrc(imageSrc: string | undefined): string | undefined {
+  if (!imageSrc || LEGACY_HOMEPAGE_POSTER.test(imageSrc) || VIDEO_FILE.test(imageSrc)) {
+    return undefined;
   }
 
   return imageSrc;

@@ -150,13 +150,19 @@ export function GalleryPage({
   const featuredCount = flatFeatured.length;
   const galleryItems = galleryMedia;
   const heroFallbackImage = useMemo(() => {
-    const candidate =
-      heroImage ||
-      featuredMedia.find((item) => item)?.src ||
-      galleryMedia[0]?.src;
+    const candidates = [
+      heroImage,
+      featuredMedia.find((item) => item?.type === 'image')?.src,
+      galleryMedia.find((item) => item.type === 'image')?.src,
+    ];
 
-    return resolveHeroPosterSrc(candidate, heroVideo);
-  }, [heroImage, heroVideo, featuredMedia, galleryMedia]);
+    for (const candidate of candidates) {
+      const resolved = resolveHeroPosterSrc(candidate);
+      if (resolved) return resolved;
+    }
+
+    return undefined;
+  }, [heroImage, featuredMedia, galleryMedia]);
   const [isMobile, setIsMobile] = useState(
     () =>
       typeof window !== 'undefined' &&
